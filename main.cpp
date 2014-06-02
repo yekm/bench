@@ -65,7 +65,7 @@ int main(int argc, char * argv[])
                 std::cout << a.second->get_name() << " N:" << n;
                 for (int i=0; i<runs_per_n; i++)
                 {
-                    std::cout << " " << i << "/" << runs_per_n;
+                    std::cout << " " << i << "/" << runs_per_n << std::flush;
                     std::shared_ptr<TaskData> td_clone(td->clone());
                     alg.run(*td_clone.get());
                     alg.check(*td_clone.get());

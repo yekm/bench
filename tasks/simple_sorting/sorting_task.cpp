@@ -13,6 +13,7 @@ static struct st
         t->add_alg(std::unique_ptr<Algorithm>(new merge_sort()));
         t->add_alg(std::unique_ptr<Algorithm>(new insertion_sort()));
         t->add_alg(std::unique_ptr<Algorithm>(new shell_sort()));
+        t->add_alg(std::unique_ptr<Algorithm>(new selection_sort()));
         TaskCollection::get().add_task(__FILE__, std::move(t));
     }
 } sorting_task_;

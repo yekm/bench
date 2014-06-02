@@ -104,6 +104,32 @@ public:
     }
 };
 
+class selection_sort : public SortingCheck
+{
+public:
+    selection_sort()
+        : SortingCheck("Selection sort n^2")
+    {}
+    virtual std::string complexity()
+    {
+        return "a*x**2+b";
+    }
+    virtual void run(TaskData & td)
+    {
+        SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
+        D() << "before " << d;
+        typedef SortingTask::g_type::container_type::iterator itr_type;
+        for ( itr_type i = d.begin(); i != d.end(); ++i)
+        {
+            itr_type min = i;
+            for (itr_type j = i+1; j != d.end(); ++j)
+                if (*j < *min) min = j;
+            std::swap(*i, *min);
+        }
+        D() << "after " << d;
+    }
+};
+
 class shell_sort : public SortingCheck
 {
 public:
