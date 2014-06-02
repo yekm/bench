@@ -24,6 +24,7 @@ public:
     virtual void prepare(const TaskData &);
     virtual void run(TaskData &) = 0;
     virtual void check(const TaskData &);
+    virtual std::string complexity();
     std::string get_name();
 private:
     const std::string m_name;

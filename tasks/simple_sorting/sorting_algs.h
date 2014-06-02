@@ -27,6 +27,10 @@ public:
     std_sort()
         : SortingCheck("Introsort std::sort n*log(n)")
     {}
+    virtual std::string complexity()
+    {
+        return "a*x*log(x)+b";
+    }
     virtual void run(TaskData & td)
     {
         SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
@@ -42,6 +46,10 @@ public:
     merge_sort()
         : SortingCheck("Merge sort n*log(n)")
     {}
+    virtual std::string complexity()
+    {
+        return "a*x*log(x)+b";
+    }
     virtual void run(TaskData & td)
     {
         SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
@@ -78,6 +86,10 @@ public:
     insertion_sort()
         : SortingCheck("Insertion sort n^2")
     {}
+    virtual std::string complexity()
+    {
+        return "a*x**2+b";
+    }
     virtual void run(TaskData & td)
     {
         SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
@@ -96,8 +108,12 @@ class shell_sort : public SortingCheck
 {
 public:
     shell_sort()
-        : SortingCheck("Shell sort n^(3/2)")
+        : SortingCheck("Shell sort n*log^2(n)")
     {}
+    virtual std::string complexity()
+    {
+        return "a*x*(log(x))**2+b";
+    }
     virtual void run(TaskData & td)
     {
         SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();

@@ -36,7 +36,7 @@ int main(int argc, char * argv[])
                       << "\t-d\tenable debug output. ex -d. (default: false)\n"
                       << "\t-n\tmaximum n. ex -n 1e10 (default: algorithm dependent)\n"
                       << "\t-t\tmaximum algorithm run time. ex -t 300. (default: 120 seconds). broken for now.\n"
-                      << "\nexample: ../bench -r 1 -n 1e6 | tee out.gnuplot | gnuplot && $BROWSER index.html\n"
+                      << "\nexample: ../bench -r 5 -n 7e4 && gnuplot o.gnuplot && $BROWSER index.html\n"
                          ;
             return -1;
             break;
@@ -47,7 +47,7 @@ int main(int argc, char * argv[])
     for (auto & x : TaskCollection::get())
     {
         Task & t = *x.second.get();
-        //std::cout << x.first << " :: " << t.get_name() << std::endl;
+        std::cout << "Task: " << t.get_name() << std::endl;
         auto ns = t.get_n();
         std::size_t n = ns.first
                 , c = 0
@@ -62,13 +62,15 @@ int main(int argc, char * argv[])
                 if (static_cast<AlgorithmStatDecorator*>(a.second.get())->get_status() != AlgorithmStatDecorator::AS_OK)
                     continue;
                 alg.prepare(*td.get());
-                //std::cout << a.second->get_name() << std::endl;
+                std::cout << a.second->get_name() << " N:" << n;
                 for (int i=0; i<runs_per_n; i++)
                 {
+                    std::cout << " " << i << "/" << runs_per_n;
                     std::shared_ptr<TaskData> td_clone(td->clone());
                     alg.run(*td_clone.get());
                     alg.check(*td_clone.get());
                 }
+                std::cout << std::endl;
             }
             c++;
             m *= 2;
@@ -76,7 +78,7 @@ int main(int argc, char * argv[])
         }
     }
     std::cout << std::endl;
-    utils::GnuplotOutput go;
+    utils::GnuplotOutput go("o.gnuplot");
     go.write();
     return 0;
 }

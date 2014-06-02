@@ -4,7 +4,7 @@
 #include <cassert>
 
 AlgorithmStatDecorator::AlgorithmStatDecorator(std::unique_ptr<Algorithm>&& a)
-    : Algorithm("WAIT. OH SHI~")
+    : Algorithm(a->get_name())
     , m_alg(std::move(a))
     , m_status(AS_OK)
 {

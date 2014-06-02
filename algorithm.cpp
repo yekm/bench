@@ -17,6 +17,11 @@ void Algorithm::check(const TaskData &)
 {
 }
 
+std::string Algorithm::complexity()
+{
+    return std::string();
+}
+
 std::string Algorithm::get_name()
 {
     return m_name;
