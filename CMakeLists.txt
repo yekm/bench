@@ -11,7 +11,6 @@ set(SRC
     task.cpp
     taskcollection.cpp
     taskdata.cpp
-    algorithmstatdecorator.cpp
     )
 
 include_directories(${PROJECT_SOURCE_DIR})

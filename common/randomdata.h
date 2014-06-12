@@ -47,13 +47,14 @@ protected:
 
 private:
     void generate(T max, T min);
-/* segfault
+    /* segfault
     {
         std::uniform_int_distribution<T> dis(min, max);
         std::generate_n(base_type::m_data.begin(), base_type::m_data.size(),
                         std::bind(dis, m_gen));
     }
-*/
+    */
+
     std::size_t m_n;
     std::random_device m_rd;
     std::mt19937 m_gen;

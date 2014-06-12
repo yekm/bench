@@ -3,8 +3,10 @@
 
 #include "algorithm.h"
 #include "sorting_task.h"
-#include <algorithm>
 #include "utils/dbg.h"
+#include "bexeption.h"
+
+#include <algorithm>
 
 class SortingCheck : public Algorithm
 {
@@ -17,7 +19,7 @@ public:
         D() << "check";
         auto &d = static_cast<const SortingTask::g_type&>(td).get_const();
         if (std::is_sorted(d.cbegin(), d.cend()) != true)
-            throw Algorithm::AlgExeption("sorting check failed");
+            throw BExeption("sorting check failed");
     }
 };
 

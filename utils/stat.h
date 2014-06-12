@@ -7,14 +7,6 @@
 namespace utils
 {
 
-enum Status
-{
-    AS_OK = 0,
-    AS_FAIL,
-    AS_OOM,
-    AS_TIMEOUT,
-};
-
 template <typename T>
 class StatT
 {
@@ -76,6 +68,7 @@ private:
 
 
 // actually Timer::timediff_type. include timer.h?
+// or move into timemeasurement.h
 typedef StatT<double> Stat;
 
 } // ns utils

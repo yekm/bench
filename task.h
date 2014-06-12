@@ -6,6 +6,8 @@
 #include "taskdata.h"
 #include "algorithm.h"
 
+#include "utils/status.h"
+
 class Task
 {
 public:
@@ -22,6 +24,8 @@ public:
     std::string get_name() const;
 
     virtual std::pair<std::size_t, std::size_t> get_n() = 0;
+
+    utils::Status m_status;
 
 protected:
     algs_type m_algs;

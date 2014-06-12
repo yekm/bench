@@ -1,7 +1,6 @@
 #include "gnuplotoutput.h"
 
 #include "taskcollection.h"
-#include "algorithmstatdecorator.h"
 
 #include <iostream>
 #include <sstream>
@@ -21,8 +20,6 @@ GnuplotOutput::GnuplotOutput(const std::string & filename)
 {
 }
 
-// TODO: make it "fit"? some nice docs http://people.duke.edu/~hpgavin/gnuplot.html
-
 std::string make_gnuplot(std::string image_filename,
                          std::string plot_title,
                          std::string data_filename,
@@ -31,8 +28,7 @@ std::string make_gnuplot(std::string image_filename,
     std::ostringstream oss;
     if (!fit.empty())
         oss << "fit " << fit << " '" << data_filename << "' using 1:2:3 via a, b\n";
-    oss
-        << "set terminal svg size 700,500 fsize 9\n"
+    oss << "set terminal svg size 700,500 fsize 9\n"
         << "set xlabel 'items'\n"
         << "set ylabel 'seconds'\n"
         << "set output '" << image_filename << "'\n"
@@ -56,20 +52,18 @@ void GnuplotOutput::write()
     {
         Task & t = *x.second.get();
         html << "<h2>" << t.get_name() << "</h2>\n";
-        int alg = 0;
+        int algn = 0;
         std::vector<std::string> allinone;
         for (const auto & a : t.get_algorithms())
         {
             std::ostringstream oss;
-            oss << "task" << task << "_alg" << alg << ".data";
+            oss << "task" << task << "_alg" << algn << ".data";
             std::ofstream of(oss.str());
             of << "# task: " << x.first << " :: " << t.get_name() << std::endl;
-            AlgorithmStatDecorator * algsd = dynamic_cast<AlgorithmStatDecorator*> (a.second.get());
-            if (algsd == nullptr)
-                throw std::runtime_error("you rewrited stat decorator but forgot about GnuplotOutput");
-            of << "# alg: " << algsd->m_alg->get_name() << std::endl;
+            Algorithm * alg = a.second.get();
+            of << "# alg: " << alg->get_name() << std::endl;
 
-            for (const auto & n_s : algsd->m_stat_run)
+            for (const auto & n_s : alg->m_statistics.m_stat_run)
             {
                 of << n_s.first << " "
                          << n_s.second.mean() << " "
@@ -78,20 +72,13 @@ void GnuplotOutput::write()
                          << n_s.second.max() << std::endl;
             }
             std::string image_filename(oss.str() + ".svg");
-            std::string title(algsd->m_alg->get_name());
-            switch (algsd->m_status)
-            {
-            case AlgorithmStatDecorator::AS_ERROR:
-                title = title + " (failed:" + algsd->m_error_sring + ")"; break;
-            case AlgorithmStatDecorator::AS_OOM:
-                title = title + " (failed: out of memory)"; break;
-            case AlgorithmStatDecorator::AS_EXEPTION:
-                title = title + " (failed: unknown exeption thrown)"; break;
-            }
+            std::string title(alg->get_name());
+            if (alg->m_statistics.m_status.get_status() != utils::Status::SE_OK)
+                title = title + " (" + alg->m_statistics.m_status.str() + ")";
             html << "<img width=49% src='" << image_filename << "'>\n";
-            m_output << make_gnuplot(image_filename, title, oss.str(), algsd->m_alg->complexity());
+            m_output << make_gnuplot(image_filename, title, oss.str(), alg->complexity());
             allinone.push_back(" '" + oss.str() + "' using 1:2 with lines title '" + title + "', '" + oss.str() + "' using 1:2:3 with errorbars notitle");
-            alg++;
+            algn++;
         }
         m_output
                 << "set terminal svg size 700,500 fsize 6\n"

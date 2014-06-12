@@ -2,21 +2,14 @@
 #define ALGORITHM_H
 
 #include <string>
-#include <stdexcept>
 #include "taskdata.h"
+#include "algorithmstat.h"
 
 #include "utils/stat.h"
 
 class Algorithm
 {
 public:
-    class AlgExeption : public std::runtime_error {
-    public:
-        AlgExeption(const std::string & wut)
-            : std::runtime_error(wut)
-        {}
-    };
-
     explicit Algorithm(const std::string &);
     Algorithm(Algorithm &&) = default;
     Algorithm(const Algorithm &) = delete;
@@ -26,6 +19,7 @@ public:
     virtual void check(const TaskData &);
     virtual std::string complexity();
     std::string get_name();
+    AlgorithmStat m_statistics;
 private:
     const std::string m_name;
 };

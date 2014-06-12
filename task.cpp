@@ -1,7 +1,5 @@
 #include "task.h"
 
-#include "algorithmstatdecorator.h"
-
 Task::Task(const std::string & name)
     : m_name(name)
 {
@@ -23,9 +21,6 @@ Task::algs_type & Task::get_algorithms()
 
 void Task::add_alg(algs_type::mapped_type a)
 {
-//    m_algs[a->get_name()] = std::move(a);
     auto &alg = m_algs[a->get_name()];
-    alg = std::unique_ptr<Algorithm>(
-                new AlgorithmStatDecorator(std::move(a))
-                );
+    alg = std::move(a);
 }
