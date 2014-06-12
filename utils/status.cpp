@@ -37,4 +37,9 @@ std::string Status::str()
     }
 }
 
+bool Status::ok()
+{
+    return m_status == SE_OK;
+}
+
 } // ns utils

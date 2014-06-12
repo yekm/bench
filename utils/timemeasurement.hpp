@@ -5,71 +5,23 @@
 #include <functional>
 
 #include "timer.hpp"
-#include "bexeption.hpp"
 #include "status.hpp"
 
 namespace utils
 {
 
-template <typename R>
 class TimeMeasurement
 {
 public:
-    typedef std::function<R()> functor_type;
-    TimeMeasurement(functor_type f)
-        : m_f(f)
-    {}
-
-    R measure(Timer::timediff_type & d, Status & s)
-    {
-        R r;
-        try
-        {
-            utils::Timer timer;
-            r = m_f();
-            d = timer.get();
-        }
-        catch (const BExeption & e)
-        {
-            s.set_status(Status::SE_ERROR, e.what());
-        }
-        catch (const std::bad_alloc & e)
-        {
-            s.set_status(Status::SE_OOM);
-        }
-        catch (...)
-        {
-            s.set_status(Status::SE_UNKNOWN_EXCEPTION);
-        }
-        return r;
-    }
+    TimeMeasurement(std::function<void()> f);
+    const TimeMeasurement & get_time(Timer::timediff_type & d) const;
+    const TimeMeasurement & get_status(Status & s) const;
+    const TimeMeasurement & set_timeout(Timer::timediff_type) const;
 
 private:
-    functor_type m_f;
+    Timer::timediff_type m_d;
+    mutable Status m_s;
 };
-
-template<>
-void TimeMeasurement<void>::measure(Timer::timediff_type & d, Status & s)
-{
-    try
-    {
-        utils::Timer timer;
-        m_f();
-        d = timer.get();
-    }
-    catch (const BExeption & e)
-    {
-        s.set_status(Status::SE_ERROR, e.what());
-    }
-    catch (const std::bad_alloc & e)
-    {
-        s.set_status(Status::SE_OOM);
-    }
-    catch (...)
-    {
-        s.set_status(Status::SE_UNKNOWN_EXCEPTION);
-    }
-}
 
 } // ns utils
 

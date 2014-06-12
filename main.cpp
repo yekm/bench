@@ -31,12 +31,12 @@ int main(int argc, char * argv[])
             max_round_time = atof(optarg);
             break;
         default:
-            std::cout << "Usage: bench [-r int] [-d] [-n size_t] [-t int]\n"
-                      << "\t-r\talgorithms run per each n. ex -r 1. (default: 3)\n"
-                      << "\t-d\tenable debug output. ex -d. (default: false)\n"
-                      << "\t-n\tmaximum n. ex -n 1e10 (default: algorithm dependent)\n"
-                      << "\t-t\tmaximum algorithm run time. ex -t 300. (default: 120 seconds). broken for now.\n"
-                      << "\nexample: ../bench -r 5 -n 7e4 && gnuplot o.gnuplot && $BROWSER index.html\n"
+            std::cout << "Usage: bench [-r int] [-d] [-n size_t] [-t float]\n"
+                      << "\t-r\talgorithms run per each n (default: 3)\n"
+                      << "\t-d\tenable debug output (default: false)\n"
+                      << "\t-n\tmaximum n (default: task dependent)\n"
+                      << "\t-t\tmaximum algorithm run time (default: 60 seconds).\n"
+                      << "\nexample: ../bench -r 5 -n 7e4 -t 0.5 -d && gnuplot o.gnuplot && $BROWSER index.html\n"
                          ;
             return -1;
             break;
@@ -46,46 +46,55 @@ int main(int argc, char * argv[])
     //std::cout << TaskCollection::get().size() << std::endl;
     for (auto & x : TaskCollection::get())
     {
-        Task & t = *x.second.get();
-        std::cout << "Task: " << t.get_name() << std::endl;
-        auto ns = t.get_n();
+        const std::unique_ptr<Task> & task = x.second;
+        std::cout << "Task: " << task->get_name() << std::endl;
+        auto ns = task->get_n();
         std::size_t n = ns.first
                 , c = 0
                 , m = 1
                 , max_n = owerride_max_n != 0 ? owerride_max_n : ns.second;
-        while(n < max_n && t.m_status.get_status() == utils::Status::SE_OK)
+        while(n < max_n)
         {
-            utils::Timer::timediff_type unused;
-            std::shared_ptr<TaskData> td =
-                    utils::TimeMeasurement<std::shared_ptr<TaskData>>(
-                        [&](){ return t.prepare_data(n); }
-                        ).measure(unused, t.m_status);
+            if (!task->algorithms_ok())
+                break;
 
-            if (t.m_status.get_status() != utils::Status::SE_OK)
-                continue;
+            std::shared_ptr<TaskData> td;
+            utils::TimeMeasurement(
+                        [&](){ td = task->prepare_data(n); }
+            ).get_status(task->m_status);
 
-            for (auto & a : t.get_algorithms())
+            if (!task->m_status.ok())
+                break;
+
+            for (auto & a : task->get_algorithms())
             {
-                Algorithm * alg = a.second.get();
-                if (alg->m_statistics.m_status.get_status() != utils::Status::SE_OK)
+                std::unique_ptr<Algorithm> & alg = a.second;
+
+                if (!alg->m_statistics.m_status.ok())
                     continue;
-                alg->prepare(*td.get());
+
+                utils::Timer::timediff_type d;
+                utils::TimeMeasurement(
+                            [&](){ alg->prepare(*td.get()); }
+                ).get_time(d).get_status(alg->m_statistics.m_status);
+                alg->m_statistics.m_stat_prepare[n].add(d);
+
                 std::cout << a.second->get_name() << " N:" << n;
+
                 for (int i=0; i<runs_per_n; i++)
                 {
                     std::cout << " " << i << "/" << runs_per_n << std::flush;
                     std::shared_ptr<TaskData> td_clone(td->clone());
                     utils::Timer::timediff_type d;
-                    utils::TimeMeasurement<void>(
+                    utils::TimeMeasurement(
                                 [&](){ alg->run(*td_clone.get()); }
-                                ).measure(d, alg->m_statistics.m_status);
+                    ).set_timeout(max_round_time).get_time(d).get_status(alg->m_statistics.m_status);
 
-                    if (d > max_round_time)
-                        alg->m_statistics.m_status.set_status(utils::Status::SE_TIMEOUT);
                     alg->m_statistics.m_stat_run[n].add(d);
 
-                    if (alg->m_statistics.m_status.get_status() != utils::Status::SE_TIMEOUT)
-                        continue;
+                    if (!alg->m_statistics.m_status.ok())
+                        break;
+
                     alg->check(*td_clone.get());
                 }
                 std::cout << std::endl;

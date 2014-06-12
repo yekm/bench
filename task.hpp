@@ -26,6 +26,7 @@ public:
     virtual std::pair<std::size_t, std::size_t> get_n() = 0;
 
     utils::Status m_status;
+    bool algorithms_ok();
 
 protected:
     algs_type m_algs;

@@ -42,6 +42,27 @@ std::string make_gnuplot(std::string image_filename,
     return oss.str();
 }
 
+std::string out_stat(const Stat & s)
+{
+    std::ostringstream oss;
+    oss << s.mean() << " "
+        << s.stddev() << " "
+        << s.min() << " "
+        << s.max();
+    return oss.str();
+}
+
+// FIXME: gnuplot's fit wont fit if error is 0
+std::string out_stat_gnuplot_happy(const Stat & s)
+{
+    std::ostringstream oss;
+    oss << s.mean() << " "
+        << (s.stddev() == 0 ? s.mean()/100. : s.stddev()) << " "
+        << s.min() << " "
+        << s.max();
+    return oss.str();
+}
+
 void GnuplotOutput::write()
 {
     // TODO: do not generate html here
@@ -52,6 +73,8 @@ void GnuplotOutput::write()
     {
         Task & t = *x.second.get();
         html << "<h2>" << t.get_name() << "</h2>\n";
+        if (!t.m_status.ok())
+            html << "<p>Task error: " << t.m_status.str() << "</p>\n";
         int algn = 0;
         std::vector<std::string> allinone;
         for (const auto & a : t.get_algorithms())
@@ -64,13 +87,8 @@ void GnuplotOutput::write()
             of << "# alg: " << alg->get_name() << std::endl;
 
             for (const auto & n_s : alg->m_statistics.m_stat_run)
-            {
-                of << n_s.first << " "
-                         << n_s.second.mean() << " "
-                         << n_s.second.stddev() << " "
-                         << n_s.second.min() << " "
-                         << n_s.second.max() << std::endl;
-            }
+                of << n_s.first << " " << out_stat_gnuplot_happy(n_s.second) << std::endl;
+
             std::string image_filename(oss.str() + ".svg");
             std::string title(alg->get_name());
             if (alg->m_statistics.m_status.get_status() != utils::Status::SE_OK)
