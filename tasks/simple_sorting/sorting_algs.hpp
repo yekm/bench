@@ -1,10 +1,10 @@
 #ifndef SORTING_ALGS_H
 #define SORTING_ALGS_H
 
-#include "algorithm.h"
-#include "sorting_task.h"
-#include "utils/dbg.h"
-#include "bexeption.h"
+#include "algorithm.hpp"
+#include "sorting_task.hpp"
+#include "utils/dbg.hpp"
+#include "bexeption.hpp"
 
 #include <algorithm>
 

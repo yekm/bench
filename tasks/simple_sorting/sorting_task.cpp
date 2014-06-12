@@ -1,6 +1,6 @@
-#include "simple_sorting/sorting_task.h"
-#include "simple_sorting/sorting_algs.h"
-#include "taskcollection.h"
+#include "simple_sorting/sorting_task.hpp"
+#include "simple_sorting/sorting_algs.hpp"
+#include "taskcollection.hpp"
 
 namespace {
 

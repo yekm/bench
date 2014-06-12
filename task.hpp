@@ -3,10 +3,10 @@
 
 #include <string>
 #include <map>
-#include "taskdata.h"
-#include "algorithm.h"
+#include "taskdata.hpp"
+#include "algorithm.hpp"
 
-#include "utils/status.h"
+#include "utils/status.hpp"
 
 class Task
 {

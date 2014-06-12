@@ -1,7 +1,7 @@
 #ifndef QUICKRANDOMDATA_H
 #define QUICKRANDOMDATA_H
 
-#include "randomdata.h"
+#include "randomdata.hpp"
 
 // works 2 times faster
 

@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <limits>
-#include "genericdata.h"
+#include "genericdata.hpp"
 
 #include <random>
 #include <algorithm>

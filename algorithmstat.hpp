@@ -3,8 +3,8 @@
 
 #include <map>
 
-#include "utils/stat.h"
-#include "utils/status.h"
+#include "utils/stat.hpp"
+#include "utils/status.hpp"
 
 struct AlgorithmStat
 {

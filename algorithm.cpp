@@ -1,4 +1,4 @@
-#include "algorithm.h"
+#include "algorithm.hpp"
 
 Algorithm::Algorithm(const std::string & name)
     : m_name(name)

@@ -1,4 +1,4 @@
-#include "taskdata.h"
+#include "taskdata.hpp"
 
 TaskData::TaskData(const std::string & name, std::size_t n)
     : m_name(name)

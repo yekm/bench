@@ -1,4 +1,4 @@
-#include "taskcollection.h"
+#include "taskcollection.hpp"
 
 void TaskCollection::add_task(const std::string & desc, tcollection::mapped_type t)
 {

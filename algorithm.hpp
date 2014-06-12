@@ -2,10 +2,10 @@
 #define ALGORITHM_H
 
 #include <string>
-#include "taskdata.h"
-#include "algorithmstat.h"
+#include "taskdata.hpp"
+#include "algorithmstat.hpp"
 
-#include "utils/stat.h"
+#include "utils/stat.hpp"
 
 class Algorithm
 {

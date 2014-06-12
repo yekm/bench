@@ -1,11 +1,11 @@
 #include <iostream>
 
-#include "taskcollection.h"
-#include "utils/stat.h"
-#include "utils/timer.h"
-#include "utils/dbg.h"
-#include "utils/gnuplotoutput.h"
-#include "utils/timemeasurement.h"
+#include "taskcollection.hpp"
+#include "utils/stat.hpp"
+#include "utils/timer.hpp"
+#include "utils/dbg.hpp"
+#include "utils/gnuplotoutput.hpp"
+#include "utils/timemeasurement.hpp"
 #include <chrono>
 
 #include <getopt.h>

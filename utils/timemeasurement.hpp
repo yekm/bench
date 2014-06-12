@@ -4,9 +4,9 @@
 #include <string>
 #include <functional>
 
-#include "timer.h"
-#include "bexeption.h"
-#include "status.h"
+#include "timer.hpp"
+#include "bexeption.hpp"
+#include "status.hpp"
 
 namespace utils
 {

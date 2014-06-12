@@ -1,6 +1,6 @@
-#include "gnuplotoutput.h"
+#include "gnuplotoutput.hpp"
 
-#include "taskcollection.h"
+#include "taskcollection.hpp"
 
 #include <iostream>
 #include <sstream>

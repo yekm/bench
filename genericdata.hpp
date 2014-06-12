@@ -1,8 +1,8 @@
 #ifndef GENERICDATA_H
 #define GENERICDATA_H
 
-#include "taskdata.h"
-#include "utils/dbg.h"
+#include "taskdata.hpp"
+#include "utils/dbg.hpp"
 
 template <typename T>
 class GenericData : public TaskData
