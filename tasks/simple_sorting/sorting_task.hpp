@@ -21,9 +21,10 @@ public:
         //return std::make_shared<QuickRandomData<item_type>>(n);
     }
 
-    virtual std::pair<std::size_t, std::size_t> get_n()
+    virtual bool get_n(std::size_t & n)
     {
-        return std::make_pair<std::size_t, std::size_t>(2, 5e8);
+        n *= 2;
+        return true;
     }
 };
 

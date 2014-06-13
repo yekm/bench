@@ -15,14 +15,14 @@ int main(int argc, char * argv[])
     int opt;
     int runs_per_n = 3;
     utils::Timer::timediff_type max_round_time = 60; // seconds
-    std::size_t owerride_max_n = 0;
+    std::size_t override_max_n = std::numeric_limits<std::size_t>::max();
     while ((opt = getopt(argc, argv, "r:dn:t:")) != -1) {
         switch (opt) {
         case 'r':
             runs_per_n = atoi(optarg);
             break;
         case 'n':
-            owerride_max_n = atof(optarg); // for e-notation
+            override_max_n = atof(optarg); // for e-notation
             break;
         case 'd':
             utils::Debugging::get().set(true);
@@ -48,12 +48,8 @@ int main(int argc, char * argv[])
     {
         const std::unique_ptr<Task> & task = x.second;
         std::cout << "Task: " << task->get_name() << std::endl;
-        auto ns = task->get_n();
-        std::size_t n = ns.first
-                , c = 0
-                , m = 1
-                , max_n = owerride_max_n != 0 ? owerride_max_n : ns.second;
-        while(n < max_n)
+        std::size_t n = 1;
+        while(task->get_n(n) && n < override_max_n)
         {
             if (!task->algorithms_ok())
                 break;
@@ -99,9 +95,6 @@ int main(int argc, char * argv[])
                 }
                 std::cout << std::endl;
             }
-            c++;
-            m *= 2;
-            n = ns.first * m;
         }
     }
     std::cout << std::endl;
