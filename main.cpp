@@ -10,13 +10,38 @@
 
 #include <getopt.h>
 
+void list_tasks()
+{
+    int n = 0;
+    for (auto & x : TaskCollection::get())
+    {
+        const std::unique_ptr<Task> & task = x.second;
+        std::cout << "Task " << n << ": " << task->get_name() << std::endl;
+        for (auto & a : task->get_algorithms())
+        {
+            std::cout << "  " << a.second->get_name() << std::endl;
+        }
+    }
+}
+
+void usage()
+{
+    std::cout << "Usage: bench [-r int] [-d] [-n size_t] [-t float]\n"
+              << "\t-r\talgorithms run per each n (default: 3)\n"
+              << "\t-d\tenable debug output (default: false)\n"
+              << "\t-n\tmaximum n (default: task dependent)\n"
+              << "\t-t\tmaximum algorithm run time (default: 60 seconds).\n"
+              << "\nexample: ../bench -r 5 -n 7e4 -t 0.5 -d && gnuplot o.gnuplot && $BROWSER index.html\n"
+                 ;
+}
+
 int main(int argc, char * argv[])
 {
     int opt;
     int runs_per_n = 3;
     utils::Timer::timediff_type max_round_time = 60; // seconds
     std::size_t override_max_n = std::numeric_limits<std::size_t>::max();
-    while ((opt = getopt(argc, argv, "r:dn:t:")) != -1) {
+    while ((opt = getopt(argc, argv, "r:dn:t:l")) != -1) {
         switch (opt) {
         case 'r':
             runs_per_n = atoi(optarg);
@@ -30,16 +55,12 @@ int main(int argc, char * argv[])
         case 't':
             max_round_time = atof(optarg);
             break;
+        case 'l':
+            list_tasks();
+            return 0;
         default:
-            std::cout << "Usage: bench [-r int] [-d] [-n size_t] [-t float]\n"
-                      << "\t-r\talgorithms run per each n (default: 3)\n"
-                      << "\t-d\tenable debug output (default: false)\n"
-                      << "\t-n\tmaximum n (default: task dependent)\n"
-                      << "\t-t\tmaximum algorithm run time (default: 60 seconds).\n"
-                      << "\nexample: ../bench -r 5 -n 7e4 -t 0.5 -d && gnuplot o.gnuplot && $BROWSER index.html\n"
-                         ;
+            usage();
             return -1;
-            break;
         }
     }
 
