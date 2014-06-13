@@ -22,6 +22,7 @@ public:
     std::string str();
     StatusEnum get_status() const;
     bool ok();
+    bool ok_timeout();
     void set_status(StatusEnum s, std::string m = "");
 
 private:

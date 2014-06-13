@@ -42,4 +42,9 @@ bool Status::ok()
     return m_status == SE_OK;
 }
 
+bool Status::ok_timeout()
+{
+    return m_status == SE_OK || m_status == SE_TIMEOUT;
+}
+
 } // ns utils

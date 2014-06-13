@@ -102,17 +102,32 @@ int main(int argc, char * argv[])
                 {
                     std::cout << " " << i << "/" << runs_per_n << std::flush;
                     std::shared_ptr<TaskData> td_clone(td->clone());
+
                     utils::Timer::timediff_type d;
+                    utils::Status & astatus = alg->m_statistics.m_status;
                     utils::TimeMeasurement(
                                 [&](){ alg->run(*td_clone.get()); }
-                    ).set_timeout(max_round_time).get_time(d).get_status(alg->m_statistics.m_status);
+                    ).set_timeout(max_round_time).get_time(d).get_status(astatus);
 
-                    alg->m_statistics.m_stat_run[n].add(d);
+                    if (astatus.ok_timeout())
+                    { // we can continue only if alg runs totally ok or timed out
+                        utils::Status check_status;
+                        utils::TimeMeasurement(
+                                    [&](){ task->check(*td_clone.get()); }
+                        ).get_status(check_status);
 
-                    if (!alg->m_statistics.m_status.ok())
+                        if (!check_status.ok())
+                        { // no matter if alg is ok ot timed out. it failed
+                            astatus = check_status;
+                            break;
+                        }
+                        // count ok or timed out time stats
+                        alg->m_statistics.m_stat_run[n].add(d);
+                    }
+
+                    if (!astatus.ok())
                         break;
 
-                    task->check(*td_clone.get());
                 }
                 std::cout << std::endl;
             }
