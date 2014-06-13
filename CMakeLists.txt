@@ -29,4 +29,5 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
     -Wl,--whole-archive tasks -Wl,--no-whole-archive
     common
     utils
+    -lrt
     )
