@@ -35,6 +35,6 @@ bool Task::algorithms_ok()
     return false;
 }
 
-void Task::check(const TaskData &)
+void Task::validate(const AResult &)
 {
 }

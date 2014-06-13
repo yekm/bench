@@ -16,6 +16,7 @@ public:
         SE_UNKNOWN_EXCEPTION,
         SE_OOM,
         SE_TIMEOUT,
+        SE_SKIP,
     };
 
     Status();

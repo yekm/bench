@@ -1,4 +1,9 @@
 #include <iostream>
+#include <set>
+#include <chrono>
+#include <sstream>
+
+#include <getopt.h>
 
 #include "taskcollection.hpp"
 #include "utils/stat.hpp"
@@ -6,9 +11,6 @@
 #include "utils/dbg.hpp"
 #include "utils/gnuplotoutput.hpp"
 #include "utils/timemeasurement.hpp"
-#include <chrono>
-
-#include <getopt.h>
 
 void list_tasks()
 {
@@ -21,27 +23,55 @@ void list_tasks()
         {
             std::cout << "  " << a.second->get_name() << std::endl;
         }
+        n++;
     }
 }
 
 void usage()
 {
     std::cout << "Usage: bench [-r int] [-d] [-n size_t] [-t float]\n"
-              << "\t-r\talgorithms run per each n (default: 3)\n"
+              << "\t-r\talgorithm runs per each n (default: 3)\n"
               << "\t-d\tenable debug output (default: false)\n"
               << "\t-n\tmaximum n (default: task dependent)\n"
-              << "\t-t\tmaximum algorithm run time (default: 60 seconds).\n"
-              << "\nexample: ../bench -r 5 -n 7e4 -t 0.5 -d && gnuplot o.gnuplot && $BROWSER index.html\n"
+              << "\t-t\tmaximum algorithm run time (default: 60 seconds)\n"
+              << "\t-l\tlist tasks\n"
+              << "\t-s\tskip certain tasks (default: none)\n"
+              << "\nexample: ../bench -r 5 -n 7e4 -t 0.5 -d -s 1,2,5,10 && gnuplot o.gnuplot && $BROWSER index.html\n"
                  ;
+}
+
+std::set<int> make_skiplist(std::string arg)
+{
+    std::set<int> res;
+    std::replace(arg.begin(), arg.end(), ',', ' ');
+    std::stringstream ss(arg.c_str());
+    copy(std::istream_iterator<int>(ss),
+         std::istream_iterator<int>(),
+         std::inserter(res, res.begin()));
+    D() << "skiplist: " << res;
+    return res;
+}
+
+void mark_skip(std::set<int> skiplist)
+{
+    int n = 0;
+    for (auto & x : TaskCollection::get())
+    {
+        const std::unique_ptr<Task> & task = x.second;
+        if (skiplist.find(n) != skiplist.end())
+            task->m_status.set_status(utils::Status::SE_SKIP);
+        n++;
+    }
 }
 
 int main(int argc, char * argv[])
 {
     int opt;
     int runs_per_n = 3;
+    std::set<int> skiplist;
     utils::Timer::timediff_type max_round_time = 60; // seconds
     std::size_t override_max_n = std::numeric_limits<std::size_t>::max();
-    while ((opt = getopt(argc, argv, "r:dn:t:l")) != -1) {
+    while ((opt = getopt(argc, argv, "r:dn:t:ls:")) != -1) {
         switch (opt) {
         case 'r':
             runs_per_n = atoi(optarg);
@@ -58,6 +88,9 @@ int main(int argc, char * argv[])
         case 'l':
             list_tasks();
             return 0;
+        case 's':
+            mark_skip(make_skiplist(optarg));
+            break;
         default:
             usage();
             return -1;
@@ -68,7 +101,13 @@ int main(int argc, char * argv[])
     for (auto & x : TaskCollection::get())
     {
         const std::unique_ptr<Task> & task = x.second;
-        std::cout << "Task: " << task->get_name() << std::endl;
+        std::cout << "Task: " << task->get_name();
+        if (!task->m_status.ok())
+        {
+            std::cout << " Skipping" << std::endl;
+            continue;
+        }
+        std::cout << std::endl;
         std::size_t n = 1;
         while(task->get_n(n) && n < override_max_n)
         {
@@ -103,17 +142,18 @@ int main(int argc, char * argv[])
                     std::cout << " " << i << "/" << runs_per_n << std::flush;
                     std::shared_ptr<TaskData> td_clone(td->clone());
 
+                    std::unique_ptr<AResult> ares;
                     utils::Timer::timediff_type d;
                     utils::Status & astatus = alg->m_statistics.m_status;
                     utils::TimeMeasurement(
-                                [&](){ alg->run(*td_clone.get()); }
+                                [&](){ ares = alg->run(td_clone); }
                     ).set_timeout(max_round_time).get_time(d).get_status(astatus);
 
                     if (astatus.ok_timeout())
                     { // we can continue only if alg runs totally ok or timed out
                         utils::Status check_status;
                         utils::TimeMeasurement(
-                                    [&](){ task->check(*td_clone.get()); }
+                                    [&](){ task->validate(*ares); }
                         ).get_status(check_status);
 
                         if (!check_status.ok())

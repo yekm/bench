@@ -28,10 +28,10 @@ public:
         return true;
     }
 
-    virtual void check(const TaskData & td)
+    virtual void validate(const AResult & ares)
     {
         D() << "check";
-        auto &d = static_cast<const g_type&>(td).get_const();
+        auto &d = static_cast<const g_type&>(ares.get_taskdata()).get_const();
         if (std::is_sorted(d.cbegin(), d.cend()) != true)
             throw BExeption("sorting check failed");
     }

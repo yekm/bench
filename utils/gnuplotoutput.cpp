@@ -63,6 +63,19 @@ std::string out_stat_gnuplot_happy(const Stat & s)
     return oss.str();
 }
 
+template <typename T>
+std::string join(T & v, std::string sep = ", ")
+{
+    std::stringstream ss;
+    for(std::size_t i = 0; i < v.size(); ++i)
+    {
+        if(i != 0)
+            ss << sep;
+        ss << v[i];
+    }
+    return ss.str();
+}
+
 void GnuplotOutput::write()
 {
     // TODO: do not generate html here
@@ -79,16 +92,18 @@ void GnuplotOutput::write()
         std::vector<std::string> allinone;
         for (const auto & a : t.get_algorithms())
         {
+            Algorithm * alg = a.second.get();
             std::ostringstream oss;
             oss << "task" << task << "_alg" << algn << ".data";
-            std::ofstream of(oss.str());
-            of << "# task: " << x.first << " :: " << t.get_name() << std::endl;
-            Algorithm * alg = a.second.get();
-            of << "# alg: " << alg->get_name() << std::endl;
+            if (t.m_status.get_status() != utils::Status::SE_SKIP)
+            {
+                std::ofstream of(oss.str());
+                of << "# task: " << x.first << " :: " << t.get_name() << std::endl;
+                of << "# alg: " << alg->get_name() << std::endl;
 
-            for (const auto & n_s : alg->m_statistics.m_stat_run)
-                of << n_s.first << " " << out_stat_gnuplot_happy(n_s.second) << std::endl;
-
+                for (const auto & n_s : alg->m_statistics.m_stat_run)
+                    of << n_s.first << " " << out_stat_gnuplot_happy(n_s.second) << std::endl;
+            }
             std::string image_filename(oss.str() + ".svg");
             std::string title(alg->get_name());
             if (alg->m_statistics.m_status.get_status() != utils::Status::SE_OK)
@@ -105,7 +120,7 @@ void GnuplotOutput::write()
                 << "set logscale xy 2\n"
                 << "plot ";
         html << "<img width=100% src='allinone_task" << task << ".svg'>\n";
-        std::copy(allinone.begin(), allinone.end(), std::ostream_iterator<std::string>(m_output, ","));
+        m_output << join(allinone) << "\n\n";
         task++;
     }
     html << "</body></html>";

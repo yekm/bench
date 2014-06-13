@@ -32,6 +32,8 @@ std::string Status::str()
         return "Timeout";
     case SE_UNKNOWN_EXCEPTION:
         return "Unknown exception";
+    case SE_SKIP:
+        return "Skipped";
     default:
         return "FIXME: something is missing...";
     }

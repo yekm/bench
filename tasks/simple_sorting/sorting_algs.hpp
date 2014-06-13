@@ -13,11 +13,12 @@ public:
     std_sort()
         : Algorithm("Introsort std::sort n*log(n)")
     {}
-    virtual std::string complexity()
+private:
+    virtual std::string do_complexity()
     {
         return "a*x*log(x)+b";
     }
-    virtual void run(TaskData & td)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
     {
         SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
         D() << "before " << d;
@@ -32,11 +33,12 @@ public:
     merge_sort()
         : Algorithm("Merge sort n*log(n)")
     {}
-    virtual std::string complexity()
+private:
+    virtual std::string do_complexity()
     {
         return "a*x*log(x)+b";
     }
-    virtual void run(TaskData & td)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
     {
         SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
         D() << "before " << d;
@@ -72,11 +74,12 @@ public:
     insertion_sort()
         : Algorithm("Insertion sort n^2")
     {}
-    virtual std::string complexity()
+private:
+    virtual std::string do_complexity()
     {
         return "a*x**2+b";
     }
-    virtual void run(TaskData & td)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
     {
         SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
         D() << "before " << d;
@@ -96,11 +99,12 @@ public:
     selection_sort()
         : Algorithm("Selection sort n^2")
     {}
-    virtual std::string complexity()
+private:
+    virtual std::string do_complexity()
     {
         return "a*x**2+b";
     }
-    virtual void run(TaskData & td)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
     {
         SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
         D() << "before " << d;
@@ -122,11 +126,12 @@ public:
     shell_sort()
         : Algorithm("Shell sort n*log^2(n)")
     {}
-    virtual std::string complexity()
+private:
+    virtual std::string do_complexity()
     {
         return "a*x*(log(x))**2+b";
     }
-    virtual void run(TaskData & td)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
     {
         SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
         D() << "before " << d;
