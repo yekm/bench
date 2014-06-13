@@ -13,10 +13,6 @@ void Algorithm::prepare(const TaskData &)
 {
 }
 
-void Algorithm::check(const TaskData &)
-{
-}
-
 std::string Algorithm::complexity()
 {
     return std::string();

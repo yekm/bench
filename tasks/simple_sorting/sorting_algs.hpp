@@ -4,30 +4,14 @@
 #include "algorithm.hpp"
 #include "sorting_task.hpp"
 #include "utils/dbg.hpp"
-#include "bexeption.hpp"
 
 #include <algorithm>
 
-class SortingCheck : public Algorithm
-{
-public:
-    SortingCheck(const std::string & name)
-        : Algorithm(name)
-    {}
-    virtual void check(const TaskData & td)
-    {
-        D() << "check";
-        auto &d = static_cast<const SortingTask::g_type&>(td).get_const();
-        if (std::is_sorted(d.cbegin(), d.cend()) != true)
-            throw BExeption("sorting check failed");
-    }
-};
-
-class std_sort : public SortingCheck
+class std_sort : public Algorithm
 {
 public:
     std_sort()
-        : SortingCheck("Introsort std::sort n*log(n)")
+        : Algorithm("Introsort std::sort n*log(n)")
     {}
     virtual std::string complexity()
     {
@@ -42,11 +26,11 @@ public:
     }
 };
 
-class merge_sort : public SortingCheck
+class merge_sort : public Algorithm
 {
 public:
     merge_sort()
-        : SortingCheck("Merge sort n*log(n)")
+        : Algorithm("Merge sort n*log(n)")
     {}
     virtual std::string complexity()
     {
@@ -82,11 +66,11 @@ public:
     }
 };
 
-class insertion_sort : public SortingCheck
+class insertion_sort : public Algorithm
 {
 public:
     insertion_sort()
-        : SortingCheck("Insertion sort n^2")
+        : Algorithm("Insertion sort n^2")
     {}
     virtual std::string complexity()
     {
@@ -106,11 +90,11 @@ public:
     }
 };
 
-class selection_sort : public SortingCheck
+class selection_sort : public Algorithm
 {
 public:
     selection_sort()
-        : SortingCheck("Selection sort n^2")
+        : Algorithm("Selection sort n^2")
     {}
     virtual std::string complexity()
     {
@@ -132,11 +116,11 @@ public:
     }
 };
 
-class shell_sort : public SortingCheck
+class shell_sort : public Algorithm
 {
 public:
     shell_sort()
-        : SortingCheck("Shell sort n*log^2(n)")
+        : Algorithm("Shell sort n*log^2(n)")
     {}
     virtual std::string complexity()
     {

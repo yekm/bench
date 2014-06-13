@@ -16,7 +16,6 @@ public:
     virtual ~Algorithm() = 0;
     virtual void prepare(const TaskData &);
     virtual void run(TaskData &) = 0;
-    virtual void check(const TaskData &);
     virtual std::string complexity();
     std::string get_name();
     AlgorithmStat m_statistics;

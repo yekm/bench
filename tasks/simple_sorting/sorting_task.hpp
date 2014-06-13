@@ -3,6 +3,7 @@
 
 #include "task.hpp"
 #include "common/quickrandomdata.hpp"
+#include "bexeption.hpp"
 
 class SortingTask : public Task
 {
@@ -25,6 +26,14 @@ public:
     {
         n *= 2;
         return true;
+    }
+
+    virtual void check(const TaskData & td)
+    {
+        D() << "check";
+        auto &d = static_cast<const g_type&>(td).get_const();
+        if (std::is_sorted(d.cbegin(), d.cend()) != true)
+            throw BExeption("sorting check failed");
     }
 };
 

@@ -112,7 +112,7 @@ int main(int argc, char * argv[])
                     if (!alg->m_statistics.m_status.ok())
                         break;
 
-                    alg->check(*td_clone.get());
+                    task->check(*td_clone.get());
                 }
                 std::cout << std::endl;
             }
