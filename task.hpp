@@ -7,13 +7,14 @@
 #include "algorithm.hpp"
 
 #include "utils/status.hpp"
+#include "utils/plotsettings.hpp"
 
 class Task
 {
 public:
     typedef std::map<std::string, std::unique_ptr<Algorithm>> algs_type;
 
-    explicit Task(const std::string &);
+    explicit Task(const std::string & name, utils::PlotSettings s = utils::PlotSettings());
     Task(Task &&) = default;
     virtual ~Task() = 0;
 
@@ -29,11 +30,14 @@ public:
     utils::Status m_status;
     bool algorithms_ok();
 
+    const utils::PlotSettings get_plotsettings() const;
+
 protected:
     algs_type m_algs;
 
 private:
     const std::string m_name;
+    const utils::PlotSettings m_plotsettings;
 };
 
 #endif // TASK_H

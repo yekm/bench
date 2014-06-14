@@ -28,16 +28,12 @@ std::string make_gnuplot(std::string image_filename,
     std::ostringstream oss;
     if (!fit.empty())
         oss << "fit " << fit << " '" << data_filename << "' using 1:2:3 via a, b\n";
-    oss << "set terminal svg size 700,500 fsize 9\n"
-        << "set xlabel 'items'\n"
-        << "set ylabel 'seconds'\n"
-        << "set output '" << image_filename << "'\n"
+    oss << "set output '" << image_filename << "'\n"
         << "set title '" << plot_title << "'\n"
-        << "set logscale xy 2\n"
         << "plot '" << data_filename << "' using 1:2 with lines title '" << plot_title << "'"
-        << ", '" << data_filename << "' using 1:2:3 with errorbars notitle";
+        << ", \\\n\t'" << data_filename << "' using 1:2:3 with errorbars notitle";
     if (!fit.empty())
-        oss << ", " << fit << " title sprintf(\"" << fit << "\\na=%g\\nb=%g\", a, b)";
+        oss << ", \\\n\t" << fit << " title sprintf(\"" << fit << "\\na=%g\\nb=%g\", a, b)";
     oss << "\n\n";
     return oss.str();
 }
@@ -88,6 +84,9 @@ void GnuplotOutput::write()
         html << "<h2>" << t.get_name() << "</h2>\n";
         if (!t.m_status.ok())
             html << "<p>Task error: " << t.m_status.str() << "</p>\n";
+        m_output << "# Task: " << t.get_name() << "\n\n";
+        m_output << t.get_plotsettings().all_for_gnuplot()
+                 << "set terminal svg size 700,500 fsize 9\n";
         int algn = 0;
         std::vector<std::string> allinone;
         for (const auto & a : t.get_algorithms())
@@ -117,10 +116,9 @@ void GnuplotOutput::write()
                 << "set terminal svg size 700,500 fsize 6\n"
                 << "set output 'allinone_task" << task << ".svg'\n"
                 << "set title 'all in one'\n"
-                << "set logscale xy 2\n"
                 << "plot ";
         html << "<img width=100% src='allinone_task" << task << ".svg'>\n";
-        m_output << join(allinone) << "\n\n";
+        m_output << join(allinone, ", \\\n\t") << "\n\n\n";
         task++;
     }
     html << "</body></html>";

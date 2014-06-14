@@ -1,7 +1,8 @@
 #include "task.hpp"
 
-Task::Task(const std::string & name)
+Task::Task(const std::string &name, utils::PlotSettings s)
     : m_name(name)
+    , m_plotsettings(s)
 {
 }
 
@@ -33,6 +34,11 @@ bool Task::algorithms_ok()
             return true;
     }
     return false;
+}
+
+const utils::PlotSettings Task::get_plotsettings() const
+{
+    return m_plotsettings;
 }
 
 void Task::validate(const AResult &)
