@@ -2,6 +2,7 @@
 #define QUICKRANDOMDATA_H
 
 #include "randomdata.hpp"
+#include <cassert>
 
 // works 2 times faster
 
@@ -12,19 +13,29 @@ template <typename T>
 class QuickRandomData : public RandomData<T>
 {
 public:
-    explicit QuickRandomData(std::size_t n)
-        : RandomData<T>(n)
+    typedef typename RandomData<T>::base_type base_type;
+
+    explicit QuickRandomData(std::size_t n,
+                             T min = std::numeric_limits<T>::min(),
+                             T max = std::numeric_limits<T>::max())
+        : RandomData<T>("quick random data " + range(min, max), n, min, max)
+        , m_data_original(base_type::m_data)
     {
-        m_data2 = this->m_data;
     }
 
-    QuickRandomData(const QuickRandomData & r)
-        : RandomData<T>(0)
+    QuickRandomData(const QuickRandomData & o)
+        : RandomData<T>("copy of " + o.get_name(), 0, o.min(), o.max())
     {
-        if (r.m_data.size() > r.m_data2.size())
-            this->m_data = r.m_data;
-        else
-            this->m_data = r.m_data2;
+        /* Instead of generating random data again we copying it from m_data2
+         * which contains unchanged data
+         */
+        base_type::m_data = o.m_data_original;
+        /* We are copying from *one* parent TaskData, so where there no
+         * copy of copy of random data. Thus we can leave just like this.
+         * But actually m_data2 should be copied too
+         */
+        //base_type::m_data2 = o.m_data2;
+        assert(o.m_data_original.size());
     }
 
     virtual std::shared_ptr<TaskData> clone_copy() const
@@ -33,7 +44,7 @@ public:
     }
 
 private:
-    std::vector<T> m_data2;
+    const std::vector<T> m_data_original;
 };
 
 } // ns common

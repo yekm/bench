@@ -1,4 +1,5 @@
 #include "algorithm.hpp"
+#include "utils/dbg.hpp"
 
 Algorithm::Algorithm(const std::string & name)
     : m_name(name)
@@ -20,6 +21,7 @@ void Algorithm::do_prepare(const TaskData &)
 
 std::unique_ptr<AResult> Algorithm::run(std::shared_ptr<TaskData> td)
 {
+    D() << td->get_name();
     std::unique_ptr<AResult> res(new AResult(td));
     do_run(*td, res);
     return res;
