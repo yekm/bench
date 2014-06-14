@@ -18,6 +18,7 @@ include_directories(${PROJECT_SOURCE_DIR})
 include_directories(tasks)
 #include_directories(common)
 #add_definitions("-std=c++0x -ggdb3 -O0 -Wall -Wextra")
+#add_definitions("-std=c++0x -ggdb2 -O3 -Wall -Wextra -Wa,-alhnd=/tmp/bench/$(notdir $@.lst)")
 add_definitions("-std=c++0x -O3 -Wall -Wextra")
 
 add_subdirectory(tasks)
