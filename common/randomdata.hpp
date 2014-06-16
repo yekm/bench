@@ -7,6 +7,7 @@
 
 #include <random>
 #include <algorithm>
+#include <type_traits>
 
 namespace common
 {
@@ -20,33 +21,30 @@ public:
     explicit RandomData(std::size_t n,
                         T min = std::numeric_limits<T>::min(),
                         T max = std::numeric_limits<T>::max())
-        : base_type("uniform random " + range(min, max), n)
-        , m_n(n)
+        : base_type("uniform random " + range_str(min, max), n)
         , m_rd()
         , m_gen(m_rd())
         , m_min(min)
         , m_max(max)
     {
-        base_type::m_data.resize(m_n);
+        base_type::m_data.resize(base_type::get_n());
         generate(m_min, m_max);
     }
 
     RandomData (const RandomData & o)
-        : base_type(o.get_name(), o.m_n)
-        , m_n(o.m_n)
+        : base_type(o.get_name(), o.get_n())
         , m_rd()
         , m_gen(o.m_gen)
         , m_min(o.m_min)
         , m_max(o.m_max)
     {
-        base_type::m_data.resize(m_n);
+        base_type::m_data.resize(base_type::get_n());
         generate(m_min, m_max);
     }
 
     virtual std::shared_ptr<TaskData> clone_copy() const
     {
         return std::make_shared<RandomData<T>>(*this);
-        //return std::make_shared<RandomData<T>>(m_n);
     }
 
 protected:
@@ -55,17 +53,16 @@ protected:
                         T min = std::numeric_limits<T>::min(),
                         T max = std::numeric_limits<T>::max())
         : base_type(name, n)
-        , m_n(n)
         , m_rd()
         , m_gen(m_rd())
         , m_min(min)
         , m_max(max)
     {
-        base_type::m_data.resize(m_n);
+        base_type::m_data.resize(base_type::get_n());
         generate(m_min, m_max);
     }
 
-    std::string range(T min, T max) const
+    std::string range_str(T min, T max) const
     {
         return "[" + std::to_string(min) + ", " + std::to_string(max) + "]";
     }
@@ -81,16 +78,24 @@ protected:
     }
 
 private:
-    void generate(T max, T min);
-    /* segfault
+    template <typename U = T,
+              typename std::enable_if<std::is_integral<U>::value, int>::type = 0>
+    void generate(U min, U max)
     {
-        std::uniform_int_distribution<T> dis(min, max);
+        std::uniform_int_distribution<U> dis(min, max);
         std::generate_n(base_type::m_data.begin(), base_type::m_data.size(),
                         std::bind(dis, m_gen));
     }
-    */
 
-    std::size_t m_n;
+    template <typename U = T,
+              typename std::enable_if<std::is_floating_point<U>::value, int>::type = 0>
+    void generate(U min, U max)
+    {
+        std::uniform_real_distribution<U> dis(min, max);
+        std::generate_n(base_type::m_data.begin(), base_type::m_data.size(),
+                        std::bind(dis, m_gen));
+    }
+
     std::random_device m_rd;
     std::mt19937 m_gen;
     T m_min, m_max;

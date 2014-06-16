@@ -16,20 +16,17 @@ set(SRC
 
 include_directories(${PROJECT_SOURCE_DIR})
 include_directories(tasks)
-#include_directories(common)
 #add_definitions("-std=c++0x -ggdb3 -O0 -Wall -Wextra")
 #add_definitions("-std=c++0x -ggdb2 -O3 -Wall -Wextra -Wa,-alhnd=/tmp/bench/$(notdir $@.lst)")
 add_definitions("-std=c++0x -O3 -Wall -Wextra")
 
 add_subdirectory(tasks)
-add_subdirectory(common)
 add_subdirectory(utils)
 
 add_executable(${CMAKE_PROJECT_NAME} ${SRC})
 
 target_link_libraries(${CMAKE_PROJECT_NAME}
     -Wl,--whole-archive tasks -Wl,--no-whole-archive
-    common
     utils
     -lrt
     )

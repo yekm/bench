@@ -15,7 +15,7 @@ public:
     explicit SortedRandomData(std::size_t n,
                               T min = std::numeric_limits<T>::min(),
                               T max = std::numeric_limits<T>::max())
-        : RandomData<T>("sorted random data " + range(min, max), n, min, max)
+        : RandomData<T>("sorted random data " + range_str(min, max), n, min, max)
     {
         std::sort(base_type::m_data.begin(), base_type::m_data.end());
     }

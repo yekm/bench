@@ -18,7 +18,7 @@ public:
     explicit QuickRandomData(std::size_t n,
                              T min = std::numeric_limits<T>::min(),
                              T max = std::numeric_limits<T>::max())
-        : RandomData<T>("quick random data " + range(min, max), n, min, max)
+        : RandomData<T>("quick random data " + range_str(min, max), n, min, max)
         , m_data_original(base_type::m_data)
     {
     }
