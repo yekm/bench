@@ -32,11 +32,12 @@ void usage()
     std::cout << "Usage: bench [-r int] [-d] [-n size_t] [-t float]\n"
               << "\t-r\talgorithm runs per each n (default: 3)\n"
               << "\t-d\tenable debug output (default: false)\n"
-              << "\t-n\tmaximum n (default: task dependent)\n"
+              << "\t-1\tstarting n value (default: 1)\n"
+              << "\t-2\tmaximum n (default: task dependent)\n"
               << "\t-t\tmaximum algorithm run time (default: 60 seconds)\n"
               << "\t-l\tlist tasks\n"
               << "\t-s\tskip certain tasks (default: none)\n"
-              << "\nexample: ../bench -r 5 -n 7e4 -t 0.5 -d -s 1,2,5,10 && gnuplot o.gnuplot && $BROWSER index.html\n"
+              << "\nexample: ../bench -r 5 -1 128 -2 7e4 -t 0.5 -d -s 1,2,5,10 && gnuplot o.gnuplot && $BROWSER index.html\n"
                  ;
 }
 
@@ -68,16 +69,19 @@ int main(int argc, char * argv[])
 {
     int opt;
     int runs_per_n = 3;
-    std::set<int> skiplist;
     utils::Timer::timediff_type max_round_time = 60; // seconds
-    std::size_t override_max_n = std::numeric_limits<std::size_t>::max();
-    while ((opt = getopt(argc, argv, "r:dn:t:ls:")) != -1) {
+    std::size_t max_n = std::numeric_limits<std::size_t>::max();
+    std::size_t start_n = 1;
+    while ((opt = getopt(argc, argv, "r:d1:2:t:ls:")) != -1) {
         switch (opt) {
         case 'r':
             runs_per_n = atoi(optarg);
             break;
-        case 'n':
-            override_max_n = atof(optarg); // for e-notation
+        case '1':
+            start_n = atof(optarg); // for e-notation
+            break;
+        case '2':
+            max_n = atof(optarg); // for e-notation
             break;
         case 'd':
             utils::Debugging::get().set(true);
@@ -108,8 +112,8 @@ int main(int argc, char * argv[])
             continue;
         }
         std::cout << std::endl;
-        std::size_t n = 1;
-        while(task->get_n(n) && n < override_max_n)
+        std::size_t n = start_n;
+        while(task->get_n(n) && n < max_n)
         {
             if (!task->algorithms_ok())
                 break;
