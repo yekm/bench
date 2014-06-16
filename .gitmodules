@@ -1,0 +1,3 @@
+[submodule "tasks/simple_sorting/swenson-sort"]
+	path = tasks/simple_sorting/swenson-sort
+	url = https://github.com/swenson/sort

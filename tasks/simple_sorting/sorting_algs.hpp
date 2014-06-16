@@ -5,6 +5,8 @@
 #include "sorting_task.hpp"
 #include "utils/dbg.hpp"
 
+#include "swenson-sort.h"
+
 #include <algorithm>
 
 class std_sort : public Algorithm
@@ -155,5 +157,184 @@ private:
     }
 };
 
+class swenson_quiksort : public Algorithm
+{
+public:
+    swenson_quiksort()
+        : Algorithm("swenson quiksort n*log(n)")
+    {}
+private:
+    virtual std::string do_complexity()
+    {
+        return "a*x*log(x)+b";
+    }
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
+    {
+        SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
+        D() << "before " << d;
+        swenson_quick_sort(d.data(), d.size());
+        D() << "after " << d;
+    }
+};
+
+class swenson_timsort : public Algorithm
+{
+public:
+    swenson_timsort()
+        : Algorithm("swenson timsort n*log(n)")
+    {}
+private:
+    virtual std::string do_complexity()
+    {
+        return "a*x*log(x)+b";
+    }
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
+    {
+        SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
+        D() << "before " << d;
+        swenson_tim_sort(d.data(), d.size());
+        D() << "after " << d;
+    }
+};
+
+class swenson_mergesort : public Algorithm
+{
+public:
+    swenson_mergesort()
+        : Algorithm("swenson mergesort n*log(n)")
+    {}
+private:
+    virtual std::string do_complexity()
+    {
+        return "a*x*log(x)+b";
+    }
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
+    {
+        SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
+        D() << "before " << d;
+        swenson_merge_sort(d.data(), d.size());
+        D() << "after " << d;
+    }
+};
+
+class swenson_heapsort : public Algorithm
+{
+public:
+    swenson_heapsort()
+        : Algorithm("swenson heapsort n*log(n)")
+    {}
+private:
+    virtual std::string do_complexity()
+    {
+        return "a*x*log(x)+b";
+    }
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
+    {
+        SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
+        D() << "before " << d;
+        swenson_heap_sort(d.data(), d.size());
+        D() << "after " << d;
+    }
+};
+
+class swenson_bi_sort : public Algorithm
+{
+public:
+    swenson_bi_sort()
+        : Algorithm("swenson binary insertion sort n^2")
+    {}
+private:
+    virtual std::string do_complexity()
+    {
+        return "a*x*x+b";
+    }
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
+    {
+        SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
+        D() << "before " << d;
+        swenson_binary_insertion_sort(d.data(), d.size());
+        D() << "after " << d;
+    }
+};
+
+class swenson_selectionsort : public Algorithm
+{
+public:
+    swenson_selectionsort()
+        : Algorithm("swenson selection sort n^2")
+    {}
+private:
+    virtual std::string do_complexity()
+    {
+        return "a*x*x+b";
+    }
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
+    {
+        SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
+        D() << "before " << d;
+        swenson_heap_sort(d.data(), d.size());
+        D() << "after " << d;
+    }
+};
+
+class swenson_shellsort : public Algorithm
+{
+public:
+    swenson_shellsort()
+        : Algorithm("swenson sell sort n*log^2(n)")
+    {}
+private:
+    virtual std::string do_complexity()
+    {
+        return "a*x*(log(x))**2+b";
+    }
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
+    {
+        SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
+        D() << "before " << d;
+        swenson_shell_sort(d.data(), d.size());
+        D() << "after " << d;
+    }
+};
+
+class swenson_grailsort : public Algorithm
+{
+public:
+    swenson_grailsort()
+        : Algorithm("swenson grail sort")
+    {}
+private:
+    /*virtual std::string do_complexity()
+    {
+        return "a*x*(log(x))**2+b";
+    }*/
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
+    {
+        SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
+        D() << "before " << d;
+        swenson_grail_sort(d.data(), d.size());
+        D() << "after " << d;
+    }
+};
+
+class swenson_sqrtsort : public Algorithm
+{
+public:
+    swenson_sqrtsort()
+        : Algorithm("swenson sqrt sort")
+    {}
+private:
+    /*virtual std::string do_complexity()
+    {
+        return "a*x*(log(x))**2+b";
+    }*/
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
+    {
+        SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
+        D() << "before " << d;
+        swenson_sqrt_sort(d.data(), d.size());
+        D() << "after " << d;
+    }
+};
 
 #endif // SORTING_ALGS_H
