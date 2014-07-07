@@ -1,21 +1,17 @@
 #ifndef GNUPLOTOUTPUT_H
 #define GNUPLOTOUTPUT_H
 
-#include <fstream>
-#include <string>
+#include "basicoutput.hpp"
 
 namespace utils
 {
 
-class GnuplotOutput
+class GnuplotOutput : BasicOutput
 {
 public:
     GnuplotOutput();
     explicit GnuplotOutput(const std::string &);
     void write();
-private:
-    std::ofstream m_output_file;
-    std::ostream m_output;
 };
 
 } // utils

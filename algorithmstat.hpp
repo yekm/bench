@@ -9,7 +9,8 @@
 struct AlgorithmStat
 {
 public:
-    std::map<std::size_t, utils::Stat> m_stat_run, m_stat_prepare;
+    typedef std::map<std::size_t, utils::Stat> timestat_type;
+    timestat_type m_stat_run, m_stat_prepare;
     utils::Status m_status;
 };
 

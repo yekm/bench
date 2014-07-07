@@ -9,7 +9,8 @@
 #include "utils/stat.hpp"
 #include "utils/timer.hpp"
 #include "utils/dbg.hpp"
-#include "utils/gnuplotoutput.hpp"
+#include "utils/output/jsonoutput.hpp"
+#include "utils/output/gnuplotoutput.hpp"
 #include "utils/timemeasurement.hpp"
 
 void list_tasks()
@@ -178,7 +179,7 @@ int main(int argc, char * argv[])
         }
     }
     std::cout << std::endl;
-    utils::GnuplotOutput go("o.gnuplot");
-    go.write();
+    utils::JsonOutput("main.json").write();
+    utils::GnuplotOutput("o.gnuplot").write();
     return 0;
 }
