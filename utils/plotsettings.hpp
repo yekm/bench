@@ -18,10 +18,11 @@ public:
     };
 
     PlotSettings();
+    PlotSettings(AxisScale a);
     PlotSettings(AxisScale a, std::string xlabel);
 
-    std::string xlabel();
-    std::string ylabel();
+    std::string xlabel() const;
+    std::string ylabel() const;
 
     std::string all_for_gnuplot() const;
 private:

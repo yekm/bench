@@ -87,6 +87,8 @@ void JsonOutput::write()
         _tv.push_back(NVP<>("name", t.get_name()));
         _tv.push_back(NVP<>("tn", std::to_string(taskn)));
         _tv.push_back(NVP<>("status", t.m_status.str()));
+        _tv.push_back(NVP<>("xlabel", t.get_plotsettings().xlabel()));
+        _tv.push_back(NVP<>("ylabel", t.get_plotsettings().ylabel()));
         _s _as(join(_algblock, ",\n"));
         _tv.push_back("\"algs\" : [\n" + _as + "\n\t]");
         _taskblock.push_back("{\n" + join(_tv, ",\n") + "\n}");

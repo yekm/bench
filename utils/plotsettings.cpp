@@ -6,15 +6,22 @@ namespace utils
 {
 
 PlotSettings::PlotSettings()
-    : m_xlabel("items")
-    , m_ylabel("seconds")
+    : m_xlabel("N (number of elements)")
+    , m_ylabel("Time (sec)")
+{
+}
+
+PlotSettings::PlotSettings(PlotSettings::AxisScale a)
+    : m_axis(a)
+    , m_xlabel("N (number of elements)")
+    , m_ylabel("Time (sec)")
 {
 }
 
 PlotSettings::PlotSettings(AxisScale a, std::string xlabel)
     : m_axis(a)
     , m_xlabel(xlabel)
-    , m_ylabel("seconds")
+    , m_ylabel("Time (sec)")
 {
 }
 
@@ -40,12 +47,12 @@ std::string PlotSettings::all_for_gnuplot() const
     return ss.str();
 }
 
-std::string PlotSettings::xlabel()
+std::string PlotSettings::xlabel() const
 {
     return m_xlabel;
 }
 
-std::string PlotSettings::ylabel()
+std::string PlotSettings::ylabel() const
 {
     return m_ylabel;
 }

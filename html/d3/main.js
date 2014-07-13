@@ -136,7 +136,11 @@ function drawchart(task) {
         .x(function(d) { return x(d.n); })
         .y(function(d) { return y(d.mean); });
 
-    var svg = d3.select("body").append("svg")
+    d3.select("body")
+        .append("h3").attr("class", "taskname").text(task.name);
+
+    var svg = d3.select("body")
+        .append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
@@ -156,7 +160,7 @@ function drawchart(task) {
         .attr("y", -12)
         .attr("dy", ".71em")
         .style("text-anchor", "end")
-        .text("N (number of elements)");
+        .text(task.xlabel);
 
     svg.append("g")
         .attr("class", "y axis")
@@ -166,7 +170,7 @@ function drawchart(task) {
         .attr("y", 6)
         .attr("dy", ".71em")
         .style("text-anchor", "end")
-        .text("Time (sec)");
+        .text(task.ylabel);
 
     var apath = svg.selectAll(".apath")
         .data(task.algs)
