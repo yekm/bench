@@ -4,6 +4,7 @@
 #include <vector>
 #include <limits>
 #include "genericdata.hpp"
+#include "utils/not_so_random_device.hpp"
 
 #include <random>
 #include <algorithm>
@@ -96,9 +97,9 @@ private:
                         std::bind(dis, m_gen));
     }
 
-    std::random_device m_rd;
+    utils::not_so_random_device m_rd;
     std::mt19937 m_gen;
-    T m_min, m_max;
+    const T m_min, m_max;
 };
 
 } // ns common
