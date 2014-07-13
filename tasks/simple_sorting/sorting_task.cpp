@@ -1,4 +1,5 @@
 #include "simple_sorting/sorting_task.hpp"
+#include "simple_sorting/psorting_task.hpp"
 #include "simple_sorting/sorting_algs.hpp"
 #include "taskcollection.hpp"
 
@@ -24,6 +25,11 @@ static struct st
         t->add_alg(std::unique_ptr<Algorithm>(new swenson_sqrtsort()));
         t->add_alg(std::unique_ptr<Algorithm>(new swenson_mergesort()));
         TaskCollection::get().add_task(__FILE__, std::move(t));
+
+        std::unique_ptr<Task> pt(new PSortingTask());
+        pt->add_alg(std::unique_ptr<Algorithm>(new std_sort()));
+        pt->add_alg(std::unique_ptr<Algorithm>(new swenson_timsort()));
+        TaskCollection::get().add_task(__FILE__ "2", std::move(pt));
     }
 } sorting_task_;
 

@@ -3,6 +3,7 @@
 
 #include "task.hpp"
 #include "common/quickrandomdata.hpp"
+#include "common/partiallysorteddata.hpp"
 #include "bexeption.hpp"
 
 class SortingTask : public Task
@@ -35,6 +36,10 @@ public:
         if (std::is_sorted(d.cbegin(), d.cend()) != true)
             throw BExeption("sorting check failed");
     }
+protected:
+    SortingTask(const std::string & name, utils::PlotSettings s)
+        : Task(name, s)
+    {}
 };
 
 #endif // SORTING_TASK_H
