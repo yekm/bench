@@ -124,7 +124,8 @@ function drawchart(task) {
 
     var xAxis = d3.svg.axis()
         .scale(x)
-        .orient("bottom");
+        .orient("bottom")
+        .ticks(allx.length, ",.1s");
 
     var yAxis = d3.svg.axis()
         .scale(y)
