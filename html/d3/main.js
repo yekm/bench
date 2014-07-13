@@ -48,12 +48,20 @@ function getTSV(url) {
 }
 
 getJSON('main.json').then(function(mainjson) {
-    mainjson.tasks.forEach(makechart);
+    mainjson.tasks.reduce(function(seq, a) {
+        return seq.then(function() {
+            return makechart(a);
+        });
+    }, Promise.resolve()).then(function() {
+        console.log("Load done", mainjson);
+        mainjson.tasks.forEach(drawchart);
+    });
 });
 
 function makechart(task)
 {
-    task.algs.reduce(function(seq, a) {
+    console.log("makechart n:" + task.tn + " name: " + task.name);
+    return task.algs.reduce(function(seq, a) {
         return seq.then(function() {
             return getTSV(a.tsv);
         }).then(function(d) {
@@ -61,11 +69,10 @@ function makechart(task)
         });
     }, Promise.resolve()).then(function() {
         console.log("All done", task.algs);
-        drawchart(task);
     }).catch(function(err) {
         consile.log("Argh, broken: " + err.message);
     }).then(function() {
-        console.log("Last");
+        //console.log("Last");
     });
 }
 
