@@ -7,7 +7,7 @@
 #include <algorithm>
 #include "utils/dbg.hpp"
 #include "vecresult.hpp"
-#include "bexeption.hpp"
+#include "bexception.hpp"
 
 class vec_template : public Algorithm
 {
@@ -51,7 +51,7 @@ private:
 template <>
 inline void vec_template::switcher<1>(int, const VecTask::g_type::container_type &, std::vector<float> &)
 {
-    throw BExeption("unsupported vector length " + get_name());
+    throw BException("unsupported vector length " + get_name());
 }
 
 
@@ -99,7 +99,7 @@ private:
 template <>
 inline void vec_loop::switcher<1>(int, const VecTask::g_type::container_type &, std::vector<float> &)
 {
-    throw BExeption("unsupported vector length " + get_name());
+    throw BException("unsupported vector length " + get_name());
 }
 
 class vec_handmade : public Algorithm
@@ -122,7 +122,7 @@ private:
     template <int N>
     void count(const float *, std::size_t, std::vector<float> &)
     {
-        throw BExeption("unsupported vector length" + get_name());
+        throw BException("unsupported vector length" + get_name());
     }
 
     virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r)
@@ -140,7 +140,7 @@ private:
 template <>
 inline void vec_handmade::switcher<1>(int, const VecTask::g_type::container_type &, std::vector<float> &)
 {
-    throw BExeption("unsupported vector length" + get_name());
+    throw BException("unsupported vector length" + get_name());
 }
 
 template<> void vec_handmade::count<2>(const float * v, std::size_t c, std::vector<float> & l)

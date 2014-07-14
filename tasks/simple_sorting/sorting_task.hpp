@@ -4,7 +4,7 @@
 #include "task.hpp"
 #include "common/quickrandomdata.hpp"
 #include "common/partiallysorteddata.hpp"
-#include "bexeption.hpp"
+#include "bexception.hpp"
 
 class SortingTask : public Task
 {
@@ -34,7 +34,7 @@ public:
         D() << "check";
         auto &d = static_cast<const g_type&>(ares.get_taskdata()).get_const();
         if (std::is_sorted(d.cbegin(), d.cend()) != true)
-            throw BExeption("sorting check failed");
+            throw BException("sorting check failed");
     }
 protected:
     SortingTask(const std::string & name, utils::PlotSettings s)

@@ -4,7 +4,7 @@
 #include "task.hpp"
 #include "common/quickrandomdata.hpp"
 #include "vecresult.hpp"
-#include "bexeption.hpp"
+#include "bexception.hpp"
 
 class VecTask : public Task
 {
@@ -58,7 +58,7 @@ public:
             if (delta > 1e-4)
             {
                 std::cout << "theirs:" << vr.lengths[i] << " check:" << sqrt(sum) << " delta:" << delta;
-                throw BExeption("validation failed");
+                throw BException("validation failed");
             }
         }
     }

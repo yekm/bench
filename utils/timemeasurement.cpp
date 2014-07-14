@@ -1,6 +1,6 @@
 #include "timemeasurement.hpp"
 
-#include "bexeption.hpp"
+#include "bexception.hpp"
 
 namespace utils
 {
@@ -13,7 +13,7 @@ TimeMeasurement::TimeMeasurement(std::function<void()> f)
         f();
         m_d = timer.get();
     }
-    catch (const BExeption & e)
+    catch (const BException & e)
     {
         m_s.set_status(Status::SE_ERROR, e.what());
     }
