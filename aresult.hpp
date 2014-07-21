@@ -11,6 +11,7 @@ public:
     AResult(const AResult &);
     const TaskData & get_taskdata() const;
     std::shared_ptr<TaskData> get_ptr() const;
+    virtual ~AResult();
 private:
     std::shared_ptr<TaskData> m_td;
 };

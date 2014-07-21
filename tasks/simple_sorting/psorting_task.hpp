@@ -32,4 +32,6 @@ public:
     }
 };
 
+constexpr std::size_t PSortingTask::N; // FIXME -O0 wouldn't compile
+
 #endif // PSORTING_TASK_HPP

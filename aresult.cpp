@@ -23,3 +23,7 @@ std::shared_ptr<TaskData> AResult::get_ptr() const
 {
     return m_td;
 }
+
+AResult::~AResult()
+{
+}
