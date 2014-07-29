@@ -44,3 +44,9 @@ const utils::PlotSettings Task::get_plotsettings() const
 void Task::validate(const AResult &)
 {
 }
+
+bool Task::get_n(std::size_t & n)
+{
+    n *= 2;
+    return true;
+}

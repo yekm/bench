@@ -23,12 +23,6 @@ public:
         //return std::make_shared<QuickRandomData<item_type>>(n);
     }
 
-    virtual bool get_n(std::size_t & n)
-    {
-        n *= 2;
-        return true;
-    }
-
     virtual void validate(const AResult & ares)
     {
         D() << "check";

@@ -24,7 +24,7 @@ public:
 
     std::string get_name() const;
 
-    virtual bool get_n(std::size_t &) = 0;
+    virtual bool get_n(std::size_t &);
     virtual void validate(const AResult &);
 
     utils::Status m_status;
