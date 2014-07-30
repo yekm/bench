@@ -125,7 +125,8 @@ int main(int argc, char * argv[])
 
             for (int j=0; j<reset_runs_per_n; j++)
             {
-                std::cout << "Reset " << j << "/" << reset_runs_per_n << std::endl;
+                if (reset_runs_per_n > 1)
+                    std::cout << "Reset " << j+1 << "/" << reset_runs_per_n << std::endl;
                 std::shared_ptr<TaskData> td;
                 utils::TimeMeasurement(
                             [&](){ td = task->prepare_data(n); }
@@ -151,7 +152,7 @@ int main(int argc, char * argv[])
 
                     for (int i=0; i<runs_per_n; i++)
                     {
-                        std::cout << " " << i << "/" << runs_per_n << std::flush;
+                        std::cout << " " << i+1 << "/" << runs_per_n << std::flush;
                         std::shared_ptr<TaskData> td_clone(td->clone());
 
                         std::unique_ptr<AResult> ares;
