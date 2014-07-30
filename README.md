@@ -11,6 +11,74 @@ may look a bit awkward.
 ### Sample graphs
 http://yekm.name/bench/d3
 
+### Usage
+#### Compilation:
+```
+git submodule update --init
+mkdir build
+cd build
+cmake ..
+make
+```
+#### Running:
+Make separate folder and run bench from where
+```mkdir tmp && cd tmp```
+
+Listing all tasks and algorithms
+```
+$ ../bench -l
+Task 0: sorting algorithms
+  Insertion sort n^2
+  Introsort std::sort n*log(n)
+  Merge sort n*log(n)
+  Selection sort n^2
+  Shell sort n*log^2(n)
+  swenson binary insertion sort n^2
+  swenson grail sort
+  swenson heapsort n*log(n)
+  swenson mergesort n*log(n)
+  swenson quiksort n*log(n)
+  swenson selection sort n^2
+  swenson sell sort n*log^2(n)
+  swenson sqrt sort
+  swenson timsort n*log(n)
+Task 1: Sorting algorithms, partially sorted data, 1000000 elements
+  Introsort std::sort n*log(n)
+  swenson timsort n*log(n)
+Task 2: 1000000 vector lengths
+  handmade unrolling
+  loop unrolling
+  template unrolling
+```
+
+Quick run
+```
+$ ../bench -t 0.1
+```
+
+Skip some tasks. However final listing will include this skipped tasks and old
+measured perfomance data will be preserved between runs.
+```
+$ ../bench -t 1 -s 2
+```
+
+Each algorithm runs `a` (by default 3) times with same data to minimize the error.
+It is possible to regenerate data and run algorithm `a` times again. The number
+of iterations of data regeneration specified by `-b`
+```
+$ ../bench -t 1 -s 0,2 -a 2 -b 3
+```
+
+#### Viewing results:
+For now it is quiet uncomfortable. You need a web server and a couple of links.
+```
+$ ln -s ../../html/d3/main.js main.js
+$ ln -s ../../html/d3/main.css main.css
+$ ln -s ../../html/d3/index.html index.html
+$ python3 -m http.server 8082
+$ $BROWSER http://localhost:8082
+```
+
 ### Adding algorithms for benchmarking
 Adding algorithms for benchmarking is easy (at least I've tried to make it easy).
 
