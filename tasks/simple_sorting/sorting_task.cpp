@@ -24,6 +24,9 @@ static struct st
         t->add_alg(std::unique_ptr<Algorithm>(new swenson_grailsort()));
         t->add_alg(std::unique_ptr<Algorithm>(new swenson_sqrtsort()));
         t->add_alg(std::unique_ptr<Algorithm>(new swenson_mergesort()));
+#ifdef CUDA_FOUND
+        t->add_alg(std::unique_ptr<Algorithm>(new thrust_sort()));
+#endif
         TaskCollection::get().add_task(__FILE__, std::move(t));
 
         std::unique_ptr<Task> pt(new PSortingTask());

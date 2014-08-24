@@ -1,14 +1,15 @@
 cmake_minimum_required(VERSION 2.8)
 
-#set(TRIALS_SRC
-#    t1.cpp
-#    t2.cpp
-#    t3.cpp
-#    )
+if(CUDA_FOUND)
+    cuda_compile(THRUST_SORT_O simple_sorting/thrust_sort.cu)
+    list(APPEND ADDITIONAL_O ${THRUST_SORT_O})
+endif(CUDA_FOUND)
 
-# no good
 include_directories(simple_sorting/swenson-sort)
 
-FILE(GLOB_RECURSE TASKS_SRC  *.cpp)
+set(TASKS_SRC
+    simple_sorting/sorting_task.cpp
+    vector_length_test/vec_task.cpp
+)
 
-add_library(tasks ${TASKS_SRC})
+add_library(tasks ${TASKS_SRC} ${ADDITIONAL_O})

@@ -3,11 +3,13 @@
 
 #include "algorithm.hpp"
 #include "sorting_task.hpp"
+#include "simple_sorting/thrust_sort.hpp"
 #include "utils/dbg.hpp"
 
 #include "swenson-sort.h"
 
 #include <algorithm>
+
 
 class std_sort : public Algorithm
 {
@@ -28,6 +30,28 @@ private:
         D() << "after " << d;
     }
 };
+
+#ifdef CUDA_FOUND
+class thrust_sort : public Algorithm
+{
+public:
+    thrust_sort()
+        : Algorithm("thrust::sort")
+    {}
+private:
+/*    virtual std::string do_complexity()
+    {
+        return "a*x*log(x)+b";
+    }*/
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
+    {
+        SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
+        D() << "before " << d;
+        thrust_sort_ex<SortingTask::item_type>(d);
+        D() << "after " << d;
+    }
+};
+#endif
 
 class merge_sort : public Algorithm
 {

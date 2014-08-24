@@ -2,6 +2,15 @@ cmake_minimum_required(VERSION 2.8)
 
 project(bench)
 
+find_package(CUDA QUIET)
+
+if(CUDA_FOUND)
+    add_definitions("-DCUDA_FOUND")
+    include_directories(${CUDA_INCLUDE_DIRS})
+    list(APPEND ADDITIONAL_LIBS ${CUDA_LIBRARIES})
+endif(CUDA_FOUND)
+
+
 set(CMAKE_VERBOSE_MAKEFILE 1)
 add_definitions("-DDEBUG")
 
@@ -29,4 +38,5 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
     -Wl,--whole-archive tasks -Wl,--no-whole-archive
     utils
     -lrt
+    ${ADDITIONAL_LIBS}
     )
