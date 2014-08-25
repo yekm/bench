@@ -79,8 +79,10 @@ function makechart(task)
 
 function drawchart(task) {
     var margin = {top: 20, right: 20, bottom: 30, left: 50};
-    var width = 1000 - margin.left - margin.right;
-    var height = 800 - margin.top - margin.bottom;
+    var svgwidth = 900;
+    var svgheight = 600;
+    var width = svgwidth - margin.left - margin.right;
+    var height = svgheight - margin.top - margin.bottom;
     var bisectx = d3.bisector(function(d) { return d.n; }).left;
 
     var maxx = d3.max(task.algs, function(a) {
@@ -140,12 +142,31 @@ function drawchart(task) {
     d3.select("body")
         .append("h3").attr("class", "taskname").text(task.name);
 
-    var svg = d3.select("body")
+    var chartdiv = d3.select("body")
+        .append("div")
+        .attr("class", "chartdiv");
+
+    var svg = chartdiv
         .append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
+        /*.style("float", "left")*/
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var ltable = chartdiv
+        .append("table")
+        .attr("class", "tinfo");
+
+    var theader = ltable.append("tr");
+    theader.append("th").text("Color");
+    theader.append("th").text("Name");
+    theader.append("th").text("Time").style("width", "90px");
+    theader.append("th").text("Status");
+    theader.append("th").text("Percent of slowest");
+    theader.append("th").text("Rank");
+
+    //chartdiv.append("br").attr("class", "clear");
 
     var color = d3.scale.category10();
     color.domain(task.algs.map(function(a) { return a.name; } ));
@@ -176,7 +197,7 @@ function drawchart(task) {
     var apath = svg.selectAll(".apath")
         .data(task.algs)
         .enter().append("g")
-        .attr("class", "apath");
+        .attr("class", function(d) { return "apath " + d.common_filename; });
 
     apath.append("path")
         .attr("class", "line")
@@ -280,10 +301,7 @@ function drawchart(task) {
             .data(new_algs, function(d){ return d.name; });
 
         litem.select(".label")
-            .text(function(d) {
-                var mean = d.tsvdata.length > cur ? d.tsvdata[cur].mean : d.tsvdata[d.tsvdata.length-1].mean;
-                return d.name + ': ' + mean;
-            });
+            .text(function(d) { return d.name; });
 
         litem.transition().duration(200)
             .attr("transform", function(d, i) { return "translate(0," + d.index * 12 + ")"; })
@@ -309,7 +327,7 @@ function drawchart(task) {
             .attr("x", 40)
             .attr("y", 4)
             .attr("dy", ".35em")
-            .text(function(d) { return d.name + ': ' + d.tsvdata[cur].mean; });
+            .text(function(d) { return d.name; });
 
 
         lenter
@@ -322,6 +340,52 @@ function drawchart(task) {
             .attr("transform", function(d, i) { return "translate(-10," + d.index * 12 + ")"; })
             .style("fill-opacity", 0.1)
             .remove();
+
+
+/*******************************************************************
+ *                 table legend                                    *
+ *******************************************************************/
+        var titem = ltable.selectAll(".titem")
+            .data(new_algs, function(d){ return d.name; });
+
+
+        var tenter = titem.enter()
+            .append("tr")
+            .attr("class", "titem")
+            .on("mouseover", function(d) { d3.select("."+d.common_filename).select("path").classed("highlighted", true); })
+            .on("mouseout", function(d) { d3.select("."+d.common_filename).select("path").classed("highlighted", false); })
+            .on("mousemove", function(d) {});
+
+        titem.classed({"exited": false});
+
+        tenter.append("td").attr("class", "td1").append("div").attr("class", "divtd1");
+        tenter.append("td").attr("class", "td2");
+        tenter.append("td").attr("class", "td3");
+        tenter.append("td").attr("class", "td4");
+        tenter.append("td").attr("class", "td5").append("div").attr("class", "percentdiv");
+        tenter.append("td").attr("class", "td6");
+
+        function percent_from_top(d, i) {
+            return Math.floor( new_algs[i].tsvdata[cur].mean / new_algs[0].tsvdata[cur].mean * 100 );
+        }
+
+        titem.select(".divtd1")
+            .style("background-color", function(d) { return color(d.name); })
+            .style("width", "18px")
+            .style("height", "10px");
+        titem.select(".td2").text(function(d) { return d.name; });
+        titem.select(".td3").text(function(d) {
+            return d.tsvdata.length > cur ? d.tsvdata[cur].mean : d.tsvdata[d.tsvdata.length-1].mean;
+        });
+        titem.select(".td4").text(function(d) { return d.status; });
+        titem.select(".percentdiv")
+            .style("width", function(d, i) { return percent_from_top(d, i) + "px" })
+            .style("background-color", function(d) { return color(d.name); })
+            .text(percent_from_top);
+        titem.select(".td6").text(function(d, i) { return i; });
+
+        titem.exit()
+            .classed({"exited":true});
     }
 
 
