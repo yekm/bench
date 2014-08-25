@@ -5,6 +5,7 @@
 #include <limits>
 #include "genericdata.hpp"
 #include "utils/not_so_random_device.hpp"
+#include "common/thrust_generate_random.hpp"
 
 #include <random>
 #include <algorithm>
@@ -23,8 +24,8 @@ public:
                         T min = std::numeric_limits<T>::min(),
                         T max = std::numeric_limits<T>::max())
         : base_type("uniform random " + range_str(min, max), n)
-        , m_rd()
-        , m_gen(m_rd())
+        , m_seed(utils::not_so_random_device()())
+        , m_gen(m_seed)
         , m_min(min)
         , m_max(max)
     {
@@ -34,7 +35,7 @@ public:
 
     RandomData (const RandomData & o)
         : base_type(o.get_name(), o.get_n())
-        , m_rd()
+        , m_seed(o.m_seed)
         , m_gen(o.m_gen)
         , m_min(o.m_min)
         , m_max(o.m_max)
@@ -54,8 +55,8 @@ protected:
                         T min = std::numeric_limits<T>::min(),
                         T max = std::numeric_limits<T>::max())
         : base_type(name, n)
-        , m_rd()
-        , m_gen(m_rd())
+        , m_seed(utils::not_so_random_device()())
+        , m_gen(m_seed)
         , m_min(min)
         , m_max(max)
     {
@@ -83,21 +84,29 @@ private:
               typename std::enable_if<std::is_integral<U>::value, int>::type = 0>
     void generate(U min, U max)
     {
+#ifdef CUDA_FOUND
+        thrust_generate_random(base_type::m_data, m_seed, min, max);
+#else
         std::uniform_int_distribution<U> dis(min, max);
         std::generate_n(base_type::m_data.begin(), base_type::m_data.size(),
                         std::bind(dis, m_gen));
+#endif
     }
 
     template <typename U = T,
               typename std::enable_if<std::is_floating_point<U>::value, int>::type = 0>
     void generate(U min, U max)
     {
+#ifdef CUDA_FOUND
+        thrust_generate_random(base_type::m_data, m_seed, min, max);
+#else
         std::uniform_real_distribution<U> dis(min, max);
         std::generate_n(base_type::m_data.begin(), base_type::m_data.size(),
                         std::bind(dis, m_gen));
+#endif
     }
 
-    utils::not_so_random_device m_rd;
+    std::random_device::result_type m_seed;
     std::mt19937 m_gen;
     const T m_min, m_max;
 };

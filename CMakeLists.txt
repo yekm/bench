@@ -2,17 +2,20 @@ cmake_minimum_required(VERSION 2.8)
 
 project(bench)
 
+set(CMAKE_VERBOSE_MAKEFILE 1)
+add_definitions("-DDEBUG")
+
 find_package(CUDA QUIET)
 
 if(CUDA_FOUND)
     add_definitions("-DCUDA_FOUND")
     include_directories(${CUDA_INCLUDE_DIRS})
-    list(APPEND ADDITIONAL_LIBS ${CUDA_LIBRARIES})
+
+    CUDA_ADD_LIBRARY(MainCudaLib common/thrust_generate_random.cu)
+
+    list(APPEND ADDITIONAL_LIBS ${CUDA_LIBRARIES} MainCudaLib)
 endif(CUDA_FOUND)
 
-
-set(CMAKE_VERBOSE_MAKEFILE 1)
-add_definitions("-DDEBUG")
 
 set(SRC
     main.cpp
