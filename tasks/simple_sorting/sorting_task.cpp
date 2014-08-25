@@ -31,7 +31,13 @@ static struct st
 
         std::unique_ptr<Task> pt(new PSortingTask());
         pt->add_alg(std::unique_ptr<Algorithm>(new std_sort()));
+        pt->add_alg(std::unique_ptr<Algorithm>(new insertion_sort()));
+        pt->add_alg(std::unique_ptr<Algorithm>(new shell_sort()));
+        pt->add_alg(std::unique_ptr<Algorithm>(new merge_sort()));
         pt->add_alg(std::unique_ptr<Algorithm>(new swenson_timsort()));
+#ifdef CUDA_FOUND
+        pt->add_alg(std::unique_ptr<Algorithm>(new thrust_sort()));
+#endif
         TaskCollection::get().add_task(__FILE__ "2", std::move(pt));
     }
 } sorting_task_;
