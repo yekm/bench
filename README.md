@@ -11,6 +11,16 @@ may look a bit awkward.
 ### Sample graphs
 http://yekm.name/bench/d3
 
+Have a look at this beautiful example:
+![](http://yekm.name/bench/scrot/2014-08-26-195453_1920x1080_scrot.png)
+This plot shows relationship between "randomness" of data and time taken to sort that data.
+So on X axis we have the (rough) number of random shuffles in pre-sorted array of 1 000 000 integers.
+What we can say from this example?
+* When array is almost sorted _Insertion sort_ is the fastest. It becames slower than _Timsort_ with 16 shuffles in array.
+* With 256 shuffles _Timsort_ becomes slower than _Introsort_ (default std::sort in stl), and then quickly becomes 1.5 times slower than _Introsort_.
+* _Merge sort_ behaves quite independently on randomnes. Only when array is almost completely random it becomes ~3 times slower. And only ~2 times slower than _Introsort_.
+* Sorting with the GPU (CUDA thrust library) is independent on array randomness. It is always blazing fast.
+
 ### Usage
 #### Compilation:
 ```
