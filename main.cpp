@@ -33,13 +33,13 @@ void usage()
     std::cout << "Usage: bench [-r int] [-d] [-n size_t] [-t float]\n"
               << "\t-a\talgorithm runs per each n (default: 3)\n"
               << "\t-b\talgorithm runs per each n with newly generated data (default: 1)\n"
-              << "\t-d\tenable debug output (default: false)\n"
+              << "\t-d\tset debug verbosity level [0,3] (default: 0, error)\n"
               << "\t-1\tstarting n value (default: 1)\n"
               << "\t-2\tmaximum n (default: task dependent)\n"
               << "\t-t\tmaximum algorithm run time (default: 60 seconds)\n"
               << "\t-l\tlist tasks\n"
               << "\t-s\tskip certain tasks (default: none)\n"
-              << "\nexample: ../bench -a 5 -b 2 -1 128 -2 7e4 -t 0.5 -d -s 1,2,5,10 && gnuplot o.gnuplot && $BROWSER index.html\n"
+              << "\nexample: ../bench -a 5 -b 2 -1 128 -2 7e4 -t 0.5 -d 2 -s 1,2,5,10 && gnuplot o.gnuplot && $BROWSER index.html\n"
                  ;
 }
 
@@ -51,7 +51,7 @@ std::set<int> make_skiplist(std::string arg)
     copy(std::istream_iterator<int>(ss),
          std::istream_iterator<int>(),
          std::inserter(res, res.begin()));
-    D() << "skiplist: " << res;
+    I() << "skiplist: " << res;
     return res;
 }
 
@@ -74,7 +74,7 @@ int main(int argc, char * argv[])
     utils::Timer::timediff_type max_round_time = 60; // seconds
     std::size_t max_n = std::numeric_limits<std::size_t>::max();
     std::size_t start_n = 1;
-    while ((opt = getopt(argc, argv, "a:b:d1:2:t:ls:")) != -1) {
+    while ((opt = getopt(argc, argv, "a:b:d:1:2:t:ls:")) != -1) {
         switch (opt) {
         case 'a':
             runs_per_n = atoi(optarg);
@@ -89,7 +89,9 @@ int main(int argc, char * argv[])
             max_n = atof(optarg); // for e-notation
             break;
         case 'd':
-            utils::Debugging::get().set(true);
+            utils::Debugging::get().set_verbosity(
+                        static_cast<utils::Debugging::Verbosity>(atoi(optarg))
+                        );
             break;
         case 't':
             max_round_time = atof(optarg);

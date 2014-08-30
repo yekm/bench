@@ -29,7 +29,7 @@ private:
         , m_gen(m_rd())
         , m_dis(std::numeric_limits<r_type>::min(), std::numeric_limits<r_type>::max())
     {
-        D() << "StaticRandomDevice init";
+        I() << "StaticRandomDevice init";
     }
 
     std::random_device m_rd;

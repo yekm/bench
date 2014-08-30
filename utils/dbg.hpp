@@ -7,6 +7,8 @@
 #include <iterator>
 #include <typeinfo>
 
+#include <algorithm>
+
 namespace utils
 {
 
@@ -15,7 +17,7 @@ struct Dbg
     Dbg()
         : m_flags(std::cout.flags())
     {
-        std::cout << "[ ";
+        std::cout << "[";
     }
 
     ~Dbg()
@@ -73,37 +75,87 @@ private:
 class Debugging
 {
 public:
+    enum Verbosity
+    {
+        V_ERROR = 0,
+        V_WARNING,
+        V_INFO,
+        V_DEBUG,
+    };
+
     static Debugging& get()
     {
         static Debugging d;
         return d;
     }
 
-    void set(bool enabled)
+    void set_verbosity(Verbosity v)
     {
-        m_enabled = enabled;
+        m_verbosity = v;
     }
 
-    bool enabled()
+    Verbosity get_verbosity()
     {
-        return m_enabled;
+        return m_verbosity;
     }
 
 private:
     Debugging()
-        : m_enabled(false)
+        : m_verbosity(V_ERROR)
     {
     }
 
-    bool m_enabled;
+    Verbosity m_verbosity;
 };
 
 } // ns utils
 
-#ifdef DEBUG
-#define D(x) if (utils::Debugging::get().enabled()) utils::Dbg()
-#else
-    #define D(x) if (false) utils::Dbg()
+namespace
+{
+
+// http://stackoverflow.com/a/8520871/864782
+
+struct MatchPathSeparator
+{
+    bool operator()( char ch ) const
+    {
+        return ch == '/';
+    }
+};
+
+#if 0 // nope nope nope
+struct MatchPathSeparator
+{
+    bool operator()( char ch ) const
+    {
+        return ch == '\\' || ch == '/';
+    }
+};
 #endif
+
+std::string ___basename(std::string const& pathname)
+{
+    return std::string(
+                std::find_if(
+                    pathname.rbegin(), pathname.rend(), MatchPathSeparator()
+                    ).base(),
+                pathname.end()
+                );
+}
+
+}
+
+
+#ifdef DEBUG
+    #define ___DBG(x) if (x <= utils::Debugging::get().get_verbosity()) utils::Dbg()
+#else
+    #define ___DBG(x) if (false) utils::Dbg()
+#endif
+
+#define ___FN ___basename(__FILE__) + ":" + std::to_string(__LINE__)
+#define E(x) ___DBG(utils::Debugging::V_ERROR) << "E" << ___FN
+#define W(x) ___DBG(utils::Debugging::V_WARNING) << "W" << ___FN
+#define I(x) ___DBG(utils::Debugging::V_INFO) << "I" << ___FN
+#define D(x) ___DBG(utils::Debugging::V_DEBUG) << "D" << ___FN
 
 #endif // DBG_H

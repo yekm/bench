@@ -25,7 +25,6 @@ public:
 
     virtual void validate(const AResult & ares)
     {
-        D() << "check";
         auto &d = static_cast<const g_type&>(ares.get_taskdata()).get_const();
         if (std::is_sorted(d.cbegin(), d.cend()) != true)
             throw BException("sorting check failed");
