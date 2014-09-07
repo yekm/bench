@@ -6,7 +6,6 @@
 #include "mpl.hpp"
 #include <algorithm>
 #include "utils/dbg.hpp"
-#include "vecresult.hpp"
 #include "bexception.hpp"
 
 class vec_template : public Algorithm
@@ -39,12 +38,12 @@ private:
     virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r)
     {
         const VecTask::g_type::container_type &d = static_cast<VecTask::g_type&>(td).get_const();
-        std::unique_ptr<VecResult> res(new VecResult(*r.get(), td.get_n()));
+        std::unique_ptr<VecResult> res(new VecResult());
         res->lengths.reserve(VecTask::num_vectors);
         D() << "vector: " << d;
         switcher<VecTask::max_vec_len>(td.get_n()/VecTask::num_vectors, d, res->lengths);
         D() << "lengths: " << res->lengths;
-        r = std::move(res);
+        r->set_custom_result(std::move(res));
     }
 };
 
@@ -87,12 +86,12 @@ private:
     virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r)
     {
         const VecTask::g_type::container_type &d = static_cast<VecTask::g_type&>(td).get_const();
-        std::unique_ptr<VecResult> res(new VecResult(*r.get(), td.get_n()));
+        std::unique_ptr<VecResult> res(new VecResult());
         res->lengths.reserve(VecTask::num_vectors);
         D() << "vector: " << d;
         switcher<VecTask::max_vec_len>(td.get_n()/VecTask::num_vectors, d, res->lengths);
         D() << "lengths: " << res->lengths;
-        r = std::move(res);
+        r->set_custom_result(std::move(res));
     }
 };
 
@@ -128,12 +127,12 @@ private:
     virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r)
     {
         const VecTask::g_type::container_type &d = static_cast<VecTask::g_type&>(td).get_const();
-        std::unique_ptr<VecResult> res(new VecResult(*r.get(), td.get_n()));
+        std::unique_ptr<VecResult> res(new VecResult());
         res->lengths.reserve(VecTask::num_vectors);
         D() << "vector: " << d;
         switcher<VecTask::max_vec_len>(td.get_n()/VecTask::num_vectors, d, res->lengths);
         D() << "lengths: " << res->lengths;
-        r = std::move(res);
+        r->set_custom_result(std::move(res));
     }
 };
 

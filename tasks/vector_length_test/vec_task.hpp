@@ -3,8 +3,13 @@
 
 #include "task.hpp"
 #include "common/quickrandomdata.hpp"
-#include "vecresult.hpp"
 #include "bexception.hpp"
+
+struct VecResult : CustomResult
+{
+    std::size_t n;
+    std::vector<float> lengths;
+};
 
 class VecTask : public Task
 {
@@ -41,11 +46,11 @@ public:
 
     virtual void validate(const AResult & r)
     {
-        const VecResult & vr = static_cast<const VecResult&>(r);
+        const VecResult & vr = static_cast<const VecResult&>(r.get_custom_result());
 
         std::size_t c = vr.lengths.size(); // number of vectors
-        int N = vr.get_taskdata().get_n() / num_vectors; // vector coords count
-        const float * v = & (static_cast<const VecTask::g_type&>(vr.get_taskdata()).get_const())[0];
+        int N = r.get_taskdata().get_n() / num_vectors; // vector coords count
+        const float * v = & (static_cast<const VecTask::g_type&>(r.get_taskdata()).get_const())[0];
 
         for (std::size_t i = 0; i < c; i++)
         {
