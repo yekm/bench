@@ -65,7 +65,8 @@ private:
 };
 
 template<typename T>
-void thrust_generate_random(std::vector<T> &, unsigned int, T, T);
+void thrust_generate_random_ex(typename std::vector<T>::iterator,
+                               size_t, unsigned int, T, T);
 /*
 {
     std::string message("thrust random generator do not support ");
@@ -75,34 +76,53 @@ void thrust_generate_random(std::vector<T> &, unsigned int, T, T);
 */
 
 template<>
-void thrust_generate_random<float>(std::vector<float> & v, unsigned int seed, float min, float max)
+void thrust_generate_random_ex<float>(std::vector<float>::iterator begin,
+                                   size_t size,
+                                   unsigned int seed,
+                                   float min, float max)
 {
-    thrust::device_vector<float> d_vec(v.size());
+    thrust::device_vector<float> d_vec(size);
     thrust::transform(thrust::counting_iterator<int>(0),
-            thrust::counting_iterator<int>(v.size()),
+            thrust::counting_iterator<int>(size),
             d_vec.begin(), RealRandomNumberFunctor<float>(seed, min, max));
 
-    thrust::copy(d_vec.begin(), d_vec.end(), v.begin());
+    thrust::copy(d_vec.begin(), d_vec.end(), begin);
 }
 
 template<>
-void thrust_generate_random<int>(std::vector<int> & v, unsigned int seed, int min, int max)
+void thrust_generate_random_ex<int>(std::vector<int>::iterator begin,
+                                 size_t size,
+                                 unsigned int seed,
+                                 int min, int max)
 {
-    thrust::device_vector<int> d_vec(v.size());
+    thrust::device_vector<int> d_vec(size);
     thrust::transform(thrust::counting_iterator<int>(0),
-            thrust::counting_iterator<int>(v.size()),
+            thrust::counting_iterator<int>(size),
             d_vec.begin(), IntRandomNumberFunctor<int>(seed, min, max));
 
-    thrust::copy(d_vec.begin(), d_vec.end(), v.begin());
+    thrust::copy(d_vec.begin(), d_vec.end(), begin);
 }
 
 template<>
-void thrust_generate_random<char>(std::vector<char> & v, unsigned int seed, char min, char max)
+void thrust_generate_random_ex<char>(std::vector<char>::iterator begin,
+                                  size_t size,
+                                  unsigned int seed,
+                                  char min, char max)
 {
-    thrust::device_vector<char> d_vec(v.size());
+    thrust::device_vector<char> d_vec(size);
     thrust::transform(thrust::counting_iterator<int>(0),
-            thrust::counting_iterator<int>(v.size()),
+            thrust::counting_iterator<int>(size),
             d_vec.begin(), IntRandomNumberFunctor<char>(seed, min, max));
 
-    thrust::copy(d_vec.begin(), d_vec.end(), v.begin());
+    thrust::copy(d_vec.begin(), d_vec.end(), begin);
+}
+
+size_t cuda_get_free_mem()
+{
+    size_t mem_tot;
+    size_t mem_free;
+    cudaMemGetInfo(&mem_free, &mem_tot);
+    return mem_free;
+    //std::cout << "Free memory : " << mem_free << std::endl;
+    //std::cout << "Total memory : " << mem_tot << std::endl;
 }
