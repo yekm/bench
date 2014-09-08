@@ -128,14 +128,19 @@ int main(int argc, char * argv[])
             for (int j=0; j<reset_runs_per_n; j++)
             {
                 if (reset_runs_per_n > 1)
-                    std::cout << "Reset " << j+1 << "/" << reset_runs_per_n << std::endl;
+                    std::cout << "Reset " << j+1 << "/" << reset_runs_per_n << " " << std::flush;
                 std::shared_ptr<TaskData> td;
                 utils::TimeMeasurement(
                             [&](){ td = task->prepare_data(n); }
                 ).get_status(task->m_status);
 
                 if (!task->m_status.ok())
+                {
+                    E() << "Task prepare data failed:" << task->m_status.str();
                     break;
+                }
+
+                std::cout << "Prepared data N:" << n << std::endl;
 
                 for (auto & a : task->get_algorithms())
                 {
@@ -150,7 +155,7 @@ int main(int argc, char * argv[])
                     ).get_time(d).get_status(alg->m_statistics.m_status);
                     alg->m_statistics.m_stat_prepare[n].add(d);
 
-                    std::cout << a.second->get_name() << " N:" << n;
+                    std::cout << a.second->get_name();
 
                     for (int i=0; i<runs_per_n; i++)
                     {
@@ -174,6 +179,7 @@ int main(int argc, char * argv[])
                             if (!check_status.ok())
                             { // no matter if alg is ok ot timed out. it failed
                                 astatus = check_status;
+                                std::cout << " " << astatus.str() << std::flush;
                                 break;
                             }
                             // count ok or timed out time stats
@@ -181,7 +187,10 @@ int main(int argc, char * argv[])
                         }
 
                         if (!astatus.ok())
+                        {
+                            std::cout << " " << astatus.str() << std::flush;
                             break;
+                        }
 
                     }
                     std::cout << std::endl;
