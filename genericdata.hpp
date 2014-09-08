@@ -43,10 +43,10 @@ protected:
     T m_data;
 
 private:
-    GenericData(const GenericData &) = delete;
-    GenericData(GenericData &&) = delete;
-    GenericData operator=(const GenericData&) = delete;
-    GenericData operator=(GenericData &&) = delete;
+    GenericData(const GenericData<T> &) = delete;
+    GenericData(GenericData<T> &&) = delete;
+    GenericData<T>& operator=(const GenericData<T>&) = delete;
+    GenericData<T>& operator=(GenericData<T> &&) = delete;
     bool m_valid;
 };
 
