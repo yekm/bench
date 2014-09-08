@@ -15,7 +15,7 @@ Status::StatusEnum Status::get_status() const
 void Status::set_status(Status::StatusEnum s, std::string m)
 {
     m_status = s;
-    m_error = m;
+    m_message = m;
 }
 
 std::string Status::str()
@@ -25,11 +25,13 @@ std::string Status::str()
     case SE_OK:
         return "Ok";
     case SE_ERROR:
-        return m_error;
+        return "Error (" + m_message + ")";
     case SE_OOM:
-        return "Out of memory";
+        return "Out of memory (" + m_message + ")";
     case SE_TIMEOUT:
         return "Timeout";
+    case SE_EXCEPTION:
+        return "Exception (" + m_message + ")";
     case SE_UNKNOWN_EXCEPTION:
         return "Unknown exception";
     case SE_SKIP:

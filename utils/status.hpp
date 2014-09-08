@@ -13,6 +13,7 @@ public:
     {
         SE_OK,
         SE_ERROR,
+        SE_EXCEPTION,
         SE_UNKNOWN_EXCEPTION,
         SE_OOM,
         SE_TIMEOUT,
@@ -28,7 +29,7 @@ public:
 
 private:
     StatusEnum m_status;
-    std::string m_error;
+    std::string m_message;
 };
 
 } // ns utils

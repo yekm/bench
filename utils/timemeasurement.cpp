@@ -19,7 +19,11 @@ TimeMeasurement::TimeMeasurement(std::function<void()> f)
     }
     catch (const std::bad_alloc & e)
     {
-        m_s.set_status(Status::SE_OOM);
+        m_s.set_status(Status::SE_OOM, e.what());
+    }
+    catch (const std::exception & e)
+    {
+        m_s.set_status(Status::SE_EXCEPTION, e.what());
     }
     catch (...)
     {
