@@ -10,6 +10,7 @@ include_directories(simple_sorting/swenson-sort)
 set(TASKS_SRC
     simple_sorting/sorting_task.cpp
     vector_length_test/vec_task.cpp
+    popcnt/popcnt.cpp
 )
 
 add_library(tasks ${TASKS_SRC} ${ADDITIONAL_O})
