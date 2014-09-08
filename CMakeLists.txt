@@ -9,6 +9,7 @@ find_package(CUDA QUIET)
 
 if(CUDA_FOUND)
     add_definitions("-DCUDA_FOUND")
+    set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};-gencode arch=compute_12,code=sm_12")
     include_directories(${CUDA_INCLUDE_DIRS})
 
     CUDA_ADD_LIBRARY(MainCudaLib common/thrust_generate_random.cu)
