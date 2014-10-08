@@ -12,7 +12,7 @@ may look a bit awkward.
 http://yekm.name/bench/d3
 
 Have a look at this beautiful example:
-![](http://yekm.name/bench/scrot/2014-08-26-195453_1920x1080_scrot.png)
+![](https://s3-eu-west-1.amazonaws.com/yekm/2014-08-26-195453_1920x1080_scrot.png)
 This plot shows relationship between "randomness" of data and time taken to sort that data.
 So on X axis we have the (rough) number of random shuffles in pre-sorted array of 1 000 000 integers.
 What we can say from this example?
