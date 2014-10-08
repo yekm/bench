@@ -37,7 +37,17 @@ Make separate folder and run bench from where
 Listing all tasks and algorithms
 ```
 $ ../bench -l
-Task 0: sorting algorithms
+Task 0: popcnt perfomance
+  32bit SWAR popcnt
+  Brian Kernighan popcnt
+  Simple popcnt
+  generalized 32 bit SWAR popcnt
+  generalized 64 bit SWAR popcnt
+  intrinsics _mm_popcnt_u64 manual asm popcnt
+  intrinsics _mm_popcnt_u64 popcnt
+  intrinsics _mm_popcnt_u64 unrolled popcnt
+  table lookup popcnt
+Task 1: sorting algorithms
   Insertion sort n^2
   Introsort std::sort n*log(n)
   Merge sort n*log(n)
@@ -52,10 +62,15 @@ Task 0: sorting algorithms
   swenson sell sort n*log^2(n)
   swenson sqrt sort
   swenson timsort n*log(n)
-Task 1: Sorting algorithms, partially sorted data, 1000000 elements
+  thrust::sort
+Task 2: Sorting algorithms, partially sorted data, 1000000 elements
+  Insertion sort n^2
   Introsort std::sort n*log(n)
+  Merge sort n*log(n)
+  Shell sort n*log^2(n)
   swenson timsort n*log(n)
-Task 2: 1000000 vector lengths
+  thrust::sort
+Task 3: 1000000 vector lengths
   handmade unrolling
   loop unrolling
   template unrolling
@@ -107,9 +122,9 @@ exceeds memory capacity (std::bad_alloc thrown). Timeout can be changed by
 command line arguments. Data growth can be changed by reimplementing virtual
 function get_n().
 
-Derive from Algorithm and implement do_run(). Here you cast passed TaskData
-to GenericData<T> which you pick earlier and do some processing. Running time
-of this function is measured. For example:
+Derive from Algorithm and implement do_run(TaskData & td, std::unique_ptr<AResult> &).
+Here you cast passed TaskData to GenericData<T> which you pick earlier and do some
+processing. Running time of this function is measured. For example:
 ```
 std::vector<int> &d = static_cast<GenericData<std::vector<int>>&>(td).get_mutable();
 std::sort(d.begin(), d.end());
@@ -121,6 +136,8 @@ Since your struct is static and TaskCollection is a singleton all algorithms and
 will be created and registered in TaskCollection automatically at program launch.
 And thus there is no need to make any changes in present code. Just create a subfolder
 in tasks/, place you code there and re-run cmake.
+
+Add your cpp file in `tasks/CMakeLists.txt`.
 
 Quiet messy description. You should look at actual code, it is simple <s>and clear</s>.
 
