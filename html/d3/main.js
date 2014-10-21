@@ -108,7 +108,9 @@ function drawchart(task) {
             aset.add(d.n);
         });
     });
-    var allx = aset.values();
+    var allx = aset.values().sort(function(a,b){ return +a - b;});
+    var firststep = allx[1] - allx[0];
+    var xdomain = [ firststep/2, maxx];
 
     var i = 0;
     var yticks = task.algs[0].tsvdata.map( function(d) {
@@ -118,7 +120,7 @@ function drawchart(task) {
 
     var x = d3.scale.log().base(2)
         .range([0, width])
-        .domain([1, maxx]);
+        .domain(xdomain);
 
     var y = d3.scale.log().base(2)
         .range([height, 0])
