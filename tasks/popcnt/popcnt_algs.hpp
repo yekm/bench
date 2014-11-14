@@ -3,6 +3,7 @@
 
 #include "algorithm.hpp"
 #include "popcnt.hpp"
+#include "thrust_popcnt.hpp"
 #include "utils/dbg.hpp"
 
 #include <x86intrin.h>
@@ -281,5 +282,29 @@ private:
 };
 
 #endif // __POPCNT__
+
+
+#ifdef CUDA_FOUND
+
+class thrust_pcnt : public Algorithm
+{
+public:
+    thrust_pcnt()
+        : Algorithm("thrust popcnt")
+    {}
+private:
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r)
+    {
+        const Popcnt::g_type::container_type &d = static_cast<Popcnt::g_type&>(td).get_const();
+        size_t pcount = thrust_popcnt_ex<Popcnt::item_type>(d);
+        std::unique_ptr<PResult> res(new PResult());
+        res->count = pcount;
+        r->set_custom_result(std::move(res));
+        D() << get_name() << pcount;
+    }
+};
+
+#endif // CUDA_FOUND
+
 
 #endif // POPCNT_ALGS_HPP

@@ -35,7 +35,7 @@ public:
 
         if (n > 6e8)
         {
-            E() << "ololo" << n;
+            E() << "enough" << n;
             return false;
         }
 
@@ -55,7 +55,10 @@ public:
             count += (((i + (i >> 4)) & 0x0F0F0F0F) * 0x01010101) >> 24;
         }
         if (count != pcount)
+        {
+            W() << "popcount check failed." << pcount << "instead of" << count;
             throw BException("popcount check failed");
+        }
     }
 };
 

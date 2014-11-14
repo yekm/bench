@@ -21,6 +21,9 @@ static struct st
         t->add_alg(std::unique_ptr<Algorithm>(new unr_intrin64_pcnt()));
         t->add_alg(std::unique_ptr<Algorithm>(new asm_intrin64_pcnt()));
 #endif // __POPCNT__
+#ifdef CUDA_FOUND
+        t->add_alg(std::unique_ptr<Algorithm>(new thrust_pcnt()));
+#endif // CUDA_FOUND
         TaskCollection::get().add_task(__FILE__, std::move(t));
     }
 } p_task_;
