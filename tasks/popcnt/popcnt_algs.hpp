@@ -296,7 +296,7 @@ private:
     virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r)
     {
         const Popcnt::g_type::container_type &d = static_cast<Popcnt::g_type&>(td).get_const();
-        size_t pcount = thrust_popcnt_ex<Popcnt::item_type>(d);
+        size_t pcount = thrust_popcnt<Popcnt::item_type>(d);
         std::unique_ptr<PResult> res(new PResult());
         res->count = pcount;
         r->set_custom_result(std::move(res));
