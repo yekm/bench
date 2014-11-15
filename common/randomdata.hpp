@@ -6,6 +6,7 @@
 #include "genericdata.hpp"
 #include "utils/not_so_random_device.hpp"
 #include "common/thrust_generate_random.hpp"
+#include "utils/simple_histogram.hpp"
 
 #include <random>
 #include <algorithm>
@@ -31,6 +32,11 @@ public:
     {
         base_type::m_data.resize(base_type::get_n());
         generate(m_min, m_max);
+
+#ifdef DEBUG_RANDOM
+        auto h = utils::simple_histogram(base_type::m_data, 50);
+        utils::draw_histogram(h);
+#endif
     }
 
     RandomData (const RandomData & o)
