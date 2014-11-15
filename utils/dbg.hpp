@@ -1,8 +1,10 @@
 #ifndef DBG_H
 #define DBG_H
 
+#include <string>
 #include <vector>
 #include <set>
+#include <map>
 #include <iostream>
 #include <iterator>
 #include <typeinfo>
@@ -57,6 +59,23 @@ struct Dbg
         std::copy(v.begin(), v.end(), std::ostream_iterator<T>(std::cout, ", "));
         std::cout << ")";
         return *this;
+    }
+
+    template <typename K, typename V>
+    Dbg& operator<< (std::map<K, V> m)
+    {
+        std::cout << " map<" << typeid(K).name() << ", " << typeid(V).name() << ">(";
+        for (const auto &t : m)
+        {
+            (*this) << t.first << ":" << t.second << ", ";
+        }
+        std::cout << ")";
+        return *this;
+    }
+
+    Dbg& operator<< (char d)
+    {
+        return (*this) << (int)d;
     }
 
     Dbg& operator<< (char* d)
