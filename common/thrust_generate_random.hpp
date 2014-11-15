@@ -11,13 +11,15 @@ template<typename T>
 void thrust_generate_random(std::vector<T> &v, unsigned int seed, T min, T max)
 {
     size_t left = v.size();
+    size_t done = 0;
     size_t free = cuda_get_free_mem() / sizeof(T);
     free -= free/8; // dont eat up all, just in case
     do
     {
         size_t todo = left > free ? free : left;
         // TODO: sort out seed
-        thrust_generate_random_ex(v.begin(), todo, seed^left, min, max);
+        thrust_generate_random_ex(v.begin() + done, todo, seed^left, min, max);
+        done += todo;
         left -= todo;
     } while (left != 0);
 }
