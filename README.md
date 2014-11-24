@@ -9,7 +9,7 @@ This project is written for (self)educational purposes and fun. Some things
 may look a bit awkward.
 
 ### Sample graphs
-http://yekm.name/bench/d3
+http://yekm.name/bench/d3 or http://yekm.name/bench/aws-g2.2xlarge/
 
 Have a look at this beautiful example:
 ![](https://s3-eu-west-1.amazonaws.com/yekm/2014-08-26-195453_1920x1080_scrot.png)
@@ -47,6 +47,7 @@ Task 0: popcnt perfomance
   intrinsics _mm_popcnt_u64 popcnt
   intrinsics _mm_popcnt_u64 unrolled popcnt
   table lookup popcnt
+  thrust popcnt
 Task 1: sorting algorithms
   Insertion sort n^2
   Introsort std::sort n*log(n)
@@ -107,24 +108,32 @@ $ $BROWSER http://localhost:8082
 ### Adding algorithms for benchmarking
 Adding algorithms for benchmarking is easy (at least I've tried to make it easy).
 
-Decide what data your algorithm process and derive from GenericData<T> (or use
-already made RandomData and others).
+Decide what type of data your algorithm should process. Derive a class from `GenericData<T>`
+or use already made `common::RandomData` and others. `GenericData<T>` has two useful functions
+`T & get_mutable()` and `const T & get_const()`.
+If algorithm is not modifying it should ask for const data. In this case next algorithm
+will get just the same data. Otherwise modified data discarded and new data
+generated (which _should_ be exactly the same as previous, but it can depend on actual
+implementation).
 
-Derive from Task and implement prepare_data(size_t n). Here you create and return
+Derive from `Task` and implement `prepare_data(size_t n)`. Here you create and return
 your data of size n. For example:
 ```
 return std::make_shared<common::RandomData<int>>(n);
 ```
 
-By default amount of data will be doubled on each run of algorithm. Testing will
+`RandomData<T>` derived from `GenericData<std::vector<T>>`, so `get_mutable()` will
+return `std::vector<T>&`.
+
+Amount of data will be doubled on each run of algorithm. Testing will
 be stopped then execution time exeeds 60 sec (by default) or amount of data
 exceeds memory capacity (std::bad_alloc thrown). Timeout can be changed by
 command line arguments. Data growth can be changed by reimplementing virtual
-function get_n().
+function `Task::get_n()`.
 
-Derive from Algorithm and implement do_run(TaskData & td, std::unique_ptr<AResult> &).
-Here you cast passed TaskData to GenericData<T> which you pick earlier and do some
-processing. Running time of this function is measured. For example:
+Derive from `Algorithm` and implement `do_run(TaskData & td, std::unique_ptr<AResult> &)`.
+Here you cast passed `TaskData` to `GenericData<T>` which you pick earlier and do some
+processing. Running time of this function is measured. For example, in case of `RandomData<int>`:
 ```
 std::vector<int> &d = static_cast<GenericData<std::vector<int>>&>(td).get_mutable();
 std::sort(d.begin(), d.end());
@@ -141,19 +150,5 @@ Add your cpp file in `tasks/CMakeLists.txt`.
 
 Quiet messy description. You should look at actual code, it is simple <s>and clear</s>.
 
-### Some useful classes
-`TaskCollection` - singleton. Keeps tasks together.
-
-`Task` - keeps set of algorithms which perform one particular
-task (sorting, counting, searching, etc). Knows how to generate data,
-and validate results.
-
-`Algorithm` - gets TaskData, processes it.
-
-`TaskData` - basic class for data. Interface for cloning.
-
-`GenericData<T>` - holds actual data. Can return constant or mutable reference to it.
-If algorithm is not modifying it should ask for const data. In that case next algorithm
-will get just the same data. Otherwise modified data discarded and new data
-generated, which should be exactly the same as previous (it can depend on actual
-implementation).
+### LICENSE
+MIT.
