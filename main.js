@@ -48,7 +48,7 @@ function getTSV(url) {
 }
 
 var chartdiv = d3.select(".chartdiv");
-var tsvroot = chartdiv.attr("data-tsvroot") || "";
+var tsvroot = chartdiv.attr("data-tsvroot") || ".";
 
 getJSON(tsvroot + '/main.json').then(function(mainjson) {
     mainjson.tasks.reduce(function(seq, a) {
