@@ -47,7 +47,10 @@ function getTSV(url) {
     });
 }
 
-getJSON('main.json').then(function(mainjson) {
+var chartdiv = d3.select(".chartdiv");
+var tsvroot = chartdiv.attr("data-tsvroot") || "";
+
+getJSON(tsvroot + '/main.json').then(function(mainjson) {
     mainjson.tasks.reduce(function(seq, a) {
         return seq.then(function() {
             return makechart(a);
@@ -63,7 +66,7 @@ function makechart(task)
     console.log("makechart n:" + task.tn + " name: " + task.name);
     return task.algs.reduce(function(seq, a) {
         return seq.then(function() {
-            return getTSV(a.tsv);
+            return getTSV(tsvroot + '/' + a.tsv);
         }).then(function(d) {
             a.tsvdata = d;
         });
@@ -78,10 +81,8 @@ function makechart(task)
 
 
 function drawchart(task) {
-    var chartdiv = d3.select(".chartdiv");
-
     var margin = {top: 20, right: 20, bottom: 30, left: 30};
-    var svgwidth = chartdiv.attr("width");
+    var svgwidth = chartdiv.attr("width") || 900;
     var svgheight = svgwidth/3*2;
     var width = svgwidth - margin.left - margin.right;
     var height = svgheight - margin.top - margin.bottom;
@@ -143,7 +144,7 @@ function drawchart(task) {
         .x(function(d) { return x(d.n); })
         .y(function(d) { return y(d.mean); });
 
-    d3.select("body")
+    chartdiv
         .append("h3").attr("class", "taskname").text(task.name);
 
     var svg = chartdiv
@@ -156,7 +157,8 @@ function drawchart(task) {
 
     var ltable = chartdiv
         .append("table")
-        .attr("class", "tinfo");
+        .attr("class", "tinfo")
+        .attr("width", svgwidth);
 
     var theader = ltable.append("tr");
     theader.append("th").text("Color");

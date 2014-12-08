@@ -2,6 +2,12 @@
     font: 10px sans-serif;
 }
 
+.taskname
+{
+    margin-top: 20px;
+    font-size: 12px;
+}
+
 .axis path,
 .axis line {
     fill: none;
@@ -44,7 +50,6 @@ path.highlighted {
 
 table.tinfo {
     border-collapse: collapse;
-    width: 100%;
 }
 
 table.tinfo tr:nth-child(even) {

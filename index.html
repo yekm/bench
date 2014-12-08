@@ -7,7 +7,7 @@
     <meta name="description" content="Bench : Algorithms benchmarking &quot;framework&quot;">
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/main.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
 
     <title>Bench</title>
   </head>
@@ -46,13 +46,13 @@ may look a bit awkward.</p>
 <h3>
 <a id="sample-graphs" class="anchor" href="#sample-graphs" aria-hidden="true"><span class="octicon octicon-link"></span></a>Sample graphs</h3>
 
-<p><a href="http://yekm.name/bench/d3">http://yekm.name/bench/d3</a> or <a href="http://yekm.name/bench/aws-g2.2xlarge/">http://yekm.name/bench/aws-g2.2xlarge/</a></p>
-
-<p>Have a look at this beautiful example:
-<div class="chartdiv" width="640"></div>
+<p>Internally <em>amount of data</em> is just a number (lets say N). We can make it behave bit differently.
+For example we can keep size of data same,
+but vary some properties of that data according to N:
+<div class="chartdiv" width="640" data-tsvsrc="/"></div>
 This plot shows relationship between "randomness" of data and time taken to sort that data.
 So on X axis we have the (rough) number of random shuffles in pre-sorted array of 1 000 000 integers.
-What we can say from this example?</p>
+</p>
 
 <ul>
 <li>When array is almost sorted <em>Insertion sort</em> is the fastest. It becames slower than <em>Timsort</em> with 16 shuffles in array.</li>
@@ -62,6 +62,9 @@ What we can say from this example?</p>
 <li>Sorting with the GPU (CUDA thrust library) is independent on array randomness. It is always blazing fast.</li>
 </ul>
 
+<p>You can look at other graphs based on data from
+<a href="h0me.html">my coputer</a> (i5-4430, Tesla GT215) or from
+<a href="aws.html">aws g2.2xlarge</a> instance (Xeon E5-2670, Kepler GK104).</p>
 <h3>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h3>
 
@@ -182,7 +185,7 @@ $ $BROWSER http://localhost:8082
           </script>
 
     <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script src="javascripts/main.js"></script>
+    <script src="main.js"></script>
 
   </body>
 </html>
