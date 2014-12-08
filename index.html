@@ -7,6 +7,7 @@
     <meta name="description" content="Bench : Algorithms benchmarking &quot;framework&quot;">
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/main.css">
 
     <title>Bench</title>
   </head>
@@ -31,7 +32,6 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <p><a href="https://drone.io/github.com/yekm/bench/latest"><img src="https://drone.io/github.com/yekm/bench/status.png" alt="Build Status"></a></p>
 
 <h3>
 <a id="description" class="anchor" href="#description" aria-hidden="true"><span class="octicon octicon-link"></span></a>Description</h3>
@@ -49,14 +49,14 @@ may look a bit awkward.</p>
 <p><a href="http://yekm.name/bench/d3">http://yekm.name/bench/d3</a> or <a href="http://yekm.name/bench/aws-g2.2xlarge/">http://yekm.name/bench/aws-g2.2xlarge/</a></p>
 
 <p>Have a look at this beautiful example:
-<img src="https://s3-eu-west-1.amazonaws.com/yekm/2014-08-26-195453_1920x1080_scrot.png" alt="">
+<div class="chartdiv" width="640"></div>
 This plot shows relationship between "randomness" of data and time taken to sort that data.
 So on X axis we have the (rough) number of random shuffles in pre-sorted array of 1 000 000 integers.
 What we can say from this example?</p>
 
 <ul>
 <li>When array is almost sorted <em>Insertion sort</em> is the fastest. It becames slower than <em>Timsort</em> with 16 shuffles in array.</li>
-<li>With 256 shuffles <em>Timsort</em> becomes slower than <em>Introsort</em> (default std::sort in stl), and then quickly becomes 1.5 times slower than <em>Introsort</em>.</li>
+<li>With 128 shuffles <em>Timsort</em> becomes slower than <em>Introsort</em> (default std::sort in stl), and then quickly becomes 1.5 times slower than <em>Introsort</em>.</li>
 <li>
 <em>Merge sort</em> behaves quite independently on randomnes. Only when array is almost completely random it becomes ~3 times slower. And only ~2 times slower than <em>Introsort</em>.</li>
 <li>Sorting with the GPU (CUDA thrust library) is independent on array randomness. It is always blazing fast.</li>
@@ -154,52 +154,6 @@ $ python3 -m http.server 8082
 $ $BROWSER http://localhost:8082
 </code></pre>
 
-<h3>
-<a id="adding-algorithms-for-benchmarking" class="anchor" href="#adding-algorithms-for-benchmarking" aria-hidden="true"><span class="octicon octicon-link"></span></a>Adding algorithms for benchmarking</h3>
-
-<p>Adding algorithms for benchmarking is easy (at least I've tried to make it easy).</p>
-
-<p>Decide what type of data your algorithm should process. Derive a class from <code>GenericData&lt;T&gt;</code>
-or use already made <code>common::RandomData</code> and others. <code>GenericData&lt;T&gt;</code> has two useful functions
-<code>T &amp; get_mutable()</code> and <code>const T &amp; get_const()</code>.
-If algorithm is not modifying it should ask for const data. In this case next algorithm
-will get just the same data. Otherwise modified data discarded and new data
-generated (which <em>should</em> be exactly the same as previous, but it can depend on actual
-implementation).</p>
-
-<p>Derive from <code>Task</code> and implement <code>prepare_data(size_t n)</code>. Here you create and return
-your data of size n. For example:</p>
-
-<pre><code>return std::make_shared&lt;common::RandomData&lt;int&gt;&gt;(n);
-</code></pre>
-
-<p><code>RandomData&lt;T&gt;</code> derived from <code>GenericData&lt;std::vector&lt;T&gt;&gt;</code>, so <code>get_mutable()</code> will
-return <code>std::vector&lt;T&gt;&amp;</code>.</p>
-
-<p>Amount of data will be doubled on each run of algorithm. Testing will
-be stopped then execution time exeeds 60 sec (by default) or amount of data
-exceeds memory capacity (std::bad_alloc thrown). Timeout can be changed by
-command line arguments. Data growth can be changed by reimplementing virtual
-function <code>Task::get_n()</code>.</p>
-
-<p>Derive from <code>Algorithm</code> and implement <code>do_run(TaskData &amp; td, std::unique_ptr&lt;AResult&gt; &amp;)</code>.
-Here you cast passed <code>TaskData</code> to <code>GenericData&lt;T&gt;</code> which you pick earlier and do some
-processing. Running time of this function is measured. For example, in case of <code>RandomData&lt;int&gt;</code>:</p>
-
-<pre><code>std::vector&lt;int&gt; &amp;d = static_cast&lt;GenericData&lt;std::vector&lt;int&gt;&gt;&amp;&gt;(td).get_mutable();
-std::sort(d.begin(), d.end());
-</code></pre>
-
-<p>Write a cpp file in which make a static struct. In constructor you should create
-Task and all Algorithms. Add Algorithms to Task and add Task to TaskCollection.
-Since your struct is static and TaskCollection is a singleton all algorithms and tasks
-will be created and registered in TaskCollection automatically at program launch.
-And thus there is no need to make any changes in present code. Just create a subfolder
-in tasks/, place you code there and re-run cmake.</p>
-
-<p>Add your cpp file in <code>tasks/CMakeLists.txt</code>.</p>
-
-<p>Quiet messy description. You should look at actual code, it is simple <s>and clear</s>.</p>
 
 <h3>
 <a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>LICENSE</h3>
@@ -227,6 +181,8 @@ in tasks/, place you code there and re-run cmake.</p>
             } catch(err) {}
           </script>
 
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="javascripts/main.js"></script>
 
   </body>
 </html>

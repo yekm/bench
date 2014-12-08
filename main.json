@@ -1,0 +1,17 @@
+{ "tasks" : [
+{
+"name" : "Sorting algorithms, partially sorted data, 1000000 elements",
+"tn" : "2",
+"status" : "Ok",
+"xlabel" : "number of shuffles",
+"ylabel" : "Time (sec)",
+"algs" : [
+	{"name" : "Insertion sort n^2", "tsv" : "task2_alg0.tsv", "common_filename" : "task2_alg0", "status" : "Timeout", "an" : "0"},
+	{"name" : "Introsort std::sort n*log(n)", "tsv" : "task2_alg1.tsv", "common_filename" : "task2_alg1", "status" : "Ok", "an" : "1"},
+	{"name" : "Merge sort n*log(n)", "tsv" : "task2_alg2.tsv", "common_filename" : "task2_alg2", "status" : "Ok", "an" : "2"},
+	{"name" : "Shell sort n*log^2(n)", "tsv" : "task2_alg3.tsv", "common_filename" : "task2_alg3", "status" : "Ok", "an" : "3"},
+	{"name" : "swenson timsort n*log(n)", "tsv" : "task2_alg4.tsv", "common_filename" : "task2_alg4", "status" : "Ok", "an" : "4"},
+	{"name" : "thrust::sort", "tsv" : "task2_alg5.tsv", "common_filename" : "task2_alg5", "status" : "Ok", "an" : "5"}
+	]
+}
+]}

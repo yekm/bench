@@ -1,0 +1,67 @@
+.chartdiv {
+    font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.line {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 1.5px;
+}
+
+path.highlighted {
+    stroke-width: 3px;
+}
+
+.overlay {
+    fill: none;
+    pointer-events: all;
+}
+
+.focus line {
+    stroke: lightgray;
+}
+
+.focus circle {
+    fill: none;
+    stroke: steelblue;
+}
+
+.clear {
+    clear: both;
+    display: block;
+    height: 0;
+    line-height: 0;
+    overflow: hidden;
+    font-size: 0;
+}
+
+table.tinfo {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table.tinfo tr:nth-child(even) {
+    background-color: lightgray;
+}
+
+table.tinfo td {
+    padding: 1px 5px 1px 5px;
+}
+
+tr.exited {
+    color: gray;
+}
+tr.exited td:nth-child(n+3) {
+    text-indent: -9999px;
+}
+
+tr.exited td div.percentdiv {
+    width: 0px !important;
+}
