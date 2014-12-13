@@ -10,6 +10,7 @@ function get(url) {
             // so check the status
             if (req.status == 200) {
                 // Resolve the promise with the response text
+                //setTimeout(function(){ resolve(req.response); }, 200);
                 resolve(req.response);
             }
             else {
@@ -48,7 +49,7 @@ function getTSV(url) {
 }
 
 var chartdiv = d3.select(".chartdiv");
-var tsvroot = chartdiv.attr("data-tsvroot") || "";
+var tsvroot = chartdiv.attr("data-tsvroot") || ".";
 
 getJSON(tsvroot + '/main.json').then(function(mainjson) {
     mainjson.tasks.reduce(function(seq, a) {
@@ -64,16 +65,18 @@ getJSON(tsvroot + '/main.json').then(function(mainjson) {
 function makechart(task)
 {
     console.log("makechart n:" + task.tn + " name: " + task.name);
-    return task.algs.reduce(function(seq, a) {
+    return task.algs.map(function(a) {
+        return { p : getTSV(tsvroot + '/' + a.tsv), alg:a };
+    }).reduce(function(seq, a) {
         return seq.then(function() {
-            return getTSV(tsvroot + '/' + a.tsv);
+            return a.p;
         }).then(function(d) {
-            a.tsvdata = d;
+            a.alg.tsvdata = d;
         });
     }, Promise.resolve()).then(function() {
         console.log("All done", task.algs);
     }).catch(function(err) {
-        consile.log("Argh, broken: " + err.message);
+        console.log("Argh, broken: " + err.message);
     }).then(function() {
         //console.log("Last");
     });
