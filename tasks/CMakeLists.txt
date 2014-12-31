@@ -9,6 +9,7 @@ endif(CUDA_FOUND)
 include_directories(simple_sorting/swenson-sort)
 
 set(TASKS_SRC
+    threading/threading_task.cpp
     simple_sorting/sorting_task.cpp
     vector_length_test/vec_task.cpp
     popcnt/popcnt.cpp
