@@ -17,6 +17,8 @@ public:
 
     T & get_mutable()
     {
+        if (!m_valid)
+            W() << "using mutated data";
         m_valid = false;
         return m_data;
     }
