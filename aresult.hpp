@@ -8,6 +8,15 @@ struct CustomResult
     virtual ~CustomResult();
 };
 
+template <typename T>
+struct SimpleResult : CustomResult
+{
+    explicit SimpleResult(const T & value)
+        : m_simple_result(value)
+    {}
+    T m_simple_result;
+};
+
 class AResult
 {
 public:
