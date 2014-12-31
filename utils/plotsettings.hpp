@@ -25,6 +25,8 @@ public:
     std::string ylabel() const;
 
     std::string all_for_gnuplot() const;
+
+    std::string axis_scale_str() const;
 private:
 
     AxisScale m_axis;

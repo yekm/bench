@@ -124,24 +124,47 @@ function drawchart(task) {
         return Math.ceil(maxy) / i;
     }).reverse();
 
-    var x = d3.scale.log().base(2)
-        .range([0, width])
-        .domain(xdomain);
+    var x, y, xAxis, yAxis;
+    if (task.scale == "log")
+    {
+        x = d3.scale.log().base(2)
+            .range([0, width])
+            .domain(xdomain);
 
-    var y = d3.scale.log().base(2)
-        .range([height, 0])
-        .domain([miny/2, Math.ceil(maxy)]);
+        y = d3.scale.log().base(2)
+            .range([height, 0])
+            .domain([miny/2, Math.ceil(maxy)]);
 
-    var xAxis = d3.svg.axis()
-        .scale(x)
-        .orient("bottom")
-        .ticks(allx.length, ",.1s");
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient("bottom")
+            .ticks(allx.length, ",.1s");
 
-    var yAxis = d3.svg.axis()
-        .scale(y)
-        .orient("left")
-        .ticks(yticks.length)
-        .tickValues(yticks);
+        var yAxis = d3.svg.axis()
+            .scale(y)
+            .orient("left")
+            .ticks(yticks.length)
+            .tickValues(yticks);
+    }
+    else if (task.scale == "linear")
+    {
+        x = d3.scale.linear()
+            .range([0, width])
+            .domain(xdomain); // TODO: [0, maxx]?
+
+        y = d3.scale.linear()
+            .range([height, 0])
+            .domain([0, maxy]); // TODO: [0, maxy]?
+
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient("bottom")
+            .ticks(allx.length, ",s"); // TODO: specify ticks?
+
+        var yAxis = d3.svg.axis()
+            .scale(y)
+            .orient("left");
+    }
 
     var line = d3.svg.line()
         .x(function(d) { return x(d.n); })

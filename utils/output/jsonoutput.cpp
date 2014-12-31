@@ -89,6 +89,7 @@ void JsonOutput::write()
         _tv.push_back(NVP<>("status", t.m_status.str()));
         _tv.push_back(NVP<>("xlabel", t.get_plotsettings().xlabel()));
         _tv.push_back(NVP<>("ylabel", t.get_plotsettings().ylabel()));
+        _tv.push_back(NVP<>("scale", t.get_plotsettings().axis_scale_str()));
         _s _as(join(_algblock, ",\n"));
         _tv.push_back("\"algs\" : [\n" + _as + "\n\t]");
         _taskblock.push_back("{\n" + join(_tv, ",\n") + "\n}");

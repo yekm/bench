@@ -1,6 +1,7 @@
 #include "plotsettings.hpp"
 
 #include <sstream>
+#include <stdexcept>
 
 namespace utils
 {
@@ -45,6 +46,24 @@ std::string PlotSettings::all_for_gnuplot() const
     ss << "set ylabel '" << m_ylabel << "'\n" <<
           "set xlabel '" << m_xlabel << "'\n";
     return ss.str();
+}
+
+std::string PlotSettings::axis_scale_str() const
+{
+    switch (m_axis)
+    {
+    case AS_LOGX:
+        return "log";
+    case AS_LOGY:
+        return "log";
+    case AS_LOGXY:
+        return "log";
+    case AS_LINEAR:
+        return "linear";
+    default:
+        throw std::runtime_error("PlotSettings::axis_scale_str unimplemented scale");
+        break;
+    }
 }
 
 std::string PlotSettings::xlabel() const
