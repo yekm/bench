@@ -23,7 +23,7 @@ public:
 
     virtual bool get_n(std::size_t & n)
     {
-        n *= 2;
+        n < 2 ? n=2 : n*=2;
 
         if (n > N*8)
             return false;

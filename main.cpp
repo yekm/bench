@@ -73,7 +73,7 @@ int main(int argc, char * argv[])
     int runs_per_n = 3, reset_runs_per_n = 1;
     utils::Timer::timediff_type max_round_time = 60; // seconds
     std::size_t max_n = std::numeric_limits<std::size_t>::max();
-    std::size_t start_n = 1;
+    std::size_t start_n = 0;
     while ((opt = getopt(argc, argv, "a:b:d:1:2:t:ls:")) != -1) {
         switch (opt) {
         case 'a':
