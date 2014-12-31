@@ -5,6 +5,7 @@
 "status" : "Ok",
 "xlabel" : "number of shuffles",
 "ylabel" : "Time (sec)",
+"scale" : "log",
 "algs" : [
 	{"name" : "Insertion sort n^2", "tsv" : "task2_alg0.tsv", "common_filename" : "task2_alg0", "status" : "Timeout", "an" : "0"},
 	{"name" : "Introsort std::sort n*log(n)", "tsv" : "task2_alg1.tsv", "common_filename" : "task2_alg1", "status" : "Ok", "an" : "1"},

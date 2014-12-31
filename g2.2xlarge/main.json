@@ -5,6 +5,7 @@
 "status" : "Ok",
 "xlabel" : "N (number of elements)",
 "ylabel" : "Time (sec)",
+"scale" : "log",
 "algs" : [
 	{"name" : "32bit SWAR popcnt", "tsv" : "task0_alg0.tsv", "common_filename" : "task0_alg0", "status" : "Ok", "an" : "0"},
 	{"name" : "Brian Kernighan popcnt", "tsv" : "task0_alg1.tsv", "common_filename" : "task0_alg1", "status" : "Timeout", "an" : "1"},
@@ -24,6 +25,7 @@
 "status" : "Ok",
 "xlabel" : "N (number of elements)",
 "ylabel" : "Time (sec)",
+"scale" : "log",
 "algs" : [
 	{"name" : "Insertion sort n^2", "tsv" : "task1_alg0.tsv", "common_filename" : "task1_alg0", "status" : "Timeout", "an" : "0"},
 	{"name" : "Introsort std::sort n*log(n)", "tsv" : "task1_alg1.tsv", "common_filename" : "task1_alg1", "status" : "Timeout", "an" : "1"},
@@ -48,6 +50,7 @@
 "status" : "Ok",
 "xlabel" : "number of shuffles",
 "ylabel" : "Time (sec)",
+"scale" : "log",
 "algs" : [
 	{"name" : "Insertion sort n^2", "tsv" : "task2_alg0.tsv", "common_filename" : "task2_alg0", "status" : "Timeout", "an" : "0"},
 	{"name" : "Introsort std::sort n*log(n)", "tsv" : "task2_alg1.tsv", "common_filename" : "task2_alg1", "status" : "Ok", "an" : "1"},
@@ -63,6 +66,7 @@
 "status" : "Ok",
 "xlabel" : "vector length",
 "ylabel" : "Time (sec)",
+"scale" : "log",
 "algs" : [
 	{"name" : "handmade unrolling", "tsv" : "task3_alg0.tsv", "common_filename" : "task3_alg0", "status" : "Ok", "an" : "0"},
 	{"name" : "loop unrolling", "tsv" : "task3_alg1.tsv", "common_filename" : "task3_alg1", "status" : "Ok", "an" : "1"},
