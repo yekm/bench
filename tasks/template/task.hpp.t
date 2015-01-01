@@ -16,12 +16,12 @@ public:
         : Task("%TN%", utils::PlotSettings(utils::PlotSettings::AS_LOGXY))
     {}
 
-    virtual std::shared_ptr<TaskData> prepare_data(std::size_t n)
+    virtual std::shared_ptr<TaskData> prepare_data(std::size_t n) override
     {
         return std::make_shared<common::RandomData<item_type>>(n);
     }
 /*
-    virtual void validate(const AResult & ares)
+    virtual void validate(const AResult & ares) override
     {
         auto &d = static_cast<const g_type&>(ares.get_taskdata()).get_const();
         if (false)

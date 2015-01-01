@@ -18,11 +18,11 @@ public:
         : Algorithm("Introsort std::sort n*log(n)")
     {}
 private:
-    virtual std::string do_complexity()
+    virtual std::string do_complexity() override
     {
         return "a*x*log(x)+b";
     }
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &) override
     {
         SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
         D() << "before " << d;
@@ -39,11 +39,11 @@ public:
         : Algorithm("thrust::sort")
     {}
 private:
-/*    virtual std::string do_complexity()
+/*    virtual std::string do_complexity() override
     {
         return "a*x*log(x)+b";
     }*/
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &) override
     {
         SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
         D() << "before " << d;
@@ -60,11 +60,11 @@ public:
         : Algorithm("Merge sort n*log(n)")
     {}
 private:
-    virtual std::string do_complexity()
+    virtual std::string do_complexity() override
     {
         return "a*x*log(x)+b";
     }
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &) override
     {
         SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
         D() << "before " << d;
@@ -101,11 +101,11 @@ public:
         : Algorithm("Insertion sort n^2")
     {}
 private:
-    virtual std::string do_complexity()
+    virtual std::string do_complexity() override
     {
         return "a*x**2+b";
     }
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &) override
     {
         SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
         D() << "before " << d;
@@ -126,11 +126,11 @@ public:
         : Algorithm("Selection sort n^2")
     {}
 private:
-    virtual std::string do_complexity()
+    virtual std::string do_complexity() override
     {
         return "a*x**2+b";
     }
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &) override
     {
         SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
         D() << "before " << d;
@@ -153,11 +153,11 @@ public:
         : Algorithm("Shell sort n*log^2(n)")
     {}
 private:
-    virtual std::string do_complexity()
+    virtual std::string do_complexity() override
     {
         return "a*x*(log(x))**2+b";
     }
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &) override
     {
         SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
         D() << "before " << d;
@@ -188,11 +188,11 @@ public:
         : Algorithm("swenson quiksort n*log(n)")
     {}
 private:
-    virtual std::string do_complexity()
+    virtual std::string do_complexity() override
     {
         return "a*x*log(x)+b";
     }
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &) override
     {
         SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
         D() << "before " << d;
@@ -208,11 +208,11 @@ public:
         : Algorithm("swenson timsort n*log(n)")
     {}
 private:
-    virtual std::string do_complexity()
+    virtual std::string do_complexity() override
     {
         return "a*x*log(x)+b";
     }
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &) override
     {
         SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
         D() << "before " << d;
@@ -228,11 +228,11 @@ public:
         : Algorithm("swenson mergesort n*log(n)")
     {}
 private:
-    virtual std::string do_complexity()
+    virtual std::string do_complexity() override
     {
         return "a*x*log(x)+b";
     }
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &) override
     {
         SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
         D() << "before " << d;
@@ -248,11 +248,11 @@ public:
         : Algorithm("swenson heapsort n*log(n)")
     {}
 private:
-    virtual std::string do_complexity()
+    virtual std::string do_complexity() override
     {
         return "a*x*log(x)+b";
     }
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &) override
     {
         SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
         D() << "before " << d;
@@ -268,11 +268,11 @@ public:
         : Algorithm("swenson binary insertion sort n^2")
     {}
 private:
-    virtual std::string do_complexity()
+    virtual std::string do_complexity() override
     {
         return "a*x*x+b";
     }
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &) override
     {
         SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
         D() << "before " << d;
@@ -288,11 +288,11 @@ public:
         : Algorithm("swenson selection sort n^2")
     {}
 private:
-    virtual std::string do_complexity()
+    virtual std::string do_complexity() override
     {
         return "a*x*x+b";
     }
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &) override
     {
         SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
         D() << "before " << d;
@@ -308,11 +308,11 @@ public:
         : Algorithm("swenson sell sort n*log^2(n)")
     {}
 private:
-    virtual std::string do_complexity()
+    virtual std::string do_complexity() override
     {
         return "a*x*(log(x))**2+b";
     }
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &) override
     {
         SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
         D() << "before " << d;
@@ -328,11 +328,11 @@ public:
         : Algorithm("swenson grail sort")
     {}
 private:
-    /*virtual std::string do_complexity()
+    /*virtual std::string do_complexity() override
     {
         return "a*x*(log(x))**2+b";
     }*/
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &) override
     {
         SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
         D() << "before " << d;
@@ -348,11 +348,11 @@ public:
         : Algorithm("swenson sqrt sort")
     {}
 private:
-    /*virtual std::string do_complexity()
+    /*virtual std::string do_complexity() override
     {
         return "a*x*(log(x))**2+b";
     }*/
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &) override
     {
         SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
         D() << "before " << d;

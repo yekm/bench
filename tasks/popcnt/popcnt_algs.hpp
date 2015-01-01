@@ -19,7 +19,7 @@ public:
         : Algorithm("Simple popcnt")
     {}
 private:
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r) override
     {
         const Popcnt::g_type::container_type &d = static_cast<Popcnt::g_type&>(td).get_const();
         size_t pcount = 0;
@@ -45,7 +45,7 @@ public:
         : Algorithm("Brian Kernighan popcnt")
     {}
 private:
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r) override
     {
         const Popcnt::g_type::container_type &d = static_cast<Popcnt::g_type&>(td).get_const();
         size_t pcount = 0;
@@ -71,7 +71,7 @@ public:
         : Algorithm("32bit SWAR popcnt")
     {}
 private:
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r) override
     {
         const Popcnt::g_type::container_type &d = static_cast<Popcnt::g_type&>(td).get_const();
         size_t pcount = 0;
@@ -104,7 +104,7 @@ public:
         : Algorithm("generalized 32 bit SWAR popcnt")
     {}
 private:
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r) override
     {
         const Popcnt::g_type::container_type &d = static_cast<Popcnt::g_type&>(td).get_const();
         size_t pcount = 0;
@@ -127,7 +127,7 @@ public:
         : Algorithm("generalized 64 bit SWAR popcnt")
     {}
 private:
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r) override
     {
         const Popcnt::g_type::container_type &d = static_cast<Popcnt::g_type&>(td).get_const();
         const u_int64_t * d64 = reinterpret_cast<const u_int64_t*>(&d[0]);
@@ -160,7 +160,7 @@ public:
         }
     }
 private:
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r) override
     {
         const Popcnt::g_type::container_type &d = static_cast<Popcnt::g_type&>(td).get_const();
         size_t pcount = 0;
@@ -186,7 +186,7 @@ public:
         : Algorithm("intrinsics _mm_popcnt_u64 popcnt")
     {}
 private:
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r) override
     {
         const Popcnt::g_type::container_type &d = static_cast<Popcnt::g_type&>(td).get_const();
         const u_int64_t * d64 = reinterpret_cast<const u_int64_t*>(&d[0]);
@@ -212,7 +212,7 @@ public:
         : Algorithm("intrinsics _mm_popcnt_u64 unrolled popcnt")
     {}
 private:
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r) override
     {
         const Popcnt::g_type::container_type &d = static_cast<Popcnt::g_type&>(td).get_const();
         const u_int64_t * d64 = reinterpret_cast<const u_int64_t*>(&d[0]);
@@ -242,7 +242,7 @@ public:
         : Algorithm("intrinsics _mm_popcnt_u64 manual asm popcnt")
     {}
 private:
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r) override
     {
         const Popcnt::g_type::container_type &d = static_cast<Popcnt::g_type&>(td).get_const();
         const u_int64_t * d64 = reinterpret_cast<const u_int64_t*>(&d[0]);
@@ -293,7 +293,7 @@ public:
         : Algorithm("thrust popcnt")
     {}
 private:
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r) override
     {
         const Popcnt::g_type::container_type &d = static_cast<Popcnt::g_type&>(td).get_const();
         size_t pcount = thrust_popcnt<Popcnt::item_type>(d);

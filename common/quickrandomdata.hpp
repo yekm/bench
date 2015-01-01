@@ -38,7 +38,7 @@ public:
         assert(o.m_data_original.size());
     }
 
-    virtual std::shared_ptr<TaskData> clone_copy() const
+    virtual std::shared_ptr<TaskData> clone_copy() const override
     {
         return std::make_shared<QuickRandomData<T>>(*this);
     }

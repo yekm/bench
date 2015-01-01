@@ -13,11 +13,11 @@ public:
         : Algorithm("Template Alg")
     {}
 private:
-    virtual std::string do_complexity()
+    virtual std::string do_complexity() override
     {
         return "";
     }
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &) override
     {
         %TN%::g_type::container_type &d = static_cast<%TN%::g_type&>(td).get_mutable();
         D() << "before " << d;

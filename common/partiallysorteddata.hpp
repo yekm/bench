@@ -41,7 +41,7 @@ public:
         D() << "created copy PartiallySortedData" << base_type::m_data;
     }
 
-    virtual std::shared_ptr<TaskData> clone_copy() const
+    virtual std::shared_ptr<TaskData> clone_copy() const override
     {
         return std::make_shared<PartiallySortedData<T>>(*this);
     }

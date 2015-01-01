@@ -25,7 +25,7 @@ public:
         {
             return m_num_threads;
         }
-        virtual std::shared_ptr<TaskData> clone_copy() const
+        virtual std::shared_ptr<TaskData> clone_copy() const override
         {
             return std::make_shared<CustomRandomData>(*this);
         }
@@ -37,12 +37,12 @@ public:
         : Task(name, utils::PlotSettings(utils::PlotSettings::AS_LINEAR))
     {}
 
-    virtual std::shared_ptr<TaskData> prepare_data(std::size_t n)
+    virtual std::shared_ptr<TaskData> prepare_data(std::size_t n) override
     {
         return std::make_shared<CustomRandomData>(n);
     }
 
-    virtual bool get_n(std::size_t & n)
+    virtual bool get_n(std::size_t & n) override
     {
         ++n;
         if (n > 32)
@@ -59,7 +59,7 @@ public:
         : Threading("Flase sharing")
     {}
 
-    virtual void validate(const AResult & ares)
+    virtual void validate(const AResult & ares) override
     {
         const Threading::result_type & result =
                 static_cast<const Threading::result_type&>(ares.get_custom_result());

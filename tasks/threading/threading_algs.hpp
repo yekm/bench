@@ -15,7 +15,7 @@ public:
         : Algorithm(name)
     {}
 private:
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> & ares)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> & ares) override
     {
         Threading::CustomRandomData & d =
                     static_cast<Threading::CustomRandomData&>(td);
@@ -67,7 +67,7 @@ public:
     {}
 private:
     typedef AlignedStruct<std::size_t, Align> aligned_type;
-    virtual void init(std::size_t thread_count)
+    virtual void init(std::size_t thread_count) override
     {
         m_thread_count = thread_count;
         m_results.resize(0); // FIXME: persistent data in Algorithms is bad, mkay?
@@ -81,7 +81,7 @@ private:
  * Since we testing data alignment, we can disable optimizations here.
  * */
     virtual void do_thread(Threading::CustomRandomData & d,
-                           std::size_t t_id)
+                           std::size_t t_id) override
     {
         const auto & data = d.get_const();
         std::size_t chunk_size = data.size() / m_thread_count;
@@ -99,7 +99,7 @@ private:
     }
 #pragma GCC pop_options
 
-    virtual void gather_results(Threading::result_type & result)
+    virtual void gather_results(Threading::result_type & result) override
     {
         result.m_simple_result = std::accumulate(
                     m_results.begin(),

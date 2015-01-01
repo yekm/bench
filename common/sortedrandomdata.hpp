@@ -26,7 +26,7 @@ public:
         std::sort(base_type::m_data.begin(), base_type::m_data.end());
     }
 
-    virtual std::shared_ptr<TaskData> clone_copy() const
+    virtual std::shared_ptr<TaskData> clone_copy() const override
     {
         return std::make_shared<SortedRandomData<T>>(*this);
     }

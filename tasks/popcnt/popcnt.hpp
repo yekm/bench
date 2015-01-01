@@ -20,12 +20,12 @@ public:
         : Task("popcnt perfomance", utils::PlotSettings(utils::PlotSettings::AS_LOGXY))
     {}
 
-    virtual std::shared_ptr<TaskData> prepare_data(std::size_t n)
+    virtual std::shared_ptr<TaskData> prepare_data(std::size_t n) override
     {
         return std::make_shared<common::RandomData<item_type>>(n);
     }
 
-    virtual bool get_n(std::size_t & n)
+    virtual bool get_n(std::size_t & n) override
     {
         if (n < 2)
         {
@@ -43,7 +43,7 @@ public:
         return true;
     }
 
-    virtual void validate(const AResult & ares)
+    virtual void validate(const AResult & ares) override
     {
         const size_t pcount = static_cast<const PResult&>(ares.get_custom_result()).count;
         auto &d = static_cast<const g_type&>(ares.get_taskdata()).get_const();

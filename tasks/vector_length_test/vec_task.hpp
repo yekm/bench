@@ -24,13 +24,13 @@ public:
         : Task(std::to_string(num_vectors) + " vector lengths", utils::PlotSettings(utils::PlotSettings::AS_LOGX, "vector length"))
     {}
 
-    virtual std::shared_ptr<TaskData> prepare_data(std::size_t n)
+    virtual std::shared_ptr<TaskData> prepare_data(std::size_t n) override
     {
         return std::make_shared<common::RandomData<item_type>>(n*num_vectors, -10, 10);
         //return std::make_shared<common::SortedRandomData<item_type>>(n*num_vectors, -10, 10);
     }
 
-    virtual bool get_n(std::size_t & n)
+    virtual bool get_n(std::size_t & n) override
     {
         if (n < 2)
         {
@@ -44,7 +44,7 @@ public:
         return true;
     }
 
-    virtual void validate(const AResult & r)
+    virtual void validate(const AResult & r) override
     {
         const VecResult & vr = static_cast<const VecResult&>(r.get_custom_result());
 

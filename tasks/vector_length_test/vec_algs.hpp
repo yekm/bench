@@ -35,7 +35,7 @@ private:
         }
     }
 
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r) override
     {
         const VecTask::g_type::container_type &d = static_cast<VecTask::g_type&>(td).get_const();
         std::unique_ptr<VecResult> res(new VecResult());
@@ -83,7 +83,7 @@ private:
         }
     }
 
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r) override
     {
         const VecTask::g_type::container_type &d = static_cast<VecTask::g_type&>(td).get_const();
         std::unique_ptr<VecResult> res(new VecResult());
@@ -124,7 +124,7 @@ private:
         throw BException("unsupported vector length" + get_name());
     }
 
-    virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r)
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> & r) override
     {
         const VecTask::g_type::container_type &d = static_cast<VecTask::g_type&>(td).get_const();
         std::unique_ptr<VecResult> res(new VecResult());

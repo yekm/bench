@@ -23,7 +23,7 @@ public:
         return m_data;
     }
 
-    virtual std::shared_ptr<TaskData> clone()
+    virtual std::shared_ptr<TaskData> clone() override
     {
         if (m_valid)
         {

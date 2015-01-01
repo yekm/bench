@@ -50,7 +50,7 @@ public:
         generate(m_min, m_max);
     }
 
-    virtual std::shared_ptr<TaskData> clone_copy() const
+    virtual std::shared_ptr<TaskData> clone_copy() const override
     {
         return std::make_shared<RandomData<T>>(*this);
     }

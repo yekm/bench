@@ -16,12 +16,12 @@ public:
     {
     }
 
-    virtual std::shared_ptr<TaskData> prepare_data(std::size_t n)
+    virtual std::shared_ptr<TaskData> prepare_data(std::size_t n) override
     {
         return std::make_shared<common::PartiallySortedData<SortingTask::item_type>>(N, n);
     }
 
-    virtual bool get_n(std::size_t & n)
+    virtual bool get_n(std::size_t & n) override
     {
         n < 2 ? n=2 : n*=2;
 
