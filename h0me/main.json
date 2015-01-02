@@ -7,13 +7,13 @@
 "ylabel" : "Time (sec)",
 "scale" : "log",
 "algs" : [
-	{"name" : "32bit SWAR popcnt", "tsv" : "task0_alg0.tsv", "common_filename" : "task0_alg0", "status" : "Ok", "an" : "0"},
+	{"name" : "32bit SWAR popcnt", "tsv" : "task0_alg0.tsv", "common_filename" : "task0_alg0", "status" : "Timeout", "an" : "0"},
 	{"name" : "Brian Kernighan popcnt", "tsv" : "task0_alg1.tsv", "common_filename" : "task0_alg1", "status" : "Timeout", "an" : "1"},
 	{"name" : "Simple popcnt", "tsv" : "task0_alg2.tsv", "common_filename" : "task0_alg2", "status" : "Timeout", "an" : "2"},
 	{"name" : "generalized 32 bit SWAR popcnt", "tsv" : "task0_alg3.tsv", "common_filename" : "task0_alg3", "status" : "Ok", "an" : "3"},
 	{"name" : "generalized 64 bit SWAR popcnt", "tsv" : "task0_alg4.tsv", "common_filename" : "task0_alg4", "status" : "Ok", "an" : "4"},
 	{"name" : "intrinsics _mm_popcnt_u64 manual asm popcnt", "tsv" : "task0_alg5.tsv", "common_filename" : "task0_alg5", "status" : "Ok", "an" : "5"},
-	{"name" : "intrinsics _mm_popcnt_u64 popcnt", "tsv" : "task0_alg6.tsv", "common_filename" : "task0_alg6", "status" : "Ok", "an" : "6"},
+	{"name" : "intrinsics _mm_popcnt_u64 popcnt", "tsv" : "task0_alg6.tsv", "common_filename" : "task0_alg6", "status" : "Timeout", "an" : "6"},
 	{"name" : "intrinsics _mm_popcnt_u64 unrolled popcnt", "tsv" : "task0_alg7.tsv", "common_filename" : "task0_alg7", "status" : "Ok", "an" : "7"},
 	{"name" : "table lookup popcnt", "tsv" : "task0_alg8.tsv", "common_filename" : "task0_alg8", "status" : "Timeout", "an" : "8"},
 	{"name" : "thrust popcnt", "tsv" : "task0_alg9.tsv", "common_filename" : "task0_alg9", "status" : "Timeout", "an" : "9"}
@@ -61,16 +61,28 @@
 	]
 },
 {
-"name" : "1000000 vector lengths",
+"name" : "Flase sharing",
 "tn" : "3",
+"status" : "Skipped",
+"xlabel" : "N (number of elements)",
+"ylabel" : "Time (sec)",
+"scale" : "linear",
+"algs" : [
+	{"name" : "false sharing, default alignment", "tsv" : "task3_alg0.tsv", "common_filename" : "task3_alg0", "status" : "Ok", "an" : "0"},
+	{"name" : "fixed false sharing, 64 bytes alignment", "tsv" : "task3_alg1.tsv", "common_filename" : "task3_alg1", "status" : "Ok", "an" : "1"}
+	]
+},
+{
+"name" : "1000000 vector lengths",
+"tn" : "4",
 "status" : "Ok",
 "xlabel" : "vector length",
 "ylabel" : "Time (sec)",
 "scale" : "log",
 "algs" : [
-	{"name" : "handmade unrolling", "tsv" : "task3_alg0.tsv", "common_filename" : "task3_alg0", "status" : "Ok", "an" : "0"},
-	{"name" : "loop unrolling", "tsv" : "task3_alg1.tsv", "common_filename" : "task3_alg1", "status" : "Ok", "an" : "1"},
-	{"name" : "template unrolling", "tsv" : "task3_alg2.tsv", "common_filename" : "task3_alg2", "status" : "Ok", "an" : "2"}
+	{"name" : "handmade unrolling", "tsv" : "task4_alg0.tsv", "common_filename" : "task4_alg0", "status" : "Ok", "an" : "0"},
+	{"name" : "loop unrolling", "tsv" : "task4_alg1.tsv", "common_filename" : "task4_alg1", "status" : "Ok", "an" : "1"},
+	{"name" : "template unrolling", "tsv" : "task4_alg2.tsv", "common_filename" : "task4_alg2", "status" : "Ok", "an" : "2"}
 	]
 }
 ]}
