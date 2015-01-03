@@ -256,8 +256,15 @@ function drawchart(task) {
     var ebar_lines = ebar.selectAll(".ebar")
         .data(function(a) { return a.tsvdata; });
 
+    function filter_errorbar(d)
+    {
+        // relying on errorbar height
+        var h = Math.abs( y(d.mean+d.stddev/2) - y(d.mean-d.stddev/2) );
+        return h > 5;
+    }
     ebar_lines.enter()
         .append("svg:line")
+        .filter(filter_errorbar)
         .attr("class", "ebar")
         .attr("x1", function(d) { return x(d.n); })
         .attr("x2", function(d) { return x(d.n); })
@@ -266,6 +273,7 @@ function drawchart(task) {
 
     ebar_lines.enter()
         .append("svg:line")
+        .filter(filter_errorbar)
         .attr("class", "ebar")
         .attr("x1", function(d) { return x(d.n)-3; })
         .attr("x2", function(d) { return x(d.n)+3; })
@@ -274,6 +282,7 @@ function drawchart(task) {
 
     ebar_lines.enter()
         .append("svg:line")
+        .filter(filter_errorbar)
         .attr("class", "ebar")
         .attr("x1", function(d) { return x(d.n)-3; })
         .attr("x2", function(d) { return x(d.n)+3; })
