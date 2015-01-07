@@ -8,19 +8,6 @@ plots the relationship between time and amount of processed data.
 This project is written for (self)educational purposes and fun. Some things
 may look a bit awkward.
 
-### Sample graphs
-http://yekm.name/bench/d3 or http://yekm.name/bench/aws-g2.2xlarge/
-
-Have a look at this beautiful example:
-![](https://s3-eu-west-1.amazonaws.com/yekm/2014-08-26-195453_1920x1080_scrot.png)
-This plot shows relationship between "randomness" of data and time taken to sort that data.
-So on X axis we have the (rough) number of random shuffles in pre-sorted array of 1 000 000 integers.
-What we can say from this example?
-* When array is almost sorted _Insertion sort_ is the fastest. It becames slower than _Timsort_ with 16 shuffles in array.
-* With 256 shuffles _Timsort_ becomes slower than _Introsort_ (default std::sort in stl), and then quickly becomes 1.5 times slower than _Introsort_.
-* _Merge sort_ behaves quite independently on randomnes. Only when array is almost completely random it becomes ~3 times slower. And only ~2 times slower than _Introsort_.
-* Sorting with the GPU (CUDA thrust library) is independent on array randomness. It is always blazing fast.
-
 ### Usage
 #### Compilation:
 ```
@@ -36,7 +23,6 @@ Make separate folder and run bench from where
 
 Listing all tasks and algorithms
 ```
-$ ../bench -l
 Task 0: popcnt perfomance
   32bit SWAR popcnt
   Brian Kernighan popcnt
@@ -71,7 +57,10 @@ Task 2: Sorting algorithms, partially sorted data, 1000000 elements
   Shell sort n*log^2(n)
   swenson timsort n*log(n)
   thrust::sort
-Task 3: 1000000 vector lengths
+Task 3: Flase sharing
+  false sharing, default alignment
+  fixed false sharing, 64 bytes alignment
+Task 4: 1000000 vector lengths
   handmade unrolling
   loop unrolling
   template unrolling
@@ -108,8 +97,10 @@ $ $BROWSER http://localhost:8082
 ### Adding algorithms for benchmarking
 Adding algorithms for benchmarking is easy (at least I've tried to make it easy).
 
+Run `./create_task.sh new_task_name_here` from `tasks/template` directory.
+
 Decide what type of data your algorithm should process. Derive a class from `GenericData<T>`
-or use already made `common::RandomData` and others. `GenericData<T>` has two useful functions
+or use `common::RandomData` and others. `GenericData<T>` has two useful functions
 `T & get_mutable()` and `const T & get_const()`.
 If algorithm is not modifying it should ask for const data. In this case next algorithm
 will get just the same data. Otherwise modified data discarded and new data
@@ -139,16 +130,15 @@ std::vector<int> &d = static_cast<GenericData<std::vector<int>>&>(td).get_mutabl
 std::sort(d.begin(), d.end());
 ```
 
-Write a cpp file in which make a static struct. In constructor you should create
+Write a cpp file in which make a static struct (however, don't try this at <s>home</s> work).
+In constructor you should create
 Task and all Algorithms. Add Algorithms to Task and add Task to TaskCollection.
 Since your struct is static and TaskCollection is a singleton all algorithms and tasks
 will be created and registered in TaskCollection automatically at program launch.
 And thus there is no need to make any changes in present code. Just create a subfolder
-in tasks/, place you code there and re-run cmake.
+in tasks/, place you code there, patch `tasks/CMakeLists.txt` and re-run cmake.
 
-Add your cpp file in `tasks/CMakeLists.txt`.
-
-Quiet messy description. You should look at actual code, it is simple <s>and clear</s>.
+Quite messy description. You should look at actual code, it is simple <s>and clear</s>.
 
 ### LICENSE
 MIT.
