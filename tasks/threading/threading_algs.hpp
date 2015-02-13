@@ -3,6 +3,7 @@
 
 #include "algorithm.hpp"
 #include "threading_task.hpp"
+#include "threadsafecounter.hpp"
 #include "utils/dbg.hpp"
 
 #include <vector>
@@ -47,39 +48,22 @@ private:
     virtual void gather_results(Threading::result_type &) = 0;
 };
 
-template <typename T, unsigned Align>
-struct alignas(Align) AlignedStruct
-{
-    static_assert(std::is_pod<T>::value, "cant align non-pod");
-    AlignedStruct()
-        : m_data(0)
-    {}
-    T m_data;
-};
 
-// http://www.drdobbs.com/parallel/eliminate-false-sharing/217500206
-template <unsigned Align>
-class FalseSharing : public MTalg
+class MTCounting : public MTalg
 {
 public:
-    FalseSharing(const std::string & name)
+    MTCounting(const std::string & name)
         : MTalg(name)
     {}
+protected:
+    virtual std::unique_ptr<tsc::ThreadSafeCounter> get_counter(std::size_t thread_count) = 0;
 private:
-    typedef AlignedStruct<std::size_t, Align> aligned_type;
     virtual void init(std::size_t thread_count) override
     {
         m_thread_count = thread_count;
-        m_results.resize(0); // FIXME: persistent data in Algorithms is bad, mkay?
-        m_results.resize(m_thread_count, aligned_type());
+        m_counter = get_counter(thread_count);
     }
 
-#pragma GCC push_options
-#pragma GCC optimize(0)
-/* Apparently gcc with optimizations uses separate counter and assigns it to
- * m_results[t_id].m_data at the end of the loop, thus eliminating fasle sharing.
- * Since we testing data alignment, we can disable optimizations here.
- * */
     virtual void do_thread(Threading::CustomRandomData & d,
                            std::size_t t_id) override
     {
@@ -93,42 +77,70 @@ private:
         while (start != end)
         {
             if (*start % 2 == 0)
-                ++(m_results[t_id].m_data);
+                m_counter->inc(t_id); // carefully with optimizations!
             ++start;
         }
     }
-#pragma GCC pop_options
 
     virtual void gather_results(Threading::result_type & result) override
     {
-        result.m_simple_result = std::accumulate(
-                    m_results.begin(),
-                    m_results.end(),
-                    std::size_t(0),
-                    [](std::size_t sum, const aligned_type & element){
-                        return sum+element.m_data;
-                    });
+        result.m_simple_result = m_counter->result();
     }
 
-    std::vector<aligned_type> m_results;
+    std::unique_ptr<tsc::ThreadSafeCounter> m_counter;
     std::size_t m_thread_count;
 };
 
-class FalseSharing_bad : public FalseSharing<alignof(std::size_t)>
+class FalseSharing_bad : public MTCounting
 {
 public:
     FalseSharing_bad()
-        : FalseSharing("false sharing, default alignment")
+        : MTCounting("false sharing, default alignment")
     {}
+protected:
+    std::unique_ptr<tsc::ThreadSafeCounter> get_counter(std::size_t thread_count) override
+    {
+        return std::unique_ptr<tsc::ThreadSafeCounter>(new tsc::FalseSharingCounter(thread_count));
+    }
 };
 
-// most common cache line size is 64
-class FalseSharing_fix : public FalseSharing<64>
+class FalseSharing_fix : public MTCounting
 {
 public:
     FalseSharing_fix()
-        : FalseSharing("fixed false sharing, 64 bytes alignment")
+        : MTCounting("fixed false sharing, 64 bytes alignment")
     {}
+protected:
+    std::unique_ptr<tsc::ThreadSafeCounter> get_counter(std::size_t thread_count) override
+    {
+        return std::unique_ptr<tsc::ThreadSafeCounter>(new tsc::FixedFalseSharingCounter(thread_count));
+    }
+};
+
+class AtomicSync : public MTCounting
+{
+public:
+    AtomicSync()
+        : MTCounting("atomic")
+    {}
+protected:
+    std::unique_ptr<tsc::ThreadSafeCounter> get_counter(std::size_t) override
+    {
+        return std::unique_ptr<tsc::ThreadSafeCounter>(new tsc::AtomicCounter());
+    }
+};
+
+class MutexSync : public MTCounting
+{
+public:
+    MutexSync()
+        : MTCounting("mutex")
+    {}
+protected:
+    std::unique_ptr<tsc::ThreadSafeCounter> get_counter(std::size_t) override
+    {
+        return std::unique_ptr<tsc::ThreadSafeCounter>(new tsc::MutexCounter());
+    }
 };
 
 #endif // THREADING_ALGS_H

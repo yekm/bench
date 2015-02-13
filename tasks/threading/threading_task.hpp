@@ -52,11 +52,11 @@ public:
 
 };
 
-class FalseSharingTask : public Threading
+class ThreadedCountingTask : public Threading
 {
 public:
-    FalseSharingTask()
-        : Threading("Flase sharing")
+    ThreadedCountingTask(const std::string & add)
+        : Threading("Threaded counting, 1e7 elements (" + add + ")")
     {}
 
     virtual void validate(const AResult & ares) override
