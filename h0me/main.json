@@ -2,57 +2,57 @@
 {
 "name" : "popcnt perfomance",
 "tn" : "0",
-"status" : "Ok",
+"status" : "Skipped",
 "xlabel" : "N (number of elements)",
 "ylabel" : "Time (sec)",
 "scale" : "log",
 "algs" : [
-	{"name" : "32bit SWAR popcnt", "tsv" : "task0_alg0.tsv", "common_filename" : "task0_alg0", "status" : "Timeout", "an" : "0"},
-	{"name" : "Brian Kernighan popcnt", "tsv" : "task0_alg1.tsv", "common_filename" : "task0_alg1", "status" : "Timeout", "an" : "1"},
-	{"name" : "Simple popcnt", "tsv" : "task0_alg2.tsv", "common_filename" : "task0_alg2", "status" : "Timeout", "an" : "2"},
+	{"name" : "32bit SWAR popcnt", "tsv" : "task0_alg0.tsv", "common_filename" : "task0_alg0", "status" : "Ok", "an" : "0"},
+	{"name" : "Brian Kernighan popcnt", "tsv" : "task0_alg1.tsv", "common_filename" : "task0_alg1", "status" : "Ok", "an" : "1"},
+	{"name" : "Simple popcnt", "tsv" : "task0_alg2.tsv", "common_filename" : "task0_alg2", "status" : "Ok", "an" : "2"},
 	{"name" : "generalized 32 bit SWAR popcnt", "tsv" : "task0_alg3.tsv", "common_filename" : "task0_alg3", "status" : "Ok", "an" : "3"},
 	{"name" : "generalized 64 bit SWAR popcnt", "tsv" : "task0_alg4.tsv", "common_filename" : "task0_alg4", "status" : "Ok", "an" : "4"},
 	{"name" : "intrinsics _mm_popcnt_u64 manual asm popcnt", "tsv" : "task0_alg5.tsv", "common_filename" : "task0_alg5", "status" : "Ok", "an" : "5"},
-	{"name" : "intrinsics _mm_popcnt_u64 popcnt", "tsv" : "task0_alg6.tsv", "common_filename" : "task0_alg6", "status" : "Timeout", "an" : "6"},
+	{"name" : "intrinsics _mm_popcnt_u64 popcnt", "tsv" : "task0_alg6.tsv", "common_filename" : "task0_alg6", "status" : "Ok", "an" : "6"},
 	{"name" : "intrinsics _mm_popcnt_u64 unrolled popcnt", "tsv" : "task0_alg7.tsv", "common_filename" : "task0_alg7", "status" : "Ok", "an" : "7"},
-	{"name" : "table lookup popcnt", "tsv" : "task0_alg8.tsv", "common_filename" : "task0_alg8", "status" : "Timeout", "an" : "8"},
-	{"name" : "thrust popcnt", "tsv" : "task0_alg9.tsv", "common_filename" : "task0_alg9", "status" : "Timeout", "an" : "9"}
+	{"name" : "table lookup popcnt", "tsv" : "task0_alg8.tsv", "common_filename" : "task0_alg8", "status" : "Ok", "an" : "8"},
+	{"name" : "thrust popcnt", "tsv" : "task0_alg9.tsv", "common_filename" : "task0_alg9", "status" : "Ok", "an" : "9"}
 	]
 },
 {
 "name" : "sorting algorithms",
 "tn" : "1",
-"status" : "Ok",
+"status" : "Skipped",
 "xlabel" : "N (number of elements)",
 "ylabel" : "Time (sec)",
 "scale" : "log",
 "algs" : [
-	{"name" : "Insertion sort n^2", "tsv" : "task1_alg0.tsv", "common_filename" : "task1_alg0", "status" : "Timeout", "an" : "0"},
-	{"name" : "Introsort std::sort n*log(n)", "tsv" : "task1_alg1.tsv", "common_filename" : "task1_alg1", "status" : "Timeout", "an" : "1"},
-	{"name" : "Merge sort n*log(n)", "tsv" : "task1_alg2.tsv", "common_filename" : "task1_alg2", "status" : "Timeout", "an" : "2"},
-	{"name" : "Selection sort n^2", "tsv" : "task1_alg3.tsv", "common_filename" : "task1_alg3", "status" : "Timeout", "an" : "3"},
-	{"name" : "Shell sort n*log^2(n)", "tsv" : "task1_alg4.tsv", "common_filename" : "task1_alg4", "status" : "Timeout", "an" : "4"},
-	{"name" : "swenson binary insertion sort n^2", "tsv" : "task1_alg5.tsv", "common_filename" : "task1_alg5", "status" : "Timeout", "an" : "5"},
-	{"name" : "swenson grail sort", "tsv" : "task1_alg6.tsv", "common_filename" : "task1_alg6", "status" : "Timeout", "an" : "6"},
-	{"name" : "swenson heapsort n*log(n)", "tsv" : "task1_alg7.tsv", "common_filename" : "task1_alg7", "status" : "Timeout", "an" : "7"},
-	{"name" : "swenson mergesort n*log(n)", "tsv" : "task1_alg8.tsv", "common_filename" : "task1_alg8", "status" : "Timeout", "an" : "8"},
-	{"name" : "swenson quiksort n*log(n)", "tsv" : "task1_alg9.tsv", "common_filename" : "task1_alg9", "status" : "Timeout", "an" : "9"},
-	{"name" : "swenson selection sort n^2", "tsv" : "task1_alg10.tsv", "common_filename" : "task1_alg10", "status" : "Timeout", "an" : "10"},
-	{"name" : "swenson sell sort n*log^2(n)", "tsv" : "task1_alg11.tsv", "common_filename" : "task1_alg11", "status" : "Timeout", "an" : "11"},
-	{"name" : "swenson sqrt sort", "tsv" : "task1_alg12.tsv", "common_filename" : "task1_alg12", "status" : "Timeout", "an" : "12"},
-	{"name" : "swenson timsort n*log(n)", "tsv" : "task1_alg13.tsv", "common_filename" : "task1_alg13", "status" : "Timeout", "an" : "13"},
-	{"name" : "thrust::sort", "tsv" : "task1_alg14.tsv", "common_filename" : "task1_alg14", "status" : "Out of memory (std::bad_alloc: out of memory)", "an" : "14"}
+	{"name" : "Insertion sort n^2", "tsv" : "task1_alg0.tsv", "common_filename" : "task1_alg0", "status" : "Ok", "an" : "0"},
+	{"name" : "Introsort std::sort n*log(n)", "tsv" : "task1_alg1.tsv", "common_filename" : "task1_alg1", "status" : "Ok", "an" : "1"},
+	{"name" : "Merge sort n*log(n)", "tsv" : "task1_alg2.tsv", "common_filename" : "task1_alg2", "status" : "Ok", "an" : "2"},
+	{"name" : "Selection sort n^2", "tsv" : "task1_alg3.tsv", "common_filename" : "task1_alg3", "status" : "Ok", "an" : "3"},
+	{"name" : "Shell sort n*log^2(n)", "tsv" : "task1_alg4.tsv", "common_filename" : "task1_alg4", "status" : "Ok", "an" : "4"},
+	{"name" : "swenson binary insertion sort n^2", "tsv" : "task1_alg5.tsv", "common_filename" : "task1_alg5", "status" : "Ok", "an" : "5"},
+	{"name" : "swenson grail sort", "tsv" : "task1_alg6.tsv", "common_filename" : "task1_alg6", "status" : "Ok", "an" : "6"},
+	{"name" : "swenson heapsort n*log(n)", "tsv" : "task1_alg7.tsv", "common_filename" : "task1_alg7", "status" : "Ok", "an" : "7"},
+	{"name" : "swenson mergesort n*log(n)", "tsv" : "task1_alg8.tsv", "common_filename" : "task1_alg8", "status" : "Ok", "an" : "8"},
+	{"name" : "swenson quiksort n*log(n)", "tsv" : "task1_alg9.tsv", "common_filename" : "task1_alg9", "status" : "Ok", "an" : "9"},
+	{"name" : "swenson selection sort n^2", "tsv" : "task1_alg10.tsv", "common_filename" : "task1_alg10", "status" : "Ok", "an" : "10"},
+	{"name" : "swenson sell sort n*log^2(n)", "tsv" : "task1_alg11.tsv", "common_filename" : "task1_alg11", "status" : "Ok", "an" : "11"},
+	{"name" : "swenson sqrt sort", "tsv" : "task1_alg12.tsv", "common_filename" : "task1_alg12", "status" : "Ok", "an" : "12"},
+	{"name" : "swenson timsort n*log(n)", "tsv" : "task1_alg13.tsv", "common_filename" : "task1_alg13", "status" : "Ok", "an" : "13"},
+	{"name" : "thrust::sort", "tsv" : "task1_alg14.tsv", "common_filename" : "task1_alg14", "status" : "Ok", "an" : "14"}
 	]
 },
 {
 "name" : "Sorting algorithms, partially sorted data, 1000000 elements",
 "tn" : "2",
-"status" : "Ok",
+"status" : "Skipped",
 "xlabel" : "number of shuffles",
 "ylabel" : "Time (sec)",
 "scale" : "log",
 "algs" : [
-	{"name" : "Insertion sort n^2", "tsv" : "task2_alg0.tsv", "common_filename" : "task2_alg0", "status" : "Timeout", "an" : "0"},
+	{"name" : "Insertion sort n^2", "tsv" : "task2_alg0.tsv", "common_filename" : "task2_alg0", "status" : "Ok", "an" : "0"},
 	{"name" : "Introsort std::sort n*log(n)", "tsv" : "task2_alg1.tsv", "common_filename" : "task2_alg1", "status" : "Ok", "an" : "1"},
 	{"name" : "Merge sort n*log(n)", "tsv" : "task2_alg2.tsv", "common_filename" : "task2_alg2", "status" : "Ok", "an" : "2"},
 	{"name" : "Shell sort n*log^2(n)", "tsv" : "task2_alg3.tsv", "common_filename" : "task2_alg3", "status" : "Ok", "an" : "3"},
@@ -61,9 +61,9 @@
 	]
 },
 {
-"name" : "Flase sharing",
+"name" : "Threaded counting, 1e7 elements (false sharing)",
 "tn" : "3",
-"status" : "Skipped",
+"status" : "Ok",
 "xlabel" : "N (number of elements)",
 "ylabel" : "Time (sec)",
 "scale" : "linear",
@@ -73,16 +73,28 @@
 	]
 },
 {
-"name" : "1000000 vector lengths",
+"name" : "Threaded counting, 1e7 elements (atomic vs mutex)",
 "tn" : "4",
 "status" : "Ok",
+"xlabel" : "N (number of elements)",
+"ylabel" : "Time (sec)",
+"scale" : "linear",
+"algs" : [
+	{"name" : "atomic", "tsv" : "task4_alg0.tsv", "common_filename" : "task4_alg0", "status" : "Ok", "an" : "0"},
+	{"name" : "mutex", "tsv" : "task4_alg1.tsv", "common_filename" : "task4_alg1", "status" : "Ok", "an" : "1"}
+	]
+},
+{
+"name" : "1000000 vector lengths",
+"tn" : "5",
+"status" : "Skipped",
 "xlabel" : "vector length",
 "ylabel" : "Time (sec)",
 "scale" : "log",
 "algs" : [
-	{"name" : "handmade unrolling", "tsv" : "task4_alg0.tsv", "common_filename" : "task4_alg0", "status" : "Ok", "an" : "0"},
-	{"name" : "loop unrolling", "tsv" : "task4_alg1.tsv", "common_filename" : "task4_alg1", "status" : "Ok", "an" : "1"},
-	{"name" : "template unrolling", "tsv" : "task4_alg2.tsv", "common_filename" : "task4_alg2", "status" : "Ok", "an" : "2"}
+	{"name" : "handmade unrolling", "tsv" : "task5_alg0.tsv", "common_filename" : "task5_alg0", "status" : "Ok", "an" : "0"},
+	{"name" : "loop unrolling", "tsv" : "task5_alg1.tsv", "common_filename" : "task5_alg1", "status" : "Ok", "an" : "1"},
+	{"name" : "template unrolling", "tsv" : "task5_alg2.tsv", "common_filename" : "task5_alg2", "status" : "Ok", "an" : "2"}
 	]
 }
 ]}
