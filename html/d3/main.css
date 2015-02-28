@@ -29,8 +29,13 @@ path.highlighted {
     pointer-events: all;
 }
 
-.focus line {
+.focus .focus_line {
     stroke: lightgray;
+}
+
+.focus .pin_line
+{
+    stroke: #c87;
 }
 
 .focus circle {
