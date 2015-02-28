@@ -171,7 +171,7 @@ function drawchart(task) {
         .y(function(d) { return y(d.mean); });
 
     chartdiv
-        .append("h3").attr("class", "taskname").text(task.name);
+        .append("h2").attr("class", "taskname").text(task.name);
 
     var svg = chartdiv
         .append("svg")
@@ -192,7 +192,7 @@ function drawchart(task) {
     theader.append("th").text("Time").style("width", "90px");
     theader.append("th").text("Status");
     theader.append("th").text("Percent of slowest");
-    theader.append("th").text("Rank");
+    theader.append("th").text("Multiplier");
 
     //chartdiv.append("br").attr("class", "clear");
 
@@ -310,11 +310,19 @@ function drawchart(task) {
         .attr("width", width)
         .attr("height", height)
         .on("mouseover", function() { focus.style("display", null); })
-        .on("mouseout", function() { focus.style("display", "none"); })
-        .on("mousemove", mousemove);
+        .on("mouseout", function() { /*focus.style("display", "none");*/ })
+        .on("mousemove", mousemove)
+        .on("click", mouseclick);
 
 
     var fline = focus.append("svg:line")
+        .attr("class", "focus_line")
+        .attr("x1", 10).attr("x2", 10)
+        .attr("y1", 0).attr("y2", height);
+
+    var pin_line = focus.append("svg:line")
+        .attr("class", "pin_line")
+        .style("display", "none")
         .attr("x1", 10).attr("x2", 10)
         .attr("y1", 0).attr("y2", height);
 
@@ -322,9 +330,19 @@ function drawchart(task) {
         .attr("class", "legend")
         .attr("transform", "translate(12, 0)");
 
-    updateLegend(0);
+    updateLegend(0, -1);
 
-    function updateLegend(cur)
+    function alg_by_name(a, name)
+    {
+        var i = a.length;
+        while (i--) {
+            if (a[i].name === name)
+                return a[i];
+        }
+        return null;
+    }
+
+    function updateLegend(cur, pin)
     {
         var new_algs = task.algs.filter(function(a) { return a.tsvdata.length > cur; });
         new_algs.sort(function (a, b) {
@@ -419,27 +437,54 @@ function drawchart(task) {
             .style("width", function(d, i) { return percent_from_top(d, i) + "px" })
             .style("background-color", function(d) { return color(d.name); })
             .text(percent_from_top);
-        titem.select(".td6").text(function(d, i) { return i; });
+        titem.select(".td6").text(function(d, i) {
+            if (pin >= 0 &&
+                d.tsvdata.length > cur &&
+                alg_by_name(new_algs, d.name).tsvdata.length > pin) {
+                var cur_mean = d.tsvdata[cur].mean,
+                    pin_mean = alg_by_name(new_algs, d.name).tsvdata[pin].mean;
+                if (cur_mean < pin_mean)
+                    return -(pin_mean/cur_mean).toFixed(2);
+                else
+                    return (cur_mean/pin_mean).toFixed(2);
+            }
+            else {
+                return "";
+            }
+        });
 
         titem.exit()
             .classed({"exited":true});
     }
 
 
-    var old_ii = 0;
-    function mousemove() {
-        var x0 = x.invert(d3.mouse(this)[0]),
+    var old_ii = 0,
+        pin_ii = -1;
+    function get_i(container) {
+        var x0 = x.invert(d3.mouse(container)[0]),
             i = d3.bisectLeft(allx, x0, 1),
             d0 = allx[i - 1],
             d1 = allx[i],
             ii = x0 - d0 > d1 - x0 ? i : i-1;
+        return ii;
+     }
 
+    function mousemove() {
+        var ii = get_i(this);
         if (ii != old_ii)
         {
             fline.attr("x1", x(allx[ii])).attr("x2", x(allx[ii]));
-            updateLegend(ii);
+            updateLegend(ii, pin_ii);
         }
         old_ii = ii;
+    }
+
+    function mouseclick() {
+        pin_ii = get_i(this);
+        pin_line
+            .style("display", null)
+            .attr("x1", x(allx[pin_ii])).attr("x2", x(allx[pin_ii]));
+        updateLegend(old_ii, pin_ii);
     }
 
 }

@@ -5,7 +5,7 @@
 .taskname
 {
     margin-top: 20px;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .axis path,
@@ -30,8 +30,13 @@ path.highlighted {
     pointer-events: all;
 }
 
-.focus line {
+.focus .focus_line {
     stroke: lightgray;
+}
+
+.focus .pin_line
+{
+    stroke: #c87;
 }
 
 .focus circle {
