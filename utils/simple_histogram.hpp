@@ -11,17 +11,19 @@ namespace utils
 {
 
 template <typename T>
-std::map<T, size_t> simple_histogram(const std::vector<T> & v, size_t bins)
+std::map<T, size_t> simple_histogram(
+        const std::vector<T> & v,
+        int bins,
+        T min = std::numeric_limits<T>::lowest(),
+        T max = std::numeric_limits<T>::max()
+        )
 {
-    long int min = std::numeric_limits<T>::min();
-    long int max = std::numeric_limits<T>::max();
-    long int len = max-min;
-    size_t bin_step = len/bins;
-    D() << "bin_step" << bin_step << "len" << len << "min" << min << "max" << max;
+    auto bin_step = std::abs(max/bins-min/bins);
+    D() << "bin_step" << bin_step << "len" << min-max << "min" << min << "max" << max;
 
     std::map<T, size_t> histogram;
 
-    long int bin = min;
+    T bin = min;
     for (int i=0; i<bins-1; ++i)
     {
         bin += bin_step;
@@ -36,7 +38,9 @@ std::map<T, size_t> simple_histogram(const std::vector<T> & v, size_t bins)
                                    [](const vtype &e1, const T &e2)
                                    { return e1.first < e2; }
                                    );
-        histogram[lb->first] += 1;
+        if (lb == histogram.end())
+            E() << "value" << x << "out of histogram bins bounds.";
+        lb->second++;
     }
 
     return histogram;
@@ -46,7 +50,7 @@ template <typename T>
 void draw_histogram(const std::map<T, size_t> & m, size_t width = 100)
 {
     typedef typename std::map<T, size_t>::value_type vtype;
-    size_t max = std::max_element(
+    T max = std::max_element(
                 m.begin(),
                 m.end(),
                 [](const vtype &e1, const vtype &e2){ return e1.second < e2.second; }
@@ -59,11 +63,11 @@ void draw_histogram(const std::map<T, size_t> & m, size_t width = 100)
         auto sample = e.second;
         auto w = std::cout.width();
         std::cout.width(12);
-        std::cout << e.first;
+        std::cout << std::left << e.first;
         std::cout.width(w);
         std::cout << ":";
         std::cout.width(12);
-        std::cout << std::left << sample;
+        std::cout << sample;
         std::cout.width(w);
         for (int i=0; i<(float)sample/max*width; ++i)
             std::cout << "*";

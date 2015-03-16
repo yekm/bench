@@ -12,7 +12,7 @@ class StatT
 {
 public:
     StatT()
-        : m_max(std::numeric_limits<T>::min())
+        : m_max(std::numeric_limits<T>::lowest())
         , m_min(std::numeric_limits<T>::max())
     {}
 

@@ -16,7 +16,7 @@ public:
     typedef typename RandomData<T>::base_type base_type;
 
     explicit QuickRandomData(std::size_t n,
-                             T min = std::numeric_limits<T>::min(),
+                             T min = std::numeric_limits<T>::lowest(),
                              T max = std::numeric_limits<T>::max())
         : RandomData<T>("quick random data " + range_str(min, max), n, min, max)
         , m_data_original(base_type::m_data)

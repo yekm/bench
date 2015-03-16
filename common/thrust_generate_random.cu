@@ -6,7 +6,7 @@
 #include <thrust/iterator/counting_iterator.h>
 #include <thrust/functional.h>
 
-__host__ __device__
+__device__
 unsigned int hash(unsigned int a)
 {
     a = (a+0x7ed55d16) + (a<<12);
@@ -28,12 +28,12 @@ public:
         , m_max(max)
     {}
 
-    __host__ __device__
-        float operator()(unsigned int thread_id)
+    __device__
+    T operator()(unsigned int thread_id)
     {
         thrust::default_random_engine rng(m_seed + hash(thread_id));
-        thrust::uniform_real_distribution<T> urd(m_min, m_max);
-        return urd(rng);
+        thrust::uniform_real_distribution<T> distribution(m_min, m_max);
+        return distribution(rng);
     }
 
 private:
@@ -51,12 +51,12 @@ public:
         , m_max(max)
     {}
 
-    __host__ __device__
-        float operator()(unsigned int thread_id)
+    __device__
+    T operator()(unsigned int thread_id)
     {
         thrust::default_random_engine rng(m_seed + hash(thread_id));
-        thrust::uniform_int_distribution<T> urd(m_min, m_max);
-        return urd(rng);
+        thrust::uniform_int_distribution<T> distribution(m_min, m_max);
+        return distribution(rng);
     }
 
 private:

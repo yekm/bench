@@ -27,7 +27,7 @@ private:
     StaticRandomDevice()
         : m_rd()
         , m_gen(m_rd())
-        , m_dis(std::numeric_limits<r_type>::min(), std::numeric_limits<r_type>::max())
+        , m_dis(std::numeric_limits<r_type>::lowest(), std::numeric_limits<r_type>::max())
     {
         I() << "StaticRandomDevice init";
     }

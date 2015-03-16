@@ -141,7 +141,10 @@ int main(int argc, char * argv[])
                 }
 
                 std::cout << "Prepared data N:" << n << std::endl;
-
+#ifdef DEBUG_RANDOM
+                // make unit test already
+                continue;
+#endif
                 for (auto & a : task->get_algorithms())
                 {
                     std::unique_ptr<Algorithm> & alg = a.second;

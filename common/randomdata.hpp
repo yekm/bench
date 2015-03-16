@@ -22,7 +22,7 @@ public:
     typedef GenericData<std::vector<T>> base_type;
 
     explicit RandomData(std::size_t n,
-                        T min = std::numeric_limits<T>::min(),
+                        T min = std::numeric_limits<T>::lowest(),
                         T max = std::numeric_limits<T>::max())
         : base_type("uniform random " + range_str(min, max), n)
         , m_seed(utils::not_so_random_device()())
@@ -34,7 +34,7 @@ public:
         generate(m_min, m_max);
 
 #ifdef DEBUG_RANDOM
-        auto h = utils::simple_histogram(base_type::m_data, 50);
+        auto h = utils::simple_histogram<T>(base_type::m_data, 50, min, max);
         utils::draw_histogram(h);
 #endif
     }
@@ -58,7 +58,7 @@ public:
 protected:
     explicit RandomData(const std::string name,
                         std::size_t n,
-                        T min = std::numeric_limits<T>::min(),
+                        T min = std::numeric_limits<T>::lowest(),
                         T max = std::numeric_limits<T>::max())
         : base_type(name, n)
         , m_seed(utils::not_so_random_device()())
@@ -86,31 +86,30 @@ protected:
     }
 
 private:
+#ifdef CUDA_FOUND
+    void generate(T min, T max)
+    {
+        thrust_generate_random(base_type::m_data, m_seed, min, max);
+    }
+#else
     template <typename U = T,
               typename std::enable_if<std::is_integral<U>::value, int>::type = 0>
     void generate(U min, U max)
     {
-#ifdef CUDA_FOUND
-        thrust_generate_random(base_type::m_data, m_seed, min, max);
-#else
         std::uniform_int_distribution<U> dis(min, max);
         std::generate_n(base_type::m_data.begin(), base_type::m_data.size(),
                         std::bind(dis, m_gen));
-#endif
     }
 
     template <typename U = T,
               typename std::enable_if<std::is_floating_point<U>::value, int>::type = 0>
     void generate(U min, U max)
     {
-#ifdef CUDA_FOUND
-        thrust_generate_random(base_type::m_data, m_seed, min, max);
-#else
         std::uniform_real_distribution<U> dis(min, max);
         std::generate_n(base_type::m_data.begin(), base_type::m_data.size(),
                         std::bind(dis, m_gen));
-#endif
     }
+#endif
 
     std::random_device::result_type m_seed;
     std::mt19937 m_gen;

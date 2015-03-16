@@ -21,4 +21,12 @@ void thrust_sort_ex<char>(std::vector<char> & d)
     thrust::copy(d_vec.begin(), d_vec.end(), d.begin());
 }
 
+template<>
+void thrust_sort_ex<float>(std::vector<float> & d)
+{
+    thrust::device_vector<float> d_vec(d.begin(), d.end());
+    thrust::sort(d_vec.begin(), d_vec.end());
+    thrust::copy(d_vec.begin(), d_vec.end(), d.begin());
+}
+
 #endif

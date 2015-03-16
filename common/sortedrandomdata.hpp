@@ -13,7 +13,7 @@ public:
     typedef typename RandomData<T>::base_type base_type;
 
     explicit SortedRandomData(std::size_t n,
-                              T min = std::numeric_limits<T>::min(),
+                              T min = std::numeric_limits<T>::lowest(),
                               T max = std::numeric_limits<T>::max())
         : RandomData<T>("sorted random data " + range_str(min, max), n, min, max)
     {
