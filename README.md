@@ -10,7 +10,12 @@ may look a bit awkward.
 
 ### Usage
 #### Compilation:
+
+Dependencies: linux, C++ compiler with C++11 support (tested with g++ 4.8.4, clang 3.6.0),
+CUDA (optional).
+
 ```
+git clone https://github.com/yekm/bench
 git submodule update --init
 mkdir build
 cd build
@@ -85,11 +90,10 @@ $ ../bench -t 1 -s 0,2 -a 2 -b 3
 ```
 
 #### Viewing results:
-For now it is quiet uncomfortable. You need a web server and a couple of links.
+For now it is quite uncomfortable. You need a web server and a couple of links.
+And a modern web browser with js promises support.
 ```
-$ ln -s ../../html/d3/main.js main.js
-$ ln -s ../../html/d3/main.css main.css
-$ ln -s ../../html/d3/index.html index.html
+$ for f in ../../html/d3/*; do ln -s $f $(basename $f); done
 $ python3 -m http.server 8082
 $ $BROWSER http://localhost:8082
 ```
@@ -97,10 +101,11 @@ $ $BROWSER http://localhost:8082
 ### Adding algorithms for benchmarking
 Adding algorithms for benchmarking is easy (at least I've tried to make it easy).
 
-Run `./create_task.sh new_task_name_here` from `tasks/template` directory.
+Run `./create_task.sh new_task_name_here` from `tasks/template` directory. Explore the new
+`tasks/new_task_name_here` directory.
 
 Decide what type of data your algorithm should process. Derive a class from `GenericData<T>`
-or use `common::RandomData` and others. `GenericData<T>` has two useful functions
+or use `common::RandomData<T>` and others. `GenericData<T>` has two useful functions
 `T & get_mutable()` and `const T & get_const()`.
 If algorithm is not modifying it should ask for const data. In this case next algorithm
 will get just the same data. Otherwise modified data discarded and new data
@@ -130,15 +135,23 @@ std::vector<int> &d = static_cast<GenericData<std::vector<int>>&>(td).get_mutabl
 std::sort(d.begin(), d.end());
 ```
 
-Write a cpp file in which make a static struct (however, don't try this at <s>home</s> work).
+Write a cpp file in which make a static struct.
 In constructor you should create
 Task and all Algorithms. Add Algorithms to Task and add Task to TaskCollection.
 Since your struct is static and TaskCollection is a singleton all algorithms and tasks
 will be created and registered in TaskCollection automatically at program launch.
-And thus there is no need to make any changes in present code. Just create a subfolder
-in tasks/, place you code there, patch `tasks/CMakeLists.txt` and re-run cmake.
+And thus there is no need to make any changes in present code.
 
 Quite messy description. You should look at actual code, it is simple <s>and clear</s>.
+
+### Caveats
+Aka don't try this at <s>home</s> work.
+
+- static struct for initialisation/registering objects in collection (`tasks/*/*.cpp`)
+- dumb/useless singletons (`taskcollection.hpp`)
+- protected data members (`genericdata.hpp`)
+- loose JSON handling (`utils/output/jsonoutput.cpp`)
+- lack of comments
 
 ### LICENSE
 MIT.
