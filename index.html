@@ -62,10 +62,17 @@ So on X axis we have the (rough) number of random shuffles in pre-sorted array o
 <li>Sorting with the GPU (CUDA thrust library) is independent on array randomness. It is always blazing fast.</li>
 </ul>
 
-<p>You can look at other graphs based on data from
-<a href="h0me.html">my coputer</a> (i5-4430, Tesla GT215) or from
-<a href="g2.2xlarge.html">aws g2.2xlarge</a> instance (Xeon E5-2670, Kepler GK104) or
-<a href="c3.8xlarge.html">aws c3.8xlarge</a> instance (Xeon E5-2680, 32 vCPU).
+<p>Other graphs from various sources:
+<ul>
+    <li><a href="h0me.html">home coputer</a> (i5-4430, Tesla GT215)</li>
+    <li><a href="i7arch.html">work coputer</a> (i7-4700K)</li>
+    <li><a href="g2.2xlarge.html">aws g2.2xlarge</a> instance (Xeon E5-2670, Kepler GK104)</li>
+    <li><a href="c3.8xlarge.html">aws c3.8xlarge</a> instance (Xeon E5-2680, 32 vCPU)</li>
+</ul>
+</p>
+<p>
+Interesting results came from i7 cpu. Timsort performed much better and become slower than Introsort only with 4096 shuffles.
+Also it seems that i7 do not suffer from false sharing (or maybe thanks to modern gcc 5.1.0 for that).
 </p>
 <h3>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h3>
