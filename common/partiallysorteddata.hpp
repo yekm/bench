@@ -71,7 +71,7 @@ private:
     utils::not_so_random_device m_rd;
     std::mt19937 m_gen;
     const T m_min, m_max;
-    const double m_shuffles;
+    const std::size_t m_shuffles;
 };
 
 } // ns common
