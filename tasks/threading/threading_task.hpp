@@ -72,4 +72,27 @@ public:
     }
 };
 
+class ThreadImpactTask : public ThreadedCountingTask
+{
+public:
+    ThreadImpactTask()
+        : ThreadedCountingTask("thread impact")
+    {
+        set_plotsettings(utils::PlotSettings(utils::PlotSettings::AS_LOGX));
+    }
+
+    virtual bool get_n(std::size_t & n) override
+    {
+        if (n<1)
+        {
+            n = 2;
+            return true;
+        }
+        n *= 2;
+        if (n > 1024)
+            return false;
+        return true;
+    }
+};
+
 #endif // THREADING_H

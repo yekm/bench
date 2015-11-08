@@ -18,6 +18,10 @@ static struct st
         t2->add_alg(std::unique_ptr<Algorithm>(new MutexSync()));
         TaskCollection::get().add_task(__FILE__ "_b", std::move(t2));
 
+        std::unique_ptr<Task> t3(new ThreadImpactTask());
+        t3->add_alg(std::unique_ptr<Algorithm>(new FalseSharing_fix()));
+        TaskCollection::get().add_task(__FILE__ "_c", std::move(t3));
+
     }
 } threading_;
 
