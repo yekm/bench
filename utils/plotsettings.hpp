@@ -21,6 +21,8 @@ public:
     PlotSettings(AxisScale a);
     PlotSettings(AxisScale a, std::string xlabel);
 
+    PlotSettings& operator=(const PlotSettings&) = default;
+
     std::string xlabel() const;
     std::string ylabel() const;
 
@@ -30,7 +32,7 @@ public:
 private:
 
     AxisScale m_axis;
-    const std::string m_xlabel, m_ylabel;
+    std::string m_xlabel, m_ylabel;
 };
 
 } // ns utils

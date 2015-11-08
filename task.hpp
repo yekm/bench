@@ -31,13 +31,14 @@ public:
     bool algorithms_ok();
 
     const utils::PlotSettings get_plotsettings() const;
+    void set_plotsettings(utils::PlotSettings);
 
 protected:
     algs_type m_algs;
 
 private:
     const std::string m_name;
-    const utils::PlotSettings m_plotsettings;
+    utils::PlotSettings m_plotsettings;
 };
 
 #endif // TASK_H

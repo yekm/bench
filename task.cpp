@@ -41,6 +41,11 @@ const utils::PlotSettings Task::get_plotsettings() const
     return m_plotsettings;
 }
 
+void Task::set_plotsettings(utils::PlotSettings ps)
+{
+    m_plotsettings = ps;
+}
+
 void Task::validate(const AResult &)
 {
 }

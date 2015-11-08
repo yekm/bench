@@ -7,7 +7,8 @@ namespace utils
 {
 
 PlotSettings::PlotSettings()
-    : m_xlabel("N (number of elements)")
+    : m_axis(AS_LINEAR) // hm?
+    , m_xlabel("N (number of elements)")
     , m_ylabel("Time (sec)")
 {
 }
