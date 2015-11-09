@@ -62,10 +62,13 @@ Task 2: Sorting algorithms, partially sorted data, 1000000 elements
   Shell sort n*log^2(n)
   swenson timsort n*log(n)
   thrust::sort
-Task 3: Flase sharing
+Task 3: Threaded counting, 1e7 elements (false sharing)
   false sharing, default alignment
   fixed false sharing, 64 bytes alignment
-Task 4: 1000000 vector lengths
+Task 4: Threaded counting, 1e7 elements (atomic vs mutex)
+  atomic
+  mutex
+Task 5: 1000000 vector lengths
   handmade unrolling
   loop unrolling
   template unrolling
@@ -82,7 +85,8 @@ measured perfomance data will be preserved between runs.
 $ ../bench -t 1 -s 2
 ```
 
-Each algorithm runs `a` (by default 3) times with same data to minimize the error.
+Each algorithm runs `a` (by default 3) times with same data to minimize the
+measurement error.
 It is possible to regenerate data and run algorithm `a` times again. The number
 of iterations of data regeneration specified by `-b`
 ```
