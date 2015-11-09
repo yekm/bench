@@ -8,18 +8,69 @@
 #include <iostream>
 #include <iterator>
 #include <typeinfo>
+#include <thread>
 
 #include <algorithm>
 
 namespace utils
 {
 
+class Debugging
+{
+public:
+    enum class Verbosity
+    {
+        V_ERROR = 0,
+        V_WARNING,
+        V_INFO,
+        V_DEBUG,
+    };
+
+    static Debugging& get()
+    {
+        static Debugging d;
+        return d;
+    }
+
+    void set_verbosity(Verbosity v)
+    {
+        m_verbosity = v;
+    }
+
+    Verbosity get_verbosity()
+    {
+        return m_verbosity;
+    }
+
+private:
+    Debugging()
+#ifdef DEBUG
+        : m_verbosity(Verbosity::V_DEBUG)
+#else
+        : m_verbosity(Verbosity::V_ERROR)
+#endif
+    {
+    }
+
+    Verbosity m_verbosity;
+};
+
 struct Dbg
 {
-    Dbg()
+    Dbg(Debugging::Verbosity v)
         : m_flags(std::cout.flags())
     {
         std::cout << "[";
+        switch (v)
+        {
+        case Debugging::Verbosity::V_ERROR:   std::cout << "E "; break;
+        case Debugging::Verbosity::V_WARNING: std::cout << "W "; break;
+        case Debugging::Verbosity::V_INFO:    std::cout << "I "; break;
+        case Debugging::Verbosity::V_DEBUG:   std::cout << "D "; break;
+        default:                              std::cout << "? "; break;
+        }
+        std::cout << std::hex << std::this_thread::get_id() << " ";
+        std::cout.flags(m_flags);
     }
 
     ~Dbg()
@@ -91,90 +142,34 @@ private:
     std::ios::fmtflags m_flags;
 };
 
-class Debugging
-{
-public:
-    enum Verbosity
-    {
-        V_ERROR = 0,
-        V_WARNING,
-        V_INFO,
-        V_DEBUG,
-    };
-
-    static Debugging& get()
-    {
-        static Debugging d;
-        return d;
-    }
-
-    void set_verbosity(Verbosity v)
-    {
-        m_verbosity = v;
-    }
-
-    Verbosity get_verbosity()
-    {
-        return m_verbosity;
-    }
-
-private:
-    Debugging()
-        : m_verbosity(V_ERROR)
-    {
-    }
-
-    Verbosity m_verbosity;
-};
-
 } // ns utils
+
 
 namespace
 {
 
-// http://stackoverflow.com/a/8520871/864782
-
-struct MatchPathSeparator
-{
-    bool operator()( char ch ) const
-    {
-        return ch == '/';
-    }
-};
-
-#if 0 // nope nope nope
-struct MatchPathSeparator
-{
-    bool operator()( char ch ) const
-    {
-        return ch == '\\' || ch == '/';
-    }
-};
-#endif
-
 std::string ___basename(std::string const& pathname)
 {
-    return std::string(
-                std::find_if(
-                    pathname.rbegin(), pathname.rend(), MatchPathSeparator()
-                    ).base(),
-                pathname.end()
-                );
+    auto slash = pathname.find_last_of("/");
+    if (slash == std::string::npos)
+        return pathname;
+    else
+        return pathname.substr(slash+1);
 }
 
-}
+} // ns
 
 
 #ifdef DEBUG
-    #define ___DBG(x) if (x <= utils::Debugging::get().get_verbosity()) utils::Dbg()
+    #define ___DBG(x) if (x <= utils::Debugging::get().get_verbosity()) utils::Dbg(x)
 #else
-    #define ___DBG(x) if (false) utils::Dbg()
+    #define ___DBG(x) if (false) utils::Dbg(x)
 #endif
 
 #define ___FN ___basename(__FILE__) + ":" + std::to_string(__LINE__)
-#define E(x) ___DBG(utils::Debugging::V_ERROR) << "E" << ___FN
-#define W(x) ___DBG(utils::Debugging::V_WARNING) << "W" << ___FN
-#define I(x) ___DBG(utils::Debugging::V_INFO) << "I" << ___FN
-#define D(x) ___DBG(utils::Debugging::V_DEBUG) << "D" << ___FN
+#define E(x) ___DBG(utils::Debugging::Verbosity::V_ERROR)   << ___FN
+#define W(x) ___DBG(utils::Debugging::Verbosity::V_WARNING) << ___FN
+#define I(x) ___DBG(utils::Debugging::Verbosity::V_INFO)    << ___FN
+#define D(x) ___DBG(utils::Debugging::Verbosity::V_DEBUG)   << ___FN
 
 #endif // DBG_H
