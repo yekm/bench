@@ -71,7 +71,7 @@ void JsonOutput::write()
             _av.push_back(NVP<>("name", alg.get_name()));
             _s common_filename("task" + std::to_string(taskn) + "_alg" + std::to_string(algn));
             _s tsv(common_filename + ".tsv");
-            if (t.m_status.get_status() != utils::Status::SE_SKIP)
+            if (t.m_status.get_status() != utils::Status::StatusEnum::SE_SKIP)
             {
                 TsvOutput to(tsv);
                 to.write(alg.m_statistics.m_stat_run);

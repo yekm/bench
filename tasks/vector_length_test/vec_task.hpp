@@ -21,7 +21,7 @@ public:
     static constexpr std::size_t max_vec_len = 128;
 
     VecTask()
-        : Task(std::to_string(num_vectors) + " vector lengths", utils::PlotSettings(utils::PlotSettings::AS_LOGX, "vector length"))
+        : Task(std::to_string(num_vectors) + " vector lengths", utils::PlotSettings(utils::PlotSettings::AxisScale::AS_LOGX, "vector length"))
     {}
 
     virtual std::shared_ptr<TaskData> prepare_data(std::size_t n) override

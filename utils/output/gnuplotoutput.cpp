@@ -70,13 +70,13 @@ void GnuplotOutput::write()
             oss << "task" << task << "_alg" << algn;
             std::string data_name(oss.str());
             std::string data_filename (data_name + ".data");
-            if (t.m_status.get_status() != utils::Status::SE_SKIP)
+            if (t.m_status.get_status() != utils::Status::StatusEnum::SE_SKIP)
             {
                 DsvOutput(data_filename, "\t").write(gnuplot_happy(alg->m_statistics.m_stat_run));
             }
             std::string image_filename(data_name + ".svg");
             std::string title(alg->get_name());
-            if (alg->m_statistics.m_status.get_status() != utils::Status::SE_OK)
+            if (alg->m_statistics.m_status.get_status() != utils::Status::StatusEnum::SE_OK)
                 title = title + " (" + alg->m_statistics.m_status.str() + ")";
             m_output << make_gnuplot(image_filename, title, data_name, alg->complexity());
             allinone.push_back(" '" + data_filename + "' using 1:2 with lines title '" + title + "', \\\n\t'" +
@@ -119,7 +119,7 @@ void GnuplotOutput::write_html5()
             oss << "task" << task << "_alg" << algn;
             std::string data_name(oss.str());
             std::string data_filename (data_name + ".data");
-            if (t.m_status.get_status() != utils::Status::SE_SKIP)
+            if (t.m_status.get_status() != utils::Status::StatusEnum::SE_SKIP)
             {
                 std::ofstream of(data_filename);
                 of << "# task: " << x.first << " :: " << t.get_name() << std::endl;
@@ -130,7 +130,7 @@ void GnuplotOutput::write_html5()
             }
             std::string image_filename(data_name + ".js");
             std::string title(alg->get_name());
-            if (alg->m_statistics.m_status.get_status() != utils::Status::SE_OK)
+            if (alg->m_statistics.m_status.get_status() != utils::Status::StatusEnum::SE_OK)
                 title = title + " (" + alg->m_statistics.m_status.str() + ")";
             html << "<img width=49% src='" << image_filename << "'>\n";
             m_output << make_gnuplot(image_filename, title, data_name, alg->complexity());

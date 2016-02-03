@@ -26,6 +26,7 @@ void Task::add_alg(algs_type::mapped_type a)
     alg = std::move(a);
 }
 
+/// TODO: wtf is this?
 bool Task::algorithms_ok()
 {
     for (const auto & a : m_algs)

@@ -9,7 +9,7 @@ namespace utils
 class PlotSettings
 {
 public:
-    enum AxisScale
+    enum class AxisScale
     {
         AS_LINEAR,
         AS_LOGX,

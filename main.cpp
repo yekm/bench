@@ -63,7 +63,7 @@ void mark_skip(std::set<int> skiplist)
     {
         const std::unique_ptr<Task> & task = x.second;
         if (skiplist.find(n) != skiplist.end())
-            task->m_status.set_status(utils::Status::SE_SKIP);
+            task->m_status.set_status(utils::Status::StatusEnum::SE_SKIP);
         n++;
     }
 }

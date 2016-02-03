@@ -34,7 +34,7 @@ public:
     };
 
     Threading(const std::string & name)
-        : Task(name, utils::PlotSettings(utils::PlotSettings::AS_LINEAR))
+        : Task(name, utils::PlotSettings(utils::PlotSettings::AxisScale::AS_LINEAR))
     {}
 
     virtual std::shared_ptr<TaskData> prepare_data(std::size_t n) override
@@ -78,7 +78,7 @@ public:
     ThreadImpactTask()
         : ThreadedCountingTask("thread impact")
     {
-        set_plotsettings(utils::PlotSettings(utils::PlotSettings::AS_LOGX));
+        set_plotsettings(utils::PlotSettings(utils::PlotSettings::AxisScale::AS_LOGX));
     }
 
     virtual bool get_n(std::size_t & n) override

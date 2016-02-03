@@ -7,7 +7,7 @@ namespace utils
 {
 
 PlotSettings::PlotSettings()
-    : m_axis(AS_LINEAR) // hm?
+    : m_axis(AxisScale::AS_LINEAR) // hm?
     , m_xlabel("N (number of elements)")
     , m_ylabel("Time (sec)")
 {
@@ -32,13 +32,13 @@ std::string PlotSettings::all_for_gnuplot() const
     std::stringstream ss;
     switch (m_axis)
     {
-    case AS_LOGX:
+    case AxisScale::AS_LOGX:
         ss << "set logscale x 2\n"; break;
-    case AS_LOGY:
+    case AxisScale::AS_LOGY:
         ss << "set logscale y 2\n"; break;
-    case AS_LOGXY:
+    case AxisScale::AS_LOGXY:
         ss << "set logscale xy 2\n"; break;
-    case AS_LINEAR:
+    case AxisScale::AS_LINEAR:
         ss << "unset logscale\n"; break;
     default:
         // FIXME
@@ -53,13 +53,13 @@ std::string PlotSettings::axis_scale_str() const
 {
     switch (m_axis)
     {
-    case AS_LOGX:
+    case AxisScale::AS_LOGX:
         return "log";
-    case AS_LOGY:
+    case AxisScale::AS_LOGY:
         return "log";
-    case AS_LOGXY:
+    case AxisScale::AS_LOGXY:
         return "log";
-    case AS_LINEAR:
+    case AxisScale::AS_LINEAR:
         return "linear";
     default:
         throw std::runtime_error("PlotSettings::axis_scale_str unimplemented scale");

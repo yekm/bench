@@ -11,7 +11,7 @@ public:
 
     PSortingTask()
         : SortingTask("Sorting algorithms, partially sorted data, " + std::to_string(N) + " elements",
-                      utils::PlotSettings(utils::PlotSettings::AS_LOGXY,
+                      utils::PlotSettings(utils::PlotSettings::AxisScale::AS_LOGXY,
                                           "number of shuffles"))
     {
     }

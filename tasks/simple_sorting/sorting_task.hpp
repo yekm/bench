@@ -14,7 +14,7 @@ public:
     typedef GenericData<std::vector<item_type>> g_type;
 
     SortingTask()
-        : Task("sorting algorithms", utils::PlotSettings(utils::PlotSettings::AS_LOGXY))
+        : Task("sorting algorithms", utils::PlotSettings(utils::PlotSettings::AxisScale::AS_LOGXY))
     {}
 
     virtual std::shared_ptr<TaskData> prepare_data(std::size_t n) override

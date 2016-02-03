@@ -17,7 +17,7 @@ public:
     typedef GenericData<std::vector<item_type>> g_type;
 
     Popcnt()
-        : Task("popcnt perfomance", utils::PlotSettings(utils::PlotSettings::AS_LOGXY))
+        : Task("popcnt perfomance", utils::PlotSettings(utils::PlotSettings::AxisScale::AS_LOGXY))
     {}
 
     virtual std::shared_ptr<TaskData> prepare_data(std::size_t n) override

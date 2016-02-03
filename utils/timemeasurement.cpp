@@ -15,19 +15,19 @@ TimeMeasurement::TimeMeasurement(std::function<void()> f)
     }
     catch (const BException & e)
     {
-        m_s.set_status(Status::SE_ERROR, e.what());
+        m_s.set_status(Status::StatusEnum::SE_ERROR, e.what());
     }
     catch (const std::bad_alloc & e)
     {
-        m_s.set_status(Status::SE_OOM, e.what());
+        m_s.set_status(Status::StatusEnum::SE_OOM, e.what());
     }
     catch (const std::exception & e)
     {
-        m_s.set_status(Status::SE_EXCEPTION, e.what());
+        m_s.set_status(Status::StatusEnum::SE_EXCEPTION, e.what());
     }
     catch (...)
     {
-        m_s.set_status(Status::SE_UNKNOWN_EXCEPTION);
+        m_s.set_status(Status::StatusEnum::SE_UNKNOWN_EXCEPTION);
     }
 }
 
@@ -45,8 +45,8 @@ const TimeMeasurement & TimeMeasurement::get_status(Status & s) const
 
 const TimeMeasurement & TimeMeasurement::set_timeout(Timer::timediff_type t) const
 {
-    if (m_s.get_status() == Status::SE_OK && m_d > t)
-        m_s.set_status(Status::SE_TIMEOUT);
+    if (m_s.get_status() == Status::StatusEnum::SE_OK && m_d > t)
+        m_s.set_status(Status::StatusEnum::SE_TIMEOUT);
 
     return *this;
 }

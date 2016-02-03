@@ -9,7 +9,7 @@ namespace utils
 class Status
 {
 public:
-    enum StatusEnum
+    enum class StatusEnum
     {
         SE_OK,
         SE_ERROR,

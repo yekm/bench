@@ -3,7 +3,7 @@
 namespace utils {
 
 Status::Status()
-    : m_status(SE_OK)
+    : m_status(StatusEnum::SE_OK)
 {
 }
 
@@ -22,19 +22,19 @@ std::string Status::str()
 {
     switch (m_status)
     {
-    case SE_OK:
+    case StatusEnum::SE_OK:
         return "Ok";
-    case SE_ERROR:
+    case StatusEnum::SE_ERROR:
         return "Error (" + m_message + ")";
-    case SE_OOM:
+    case StatusEnum::SE_OOM:
         return "Out of memory (" + m_message + ")";
-    case SE_TIMEOUT:
+    case StatusEnum::SE_TIMEOUT:
         return "Timeout";
-    case SE_EXCEPTION:
+    case StatusEnum::SE_EXCEPTION:
         return "Exception (" + m_message + ")";
-    case SE_UNKNOWN_EXCEPTION:
+    case StatusEnum::SE_UNKNOWN_EXCEPTION:
         return "Unknown exception";
-    case SE_SKIP:
+    case StatusEnum::SE_SKIP:
         return "Skipped";
     default:
         return "FIXME: something is missing...";
@@ -43,12 +43,12 @@ std::string Status::str()
 
 bool Status::ok()
 {
-    return m_status == SE_OK;
+    return m_status == StatusEnum::SE_OK;
 }
 
 bool Status::ok_timeout()
 {
-    return m_status == SE_OK || m_status == SE_TIMEOUT;
+    return m_status == StatusEnum::SE_OK || m_status == StatusEnum::SE_TIMEOUT;
 }
 
 } // ns utils
