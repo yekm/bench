@@ -78,7 +78,7 @@ public:
     ThreadImpactTask()
         : ThreadedCountingTask("thread impact")
     {
-        set_plotsettings(utils::PlotSettings(utils::PlotSettings::AxisScale::AS_LOGX));
+        get_plotsettings().set_axis_scale(utils::PlotSettings::AxisScale::AS_LOGX);
     }
 
     virtual bool get_n(std::size_t & n) override

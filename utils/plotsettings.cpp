@@ -6,13 +6,6 @@
 namespace utils
 {
 
-PlotSettings::PlotSettings()
-    : m_axis(AxisScale::AS_LINEAR) // hm?
-    , m_xlabel("N (number of elements)")
-    , m_ylabel("Time (sec)")
-{
-}
-
 PlotSettings::PlotSettings(PlotSettings::AxisScale a)
     : m_axis(a)
     , m_xlabel("N (number of elements)")
@@ -25,6 +18,16 @@ PlotSettings::PlotSettings(AxisScale a, std::string xlabel)
     , m_xlabel(xlabel)
     , m_ylabel("Time (sec)")
 {
+}
+
+void PlotSettings::set_axis_scale(PlotSettings::AxisScale a)
+{
+    m_axis = a;
+}
+
+void PlotSettings::set_plot_type(PlotSettings::PlotType t)
+{
+    m_plottype = t;
 }
 
 std::string PlotSettings::all_for_gnuplot() const

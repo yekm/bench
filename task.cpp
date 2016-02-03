@@ -37,14 +37,9 @@ bool Task::algorithms_ok()
     return false;
 }
 
-const utils::PlotSettings Task::get_plotsettings() const
+utils::PlotSettings & Task::get_plotsettings()
 {
     return m_plotsettings;
-}
-
-void Task::set_plotsettings(utils::PlotSettings ps)
-{
-    m_plotsettings = ps;
 }
 
 void Task::validate(const AResult &)

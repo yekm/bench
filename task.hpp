@@ -14,7 +14,8 @@ class Task
 public:
     typedef std::map<std::string, std::unique_ptr<Algorithm>> algs_type;
 
-    explicit Task(const std::string & name, utils::PlotSettings s = utils::PlotSettings());
+    explicit Task(const std::string & name,
+                  utils::PlotSettings s = utils::PlotSettings(utils::PlotSettings::AxisScale::AS_LOGXY));
     Task(Task &&) = default;
     virtual ~Task() = 0;
 
@@ -30,8 +31,7 @@ public:
     utils::Status m_status;
     bool algorithms_ok();
 
-    const utils::PlotSettings get_plotsettings() const;
-    void set_plotsettings(utils::PlotSettings);
+    utils::PlotSettings & get_plotsettings();
 
 protected:
     algs_type m_algs;
