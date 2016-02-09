@@ -1,0 +1,29 @@
+language: cpp
+git:
+  depth: 1
+sudo: true
+compiler:
+  - gcc
+  - clang
+os:
+  - linux
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    - kalakris-cmake
+    - llvm-toolchain-precise
+    packages:
+    - gcc-5.3
+    - g++-5.3
+    - clang
+    - cmake
+install:
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-5.3" CC="gcc-5.3"; fi
+before_script:
+  - mkdir build
+  - cd build
+  - cmake --version
+  - cmake -DCMAKE_BUILD_TYPE=Release ..
+script: make
+

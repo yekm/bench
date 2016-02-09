@@ -2,8 +2,16 @@ cmake_minimum_required(VERSION 2.8)
 
 project(bench)
 
+message("CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
 set(CMAKE_VERBOSE_MAKEFILE 1)
-add_definitions("-DDEBUG")
+IF(CMAKE_BUILD_TYPE MATCHES Debug)
+    add_definitions("-DDEBUG")
+ELSEIF(CMAKE_BUILD_TYPE MATCHES Release)
+    message("Release build.")
+ELSE()
+    message("Some other build type.")
+ENDIF()
+
 
 find_package(CUDA QUIET)
 
@@ -29,9 +37,10 @@ set(SRC
 
 include_directories(${PROJECT_SOURCE_DIR})
 include_directories(tasks)
-#add_definitions("-std=c++0x -ggdb3 -O0 -Wall -Wextra")
-#add_definitions("-std=c++0x -ggdb2 -O3 -Wall -Wextra -Wa,-alhnd=/tmp/bench/$(notdir $@.lst)")
-add_definitions("-std=c++0x -march=native -Ofast -Wall -Wextra")
+set(CMAKE_C_FLAGS_DEBUG     "-ggdb3 -O0 -Wall -Wextra")
+set(CMAKE_C_FLAGS_RELEASE   "-march=native -Ofast -Wall -Wextra")
+set(CMAKE_CXX_FLAGS_DEBUG   "-std=c++0x -ggdb3 -O0 -Wall -Wextra")
+set(CMAKE_CXX_FLAGS_RELEASE "-std=c++0x -march=native -Ofast -Wall -Wextra")
 
 add_subdirectory(tasks)
 add_subdirectory(utils)
