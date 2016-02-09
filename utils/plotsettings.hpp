@@ -37,6 +37,7 @@ public:
     std::string all_for_gnuplot() const;
 
     std::string axis_scale_str() const;
+    std::string plot_type_str() const;
 private:
 
     AxisScale m_axis;

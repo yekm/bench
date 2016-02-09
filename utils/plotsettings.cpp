@@ -70,6 +70,19 @@ std::string PlotSettings::axis_scale_str() const
     }
 }
 
+std::string PlotSettings::plot_type_str() const
+{
+    switch (m_plottype)
+    {
+    case PlotType::PT_BARS:
+        return "bars";
+    case PlotType::PT_LINES:
+        return "lines";
+    default:
+        throw std::runtime_error("PlotSettings::plot_type_str unimplemented type");
+    }
+}
+
 std::string PlotSettings::xlabel() const
 {
     return m_xlabel;
