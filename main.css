@@ -21,7 +21,11 @@
     stroke-width: 1.5px;
 }
 
-path.highlighted {
+.sbar {
+    stroke-width: 0px;
+}
+
+.highlighted {
     stroke-width: 3px;
 }
 
