@@ -509,7 +509,7 @@ function drawchart(task) {
         titem.exit()
             .classed({"exited":true});
 
-        if (task.plot_type == "lines")
+        if (task.plot_type != "bars")
             ltable.selectAll(".td4").style("display", "none");
     }
 
