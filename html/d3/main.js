@@ -367,13 +367,13 @@ function drawchart(task) {
         .attr("transform", "translate(12, 0)");
 
     var theader = ltable.append("tr");
-    theader.append("th").text("Color");
-    theader.append("th").text("Name");
-    theader.append("th").text("Time").style("width", "90px");
-    theader.append("th").text("RSD");
-    theader.append("th").text("Status");
-    theader.append("th").text("Percent of slowest");
-    theader.append("th").text("Multiplier");
+    theader.append("th").attr("class", "td1").text("Color");
+    theader.append("th").attr("class", "td2").text("Name");
+    theader.append("th").attr("class", "td3").text("Time").style("width", "90px");
+    theader.append("th").attr("class", "td4").text("RSD");
+    theader.append("th").attr("class", "td5").text("Status");
+    theader.append("th").attr("class", "td6").text("Percent of slowest");
+    theader.append("th").attr("class", "td7").text("Multiplier");
 
     updateLegend(0, -1);
 
@@ -508,6 +508,9 @@ function drawchart(task) {
 
         titem.exit()
             .classed({"exited":true});
+
+        if (task.plot_type != "bars")
+            ltable.selectAll(".td4").style("display", "none");
     }
 
 
