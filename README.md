@@ -159,3 +159,6 @@ Aka don't try this at <s>home</s> work.
 
 ### LICENSE
 MIT.
+However, this project uses various sources from OpenSSL ans OpenSSH. I haven't read
+thoroughly throught their licenses but I guess they somehow make restrictions in what
+licence can I use in derived projects. Any suggestions are welcome.
