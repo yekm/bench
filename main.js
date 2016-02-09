@@ -84,7 +84,7 @@ function makechart(task)
 
 
 function drawchart(task) {
-    var margin = {top: 20, right: 20, bottom: 30, left: 30};
+    var margin = {top: 20, right: 20, bottom: 30, left: 50};
     var svgwidth = chartdiv.attr("width") || 900;
     var svgheight = svgwidth/3*2;
     var width = svgwidth - margin.left - margin.right;
@@ -135,12 +135,12 @@ function drawchart(task) {
             .range([height, 0])
             .domain([miny/2, Math.ceil(maxy)]);
 
-        var xAxis = d3.svg.axis()
+        xAxis = d3.svg.axis()
             .scale(x)
             .orient("bottom")
             .ticks(allx.length, ",.1s");
 
-        var yAxis = d3.svg.axis()
+        yAxis = d3.svg.axis()
             .scale(y)
             .orient("left")
             .ticks(yticks.length)
@@ -156,14 +156,27 @@ function drawchart(task) {
             .range([height, 0])
             .domain([0, maxy]); // TODO: [0, maxy]?
 
-        var xAxis = d3.svg.axis()
+        xAxis = d3.svg.axis()
             .scale(x)
             .orient("bottom")
             .ticks(allx.length, ",s"); // TODO: specify ticks?
 
-        var yAxis = d3.svg.axis()
+        yAxis = d3.svg.axis()
             .scale(y)
             .orient("left");
+    }
+
+    if (task.plot_type == "bars")
+    {
+        x = d3.scale.ordinal()
+            .rangeRoundBands([0, width], .1)
+            .domain(task.algs.map(function(d) { return d.an; }));
+
+        xAxis = d3.svg.axis()
+            .scale(x)
+            .orient("bottom");
+
+        task.algs = task.algs.map(function(d) { d.tsvdata[0].n = d.an; return d; });
     }
 
     var line = d3.svg.line()
@@ -186,20 +199,10 @@ function drawchart(task) {
         .attr("class", "tinfo")
         .attr("width", svgwidth);
 
-    var theader = ltable.append("tr");
-    theader.append("th").text("Color");
-    theader.append("th").text("Name");
-    theader.append("th").text("Time").style("width", "90px");
-    theader.append("th").text("Status");
-    theader.append("th").text("Percent of slowest");
-    theader.append("th").text("Multiplier");
-
     //chartdiv.append("br").attr("class", "clear");
 
     var color = d3.scale.category10();
     color.domain(task.algs.map(function(a) { return a.name; } ));
-
-
 
     svg.append("g")
         .attr("class", "x axis")
@@ -222,30 +225,6 @@ function drawchart(task) {
         .style("text-anchor", "end")
         .text(task.ylabel);
 
-    var apath = svg.selectAll(".apath")
-        .data(task.algs)
-        .enter().append("g")
-        .attr("class", function(d) { return "apath " + d.common_filename; });
-
-    apath.append("path")
-        .attr("class", "line")
-        .attr("d", function(a) { return line(a.tsvdata); })
-        .style("stroke", function(a) { return color(a.name); });
-
-    var gdot = svg.selectAll(".gdot")
-        .data(task.algs)
-        .enter().append("g")
-        .attr("class", "gdot")
-        .style("fill", function(d) { return color(d.name); });
-
-    gdot.selectAll(".dot")
-        .data(function(a) { return a.tsvdata; })
-        .enter().append("circle")
-        .attr("class", "dot")
-        .attr("r", 2)
-        .attr("cx", function(d) { return x(d.n); })
-        .attr("cy", function(d) { return y(d.mean); });
-
     var ebar = svg.selectAll(".gebar")
         .data(task.algs)
         .enter().append("g")
@@ -262,6 +241,7 @@ function drawchart(task) {
         var h = Math.abs( y(d.mean+d.stddev/2) - y(d.mean-d.stddev/2) );
         return h > 5;
     }
+
     ebar_lines.enter()
         .append("svg:line")
         .filter(filter_errorbar)
@@ -290,6 +270,63 @@ function drawchart(task) {
         .attr("y2", function(d) { return y(d.mean-d.stddev/2); });
 
 
+    if (task.plot_type == "bars")
+    {
+        var abar = svg.selectAll(".abar")
+            .data(task.algs)
+            .enter().append("g")
+            .attr("class", function(d) { return "abar " + d.common_filename; });
+
+        abar
+            .append("rect")
+            .attr("class", "fbar")
+            .style("fill", function(a) { return color(a.name); })
+            .attr("x", function(d) { return x(d.an); })
+            .attr("width", x.rangeBand())
+            .attr("y", function(d) { return y(d.tsvdata[0].mean); })
+            .attr("height", function(d) { return height - y(d.tsvdata[0].mean); });
+
+        abar
+            .append("rect")
+            .attr("class", "sbar")
+            .style("fill", "none")
+            .style("stroke", function(a) { return d3.rgb(color(a.name)).darker(); })
+            .attr("x", function(d) { return x(d.an); })
+            .attr("width", x.rangeBand())
+            .attr("y", function(d) { return y(d.tsvdata[0].mean); })
+            .attr("height", function(d) { return height - y(d.tsvdata[0].mean); });
+
+        ebar
+            .attr("transform", "translate(" + x.rangeBand()/2 + ", 0)")
+
+    }
+    else
+    {
+        var apath = svg.selectAll(".apath")
+            .data(task.algs)
+            .enter().append("g")
+            .attr("class", function(d) { return "apath " + d.common_filename; });
+
+        apath.append("path")
+            .attr("class", "line")
+            .attr("d", function(a) { return line(a.tsvdata); })
+            .style("stroke", function(a) { return color(a.name); });
+
+        var gdot = svg.selectAll(".gdot")
+            .data(task.algs)
+            .enter().append("g")
+            .attr("class", "gdot")
+            .style("fill", function(d) { return color(d.name); });
+
+        gdot.selectAll(".dot")
+            .data(function(a) { return a.tsvdata; })
+            .enter().append("circle")
+            .attr("class", "dot")
+            .attr("r", 2)
+            .attr("cx", function(d) { return x(d.n); })
+            .attr("cy", function(d) { return y(d.mean); });
+    }
+
     var focus = svg.append("g")
         .attr("class", "focus")
         .style("display", "none");
@@ -314,7 +351,6 @@ function drawchart(task) {
         .on("mousemove", mousemove)
         .on("click", mouseclick);
 
-
     var fline = focus.append("svg:line")
         .attr("class", "focus_line")
         .attr("x1", 10).attr("x2", 10)
@@ -329,6 +365,15 @@ function drawchart(task) {
     var legend = svg.append("g")
         .attr("class", "legend")
         .attr("transform", "translate(12, 0)");
+
+    var theader = ltable.append("tr");
+    theader.append("th").attr("class", "td1").text("Color");
+    theader.append("th").attr("class", "td2").text("Name");
+    theader.append("th").attr("class", "td3").text("Time").style("width", "90px");
+    theader.append("th").attr("class", "td4").text("RSD");
+    theader.append("th").attr("class", "td5").text("Status");
+    theader.append("th").attr("class", "td6").text("Percent of slowest");
+    theader.append("th").attr("class", "td7").text("Multiplier");
 
     updateLegend(0, -1);
 
@@ -407,8 +452,8 @@ function drawchart(task) {
         var tenter = titem.enter()
             .append("tr")
             .attr("class", "titem")
-            .on("mouseover", function(d) { d3.select("."+d.common_filename).select("path").classed("highlighted", true); })
-            .on("mouseout", function(d) { d3.select("."+d.common_filename).select("path").classed("highlighted", false); })
+            .on("mouseover", function(d) { d3.select("."+d.common_filename).select("path, .sbar").classed("highlighted", true); })
+            .on("mouseout", function(d) { d3.select("."+d.common_filename).select("path, .sbar").classed("highlighted", false); })
             .on("mousemove", function(d) {});
 
         titem.classed({"exited": false});
@@ -417,8 +462,9 @@ function drawchart(task) {
         tenter.append("td").attr("class", "td2");
         tenter.append("td").attr("class", "td3");
         tenter.append("td").attr("class", "td4");
-        tenter.append("td").attr("class", "td5").append("div").attr("class", "percentdiv");
-        tenter.append("td").attr("class", "td6");
+        tenter.append("td").attr("class", "td5");
+        tenter.append("td").attr("class", "td6").append("div").attr("class", "percentdiv");
+        tenter.append("td").attr("class", "td7");
 
         function percent_from_top(d, i) {
             return Math.floor( new_algs[i].tsvdata[cur].mean / new_algs[0].tsvdata[cur].mean * 100 );
@@ -429,15 +475,22 @@ function drawchart(task) {
             .style("width", "18px")
             .style("height", "10px");
         titem.select(".td2").text(function(d) { return d.name; });
-        titem.select(".td3").text(function(d) {
+        function cur_mean(d) {
             return d.tsvdata.length > cur ? d.tsvdata[cur].mean : d.tsvdata[d.tsvdata.length-1].mean;
+        }
+        function cur_stddev(d) {
+            return d.tsvdata.length > cur ? d.tsvdata[cur].stddev : d.tsvdata[d.tsvdata.length-1].stddev;
+        }
+        titem.select(".td3").text(function(d) { return cur_mean(d); });
+        titem.select(".td4").text(function(d) {
+            return Math.round((cur_stddev(d)/cur_mean(d))*100*100)/100 + "%";
         });
-        titem.select(".td4").text(function(d) { return d.status; });
+        titem.select(".td5").text(function(d) { return d.status; });
         titem.select(".percentdiv")
             .style("width", function(d, i) { return percent_from_top(d, i) + "px" })
             .style("background-color", function(d) { return color(d.name); })
             .text(percent_from_top);
-        titem.select(".td6").text(function(d, i) {
+        titem.select(".td7").text(function(d, i) {
             if (pin >= 0 &&
                 d.tsvdata.length > cur &&
                 alg_by_name(new_algs, d.name).tsvdata.length > pin) {
@@ -455,6 +508,9 @@ function drawchart(task) {
 
         titem.exit()
             .classed({"exited":true});
+
+        if (task.plot_type == "lines")
+            ltable.selectAll(".td4").style("display", "none");
     }
 
 
