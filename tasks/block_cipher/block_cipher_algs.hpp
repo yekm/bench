@@ -12,10 +12,25 @@ extern "C"
 #include "ciphers/kuznechik.h"
 #include "ciphers/rijndael.h"
 #include "ciphers/28147_14.h"
+#include "ciphers/ecrypt-sync.h"
 }
 
 #include <string>
 #include <vector>
+
+#if defined(__arm__)
+
+#include <arm_neon.h>
+typedef uint8x16_t __m128i;
+
+#elif defined (__SSE4_1__)
+
+#include <mmintrin.h>
+#include <emmintrin.h>
+#include <smmintrin.h>
+
+#endif
+
 
 template <typename T>
 class BlockCipher : public Algorithm
@@ -46,7 +61,7 @@ private:
         cipher(d);
     }
 
-    virtual void cipher(std::vector<data_type> & data)
+    virtual void cipher(block_cipher::g_type::container_type & data)
     {
         int blocks = data.size() / m_blocklen;
         data_type * in = data.data();
@@ -80,6 +95,7 @@ private:
     }
 };
 
+#if 0
 class KuzSimple : public BlockCipher<kuz_key_t>
 {
 public:
@@ -98,34 +114,35 @@ private:
         kuz_encrypt_block(&m_ctx, data);
     }
 };
+#endif
 
-class KuzSSE4 : public BlockCipher<kuz_key_t>
+class KuzSIMD : public BlockCipher<kuz_key_t>
 {
 public:
-    KuzSSE4()
-        : BlockCipher("GOST 34.12-2015 'Kuznechik' encryption by Markku-Juhani O. Saarinen SEE4",
+    KuzSIMD()
+        : BlockCipher("GOST 34.12-2015 'Kuznechik' encryption by Markku-Juhani O. Saarinen SIMD SSE4/NEON",
                       32, 16)
     {}
 private:
     virtual void do_prepare(const TaskData &) override
     {
-        kuz_init_sse4();
-        kuz_set_encrypt_key_sse4(&m_ctx, m_key.data());
+        kuz_init_tables();
+        kuz_set_encrypt_key(&m_ctx, m_key.data());
     }
 
     virtual void do_block(data_type * data) override
     {
-        kuz_encrypt_block_sse4(&m_ctx, data);
+        kuz_encrypt_block(&m_ctx, data);
     }
 };
 
-template <int N>
+template <int KL, int BL=16>
 class AES : public BlockCipher<rijndael_ctx>
 {
 public:
     AES()
         : BlockCipher("AES encryption from openssh",
-                      N, 16)
+                      KL, BL)
     {}
 private:
     virtual void do_prepare(const TaskData &) override
@@ -136,6 +153,27 @@ private:
     virtual void do_block(data_type * data) override
     {
         rijndaelEncrypt(m_ctx.ek, m_ctx.Nr, data, data);
+    }
+};
+
+template <int KL, int BL=16>
+class Salsa20 : public BlockCipher<ECRYPT_ctx>
+{
+public:
+    Salsa20()
+        : BlockCipher("Salsa20 'merged' version from djb",
+                      KL, BL)
+    {}
+private:
+    virtual void do_prepare(const TaskData &) override
+    {
+        ECRYPT_keysetup(&m_ctx, m_key.data(), m_keylen*8, 0);
+        ECRYPT_ivsetup(&m_ctx, m_key.data());
+    }
+
+    virtual void do_block(data_type * data) override
+    {
+        ECRYPT_encrypt_bytes(&m_ctx, data, data, m_blocklen);
     }
 };
 
@@ -174,6 +212,33 @@ private:
     virtual void do_block(data_type * data) override
     {
         Encrypt_14_fast(data, data, m_ctx);
+    }
+};
+
+class PerbyteXOR : public BlockCipher<bool>
+{
+public:
+    PerbyteXOR()
+        : BlockCipher("Per-byte XOR", 16, 16)
+    {}
+private:
+    virtual void do_block(data_type * data) override
+    {
+        for (size_t i=0; i<m_keylen; i++)
+            data[i] ^= m_key.at(i);
+    }
+};
+
+class SIMDXOR : public BlockCipher<bool>
+{
+public:
+    SIMDXOR()
+        : BlockCipher("SSE XOR", 16, 16)
+    {}
+private:
+    virtual void do_block(data_type * data) override
+    {
+        *((__m128i *) data) ^= *((__m128i *) m_key.data());
     }
 };
 

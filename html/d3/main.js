@@ -176,7 +176,13 @@ function drawchart(task) {
             .scale(x)
             .orient("bottom");
 
-        task.algs = task.algs.map(function(d) { d.tsvdata[0].n = d.an; return d; });
+        /* sort descending
+        task.algs.sort(function (a, b) {
+            return b.tsvdata[0].mean - a.tsvdata[0].mean;
+        });
+        task.algs = task.algs.map(function(d, i) { d.tsvdata[0].n = d.an = i; return d; });
+        */
+        task.algs = task.algs.map(function(d, i) { d.tsvdata[0].n = d.an; return d; });
     }
 
     var line = d3.svg.line()
@@ -297,7 +303,7 @@ function drawchart(task) {
             .attr("height", function(d) { return height - y(d.tsvdata[0].mean); });
 
         ebar
-            .attr("transform", "translate(" + x.rangeBand()/2 + ", 0)")
+            .attr("transform", "translate(" + x.rangeBand()/2 + ", 0)");
 
     }
     else
@@ -368,6 +374,7 @@ function drawchart(task) {
 
     var theader = ltable.append("tr");
     theader.append("th").attr("class", "td1").text("Color");
+    theader.append("th").attr("class", "td_n").text("N");
     theader.append("th").attr("class", "td2").text("Name");
     theader.append("th").attr("class", "td3").text("Time").style("width", "90px");
     theader.append("th").attr("class", "td4").text("RSD");
@@ -459,6 +466,7 @@ function drawchart(task) {
         titem.classed({"exited": false});
 
         tenter.append("td").attr("class", "td1").append("div").attr("class", "divtd1");
+        tenter.append("td").attr("class", "td_n");
         tenter.append("td").attr("class", "td2");
         tenter.append("td").attr("class", "td3");
         tenter.append("td").attr("class", "td4");
@@ -474,6 +482,7 @@ function drawchart(task) {
             .style("background-color", function(d) { return color(d.name); })
             .style("width", "18px")
             .style("height", "10px");
+        titem.select(".td_n").text(function(d) { return d.an; });
         titem.select(".td2").text(function(d) { return d.name; });
         function cur_mean(d) {
             return d.tsvdata.length > cur ? d.tsvdata[cur].mean : d.tsvdata[d.tsvdata.length-1].mean;
@@ -511,6 +520,8 @@ function drawchart(task) {
 
         if (task.plot_type != "bars")
             ltable.selectAll(".td4").style("display", "none");
+        else
+            ltable.selectAll(".td6, .td7").style("display", "none");
     }
 
 

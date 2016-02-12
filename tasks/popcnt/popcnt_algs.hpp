@@ -6,7 +6,9 @@
 #include "thrust_popcnt.hpp"
 #include "utils/dbg.hpp"
 
+#ifdef __POPCNT__
 #include <x86intrin.h>
+#endif
 
 /* Inspired by http://stackoverflow.com/questions/25078285/replacing-a-32-bit-loop-count-variable-with-64-bit-introduces-crazy-performance
  * some docs http://graphics.stanford.edu/~seander/bithacks.html#CountBitsSetParallel

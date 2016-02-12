@@ -4,6 +4,7 @@
 #include "task.hpp"
 #include "common/randomdata.hpp"
 #include "bexception.hpp"
+//#include "common/aligned_allocator.hpp"
 
 class block_cipher : public Task
 {

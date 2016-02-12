@@ -14,25 +14,18 @@ typedef union {
 
 // cipher context
 typedef struct {
-	w128_t k[10];		// round keys
+    w128_t k[10];		// round keys
 } kuz_key_t;
 
 // init lookup tables
-void kuz_init_sse4();
+void kuz_init_tables();
 
 // key setup
 void kuz_set_encrypt_key(kuz_key_t *subkeys, const uint8_t key[32]);
 void kuz_set_decrypt_key(kuz_key_t *subkeys, const uint8_t key[32]);
 
-void kuz_set_encrypt_key_sse4(kuz_key_t *subkeys, const uint8_t key[32]);
-void kuz_set_decrypt_key_sse4(kuz_key_t *subkeys, const uint8_t key[32]);
-
+// single-block ecp ops
 void kuz_encrypt_block(kuz_key_t *subkeys, void *x);
 void kuz_decrypt_block(kuz_key_t *subkeys, void *x);
-
-void kuz_encrypt_block_sse4(kuz_key_t *subkeys, void *x);
-void kuz_decrypt_block_sse4(kuz_key_t *subkeys, void *x);
-
-// single-block ecp ops
 
 #endif
