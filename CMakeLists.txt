@@ -37,10 +37,19 @@ set(SRC
 
 include_directories(${PROJECT_SOURCE_DIR})
 include_directories(tasks)
-set(CMAKE_C_FLAGS_DEBUG     "-ggdb3 -O0 -Wall -Wextra")
-set(CMAKE_C_FLAGS_RELEASE   "-march=native -Ofast -Wall -Wextra")
-set(CMAKE_CXX_FLAGS_DEBUG   "-std=c++0x -ggdb3 -O0 -Wall -Wextra")
-set(CMAKE_CXX_FLAGS_RELEASE "-std=c++0x -march=native -Ofast -Wall -Wextra")
+
+if(REPLACE_FLAGS)
+    set(COMMON_FLAGS_DEBUG      ${REPLACE_FLAGS})
+    set(COMMON_FLAGS_RELEASE    ${REPLACE_FLAGS})
+else(REPLACE_FLAGS)
+    set(COMMON_FLAGS_DEBUG      "-ggdb3 -O0 -Wall -Wextra")
+    set(COMMON_FLAGS_RELEASE    "-march=native -Ofast -Wall -Wextra")
+endif(REPLACE_FLAGS)
+
+set(CMAKE_C_FLAGS_DEBUG     "${COMMON_FLAGS_DEBUG}")
+set(CMAKE_C_FLAGS_RELEASE   "${COMMON_FLAGS_RELEASE}")
+set(CMAKE_CXX_FLAGS_DEBUG   "-std=c++0x ${COMMON_FLAGS_DEBUG}")
+set(CMAKE_CXX_FLAGS_RELEASE "-std=c++0x ${COMMON_FLAGS_RELEASE}")
 
 add_subdirectory(tasks)
 add_subdirectory(utils)
