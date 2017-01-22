@@ -42,7 +42,7 @@ if(REPLACE_FLAGS)
     set(COMMON_FLAGS_DEBUG      ${REPLACE_FLAGS})
     set(COMMON_FLAGS_RELEASE    ${REPLACE_FLAGS})
 else(REPLACE_FLAGS)
-    set(COMMON_FLAGS_DEBUG      "-ggdb3 -O0 -Wall -Wextra")
+    set(COMMON_FLAGS_DEBUG      "-march=native -ggdb3 -O0 -Wall -Wextra")
     set(COMMON_FLAGS_RELEASE    "-march=native -Ofast -Wall -Wextra")
 endif(REPLACE_FLAGS)
 

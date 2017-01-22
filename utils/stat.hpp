@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <numeric>
+#include <cmath>
 
 namespace utils
 {
@@ -72,7 +73,7 @@ public:
 
     T stddev() const
     {
-        return sqrt(variance());
+        return std::sqrt(variance());
     }
 
     // http://en.wikipedia.org/wiki/Absolute_deviation

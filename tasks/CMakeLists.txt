@@ -14,6 +14,7 @@ set(TASKS_SRC
     simple_sorting/sorting_task.cpp
     vector_length_test/vec_task.cpp
     popcnt/popcnt.cpp
+    despace/despace_task.cpp
 )
 
 add_subdirectory(block_cipher/ciphers)
