@@ -6,10 +6,11 @@
 #include <set>
 #include <map>
 #include <iostream>
+#include <iomanip>
 #include <iterator>
 #include <typeinfo>
 #include <thread>
-
+#include <type_traits>
 #include <algorithm>
 
 namespace utils
@@ -80,26 +81,89 @@ struct Dbg
     }
 
     template<typename T>
+    Dbg& p(T & d)
+    {
+        std::cout << d;
+        if (!nos)
+            std::cout << " ";
+        std::cout.flags(m_flags);
+        return *this;
+    }
+
+    template <typename U, typename Enable = void>
+    struct sOP {
+        static void setup(U d) {}
+    };
+
+    template<typename U>
+    struct sOP<U, typename std::enable_if<std::is_integral<U>::value>::type> {
+        static void setup(U d)
+        {
+            std::cout << "0x" << std::hex << std::setw(2) << std::setfill('0');
+        }
+    };
+
+    template<typename U>
+    struct sOP<U, typename std::enable_if<std::is_floating_point<U>::value>::type> {
+        static void setup(U d)
+        {
+            std::cout << std::setprecision(4);
+        }
+    };
+
+
+    template<typename T>
+    struct OP {
+        OP(Dbg & d)
+            : m_dbg(d) {}
+        Dbg& op(T d)
+        {
+            sOP<T>::setup(d);
+            return m_dbg.p(d);
+        }
+    private:
+        Dbg& p(T d)
+        {
+            return m_dbg.p(d);
+        }
+        Dbg& m_dbg;
+    };
+
+    template<typename T>
     Dbg& operator<< (T d)
     {
-        std::cout << d << " ";
-        return *this;
+        return OP<T>(*this).op(d);
+    }
+
+    void pindent()
+    {
+        for (int i=0; i<indent; i++)
+            std::cout << "  ";
     }
 
     template <typename T>
     Dbg& operator<< (std::vector<T> v)
     {
-        std::cout << " vector<" << typeid(T).name() << ">(";
-        std::copy(v.begin(), v.end(), std::ostream_iterator<T>(std::cout, ", "));
-        std::cout << ")";
-        return *this;
-    }
-
-    Dbg& operator<< (std::vector<char> v)
-    {
-        std::cout << " vector<char>(";
-        std::copy(v.begin(), v.end(), std::ostream_iterator<int>(std::cout, ", "));
-        std::cout << ")";
+        nos = true;
+        (*this) << "vector<" << typeid(T).name() << ">(\n";
+        indent++;
+        pindent();
+        int line = 0;
+        for (const auto & e : v)
+        {
+            (*this) << e;
+            line++;
+            if (line % 16 == 0)
+                std::cout << "\n", pindent();
+            else
+                std::cout << " ";
+        }
+        indent--;
+        if (line%16)
+            std::cout << "\n";
+        pindent();
+        (*this) << ")";
+        nos = false;
         return *this;
     }
 
@@ -140,6 +204,8 @@ struct Dbg
     }
 private:
     std::ios::fmtflags m_flags;
+    bool nos = false;
+    int indent= 0;
 };
 
 } // ns utils
