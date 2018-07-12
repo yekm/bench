@@ -361,4 +361,69 @@ private:
     }
 };
 
+namespace djb_avx2 {
+#include "djbsort/avx2/sort.c"
+}
+
+class djb_avx2_sort : public Algorithm
+{
+public:
+    djb_avx2_sort()
+        : Algorithm("djbsort avx2")
+    {}
+private:
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &) override
+    {
+        SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
+        D() << "before " << d;
+        djb_avx2::int32_sort(d.data(), d.size());
+        D() << "after " << d;
+    }
+};
+
+namespace djb_portable4 {
+#include "djbsort/portable4/sort.c"
+}
+
+class djb_portable4_sort : public Algorithm
+{
+public:
+    djb_portable4_sort()
+        : Algorithm("djbsort portable4")
+    {}
+private:
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &) override
+    {
+        SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
+        D() << "before " << d;
+        djb_portable4::int32_sort(d.data(), d.size());
+        D() << "after " << d;
+    }
+};
+
+#include "pdqsort/pdqsort.h"
+
+/*
+ * If your comparison function is branchless, you can call pdqsort_branchless
+ * for a potential big speedup. If you are using C++11, the type you're sorting
+ * is arithmetic and your comparison function is not given or is std::less/std::greater,
+ * pdqsort automatically delegates to pdqsort_branchless.
+ */
+
+class pdq_sort : public Algorithm
+{
+public:
+    pdq_sort()
+        : Algorithm("pdqsort")
+    {}
+private:
+    virtual void do_run(TaskData & td, std::unique_ptr<AResult> &) override
+    {
+        SortingTask::g_type::container_type &d = static_cast<SortingTask::g_type&>(td).get_mutable();
+        D() << "before " << d;
+        pdqsort(d.begin(), d.end());
+        D() << "after " << d;
+    }
+};
+
 #endif // SORTING_ALGS_H
