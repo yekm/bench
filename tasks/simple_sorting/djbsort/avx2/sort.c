@@ -1,4 +1,4 @@
-#include "int32_sort.h"
+//#include "int32_sort.h"
 #include <immintrin.h>
 #define int32 int32_t
 
@@ -356,7 +356,8 @@ static void transpose(int32 *y,long long *pos,const int32 *x,long long n)
 void int32_sort(int32 *x,long long n)
 {
   long long top,p,q,r,i,j,pos[8];
-  int32 y[n];
+  int32 * yp = 0, * y = 0;
+  //int32 y[n];
   int32 a0;
   int32x8 a01234567, b01234567, c01234567, d01234567;
 
@@ -368,6 +369,9 @@ void int32_sort(int32 *x,long long n)
     return;
     /* XXX: support more small sizes */
   }
+
+  yp = (int32*)calloc(n, sizeof(int32));
+  y = yp;
 
   top = 1;
   while (top < n - top) top += top;

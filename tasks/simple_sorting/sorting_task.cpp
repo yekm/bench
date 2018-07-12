@@ -24,7 +24,7 @@ static struct st
         t->add_alg(std::unique_ptr<Algorithm>(new swenson_grailsort()));
         t->add_alg(std::unique_ptr<Algorithm>(new swenson_sqrtsort()));
         t->add_alg(std::unique_ptr<Algorithm>(new swenson_mergesort()));
-        //t->add_alg(std::unique_ptr<Algorithm>(new djb_avx2_sort()));
+        t->add_alg(std::unique_ptr<Algorithm>(new djb_avx2_sort()));
         t->add_alg(std::unique_ptr<Algorithm>(new djb_portable4_sort()));
         t->add_alg(std::unique_ptr<Algorithm>(new pdq_sort()));
 #ifdef CUDA_FOUND
@@ -38,6 +38,7 @@ static struct st
         pt->add_alg(std::unique_ptr<Algorithm>(new shell_sort()));
         pt->add_alg(std::unique_ptr<Algorithm>(new merge_sort()));
         pt->add_alg(std::unique_ptr<Algorithm>(new swenson_timsort()));
+        pt->add_alg(std::unique_ptr<Algorithm>(new djb_avx2_sort()));
         pt->add_alg(std::unique_ptr<Algorithm>(new djb_portable4_sort()));
         pt->add_alg(std::unique_ptr<Algorithm>(new pdq_sort()));
 #ifdef CUDA_FOUND
