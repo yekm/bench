@@ -98,7 +98,7 @@ private:
     {
         std::uniform_int_distribution<U> dis(min, max);
         std::generate_n(base_type::m_data.begin(), base_type::m_data.size(),
-                        std::bind(dis, m_gen));
+                        [&]() { return dis(m_gen); });
     }
 
     template <typename U = T,
@@ -107,7 +107,7 @@ private:
     {
         std::uniform_real_distribution<U> dis(min, max);
         std::generate_n(base_type::m_data.begin(), base_type::m_data.size(),
-                        std::bind(dis, m_gen));
+                        [&]() { return dis(m_gen); });
     }
 #endif
 
