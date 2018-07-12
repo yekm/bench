@@ -6,12 +6,18 @@
 #include "common/partiallysorteddata.hpp"
 #include "bexception.hpp"
 
+#include <boost/align/aligned_allocator.hpp>
+namespace ba = boost::alignment;
+
 class SortingTask : public Task
 {
 public:
     typedef int item_type;
     //typedef char item_type; // nice for debugging
-    typedef GenericData<std::vector<item_type>> g_type;
+    typedef std::vector<item_type,
+                        ba::aligned_allocator<item_type,
+                                              32>> vector_type;
+    typedef GenericData<vector_type> g_type;
 
     SortingTask()
         : Task("sorting algorithms", utils::PlotSettings(utils::PlotSettings::AxisScale::AS_LOGXY))
