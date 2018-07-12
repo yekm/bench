@@ -81,16 +81,15 @@
 	{"name" : "Shell sort n*log^2(n)", "tsv" : "task3_alg4.tsv", "common_filename" : "task3_alg4", "status" : "Timeout", "an" : "4"},
 	{"name" : "djbsort portable4", "tsv" : "task3_alg5.tsv", "common_filename" : "task3_alg5", "status" : "Timeout", "an" : "5"},
 	{"name" : "pdqsort", "tsv" : "task3_alg6.tsv", "common_filename" : "task3_alg6", "status" : "Timeout", "an" : "6"},
-	{"name" : "pdqsort branchless", "tsv" : "task3_alg7.tsv", "common_filename" : "task3_alg7", "status" : "Timeout", "an" : "7"},
-	{"name" : "swenson binary insertion sort n^2", "tsv" : "task3_alg8.tsv", "common_filename" : "task3_alg8", "status" : "Timeout", "an" : "8"},
-	{"name" : "swenson grail sort", "tsv" : "task3_alg9.tsv", "common_filename" : "task3_alg9", "status" : "Timeout", "an" : "9"},
-	{"name" : "swenson heapsort n*log(n)", "tsv" : "task3_alg10.tsv", "common_filename" : "task3_alg10", "status" : "Timeout", "an" : "10"},
-	{"name" : "swenson mergesort n*log(n)", "tsv" : "task3_alg11.tsv", "common_filename" : "task3_alg11", "status" : "Timeout", "an" : "11"},
-	{"name" : "swenson quiksort n*log(n)", "tsv" : "task3_alg12.tsv", "common_filename" : "task3_alg12", "status" : "Timeout", "an" : "12"},
-	{"name" : "swenson selection sort n^2", "tsv" : "task3_alg13.tsv", "common_filename" : "task3_alg13", "status" : "Timeout", "an" : "13"},
-	{"name" : "swenson sell sort n*log^2(n)", "tsv" : "task3_alg14.tsv", "common_filename" : "task3_alg14", "status" : "Timeout", "an" : "14"},
-	{"name" : "swenson sqrt sort", "tsv" : "task3_alg15.tsv", "common_filename" : "task3_alg15", "status" : "Timeout", "an" : "15"},
-	{"name" : "swenson timsort n*log(n)", "tsv" : "task3_alg16.tsv", "common_filename" : "task3_alg16", "status" : "Timeout", "an" : "16"}
+	{"name" : "swenson binary insertion sort n^2", "tsv" : "task3_alg7.tsv", "common_filename" : "task3_alg7", "status" : "Timeout", "an" : "7"},
+	{"name" : "swenson grail sort", "tsv" : "task3_alg8.tsv", "common_filename" : "task3_alg8", "status" : "Timeout", "an" : "8"},
+	{"name" : "swenson heapsort n*log(n)", "tsv" : "task3_alg9.tsv", "common_filename" : "task3_alg9", "status" : "Timeout", "an" : "9"},
+	{"name" : "swenson mergesort n*log(n)", "tsv" : "task3_alg10.tsv", "common_filename" : "task3_alg10", "status" : "Timeout", "an" : "10"},
+	{"name" : "swenson quiksort n*log(n)", "tsv" : "task3_alg11.tsv", "common_filename" : "task3_alg11", "status" : "Timeout", "an" : "11"},
+	{"name" : "swenson selection sort n^2", "tsv" : "task3_alg12.tsv", "common_filename" : "task3_alg12", "status" : "Timeout", "an" : "12"},
+	{"name" : "swenson sell sort n*log^2(n)", "tsv" : "task3_alg13.tsv", "common_filename" : "task3_alg13", "status" : "Timeout", "an" : "13"},
+	{"name" : "swenson sqrt sort", "tsv" : "task3_alg14.tsv", "common_filename" : "task3_alg14", "status" : "Timeout", "an" : "14"},
+	{"name" : "swenson timsort n*log(n)", "tsv" : "task3_alg15.tsv", "common_filename" : "task3_alg15", "status" : "Timeout", "an" : "15"}
 	]
 },
 {
@@ -108,8 +107,7 @@
 	{"name" : "Shell sort n*log^2(n)", "tsv" : "task4_alg3.tsv", "common_filename" : "task4_alg3", "status" : "Ok", "an" : "3"},
 	{"name" : "djbsort portable4", "tsv" : "task4_alg4.tsv", "common_filename" : "task4_alg4", "status" : "Ok", "an" : "4"},
 	{"name" : "pdqsort", "tsv" : "task4_alg5.tsv", "common_filename" : "task4_alg5", "status" : "Ok", "an" : "5"},
-	{"name" : "pdqsort branchless", "tsv" : "task4_alg6.tsv", "common_filename" : "task4_alg6", "status" : "Ok", "an" : "6"},
-	{"name" : "swenson timsort n*log(n)", "tsv" : "task4_alg7.tsv", "common_filename" : "task4_alg7", "status" : "Ok", "an" : "7"}
+	{"name" : "swenson timsort n*log(n)", "tsv" : "task4_alg6.tsv", "common_filename" : "task4_alg6", "status" : "Ok", "an" : "6"}
 	]
 },
 {
