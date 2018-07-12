@@ -86,8 +86,8 @@ struct Dbg
         return *this;
     }
 
-    template <typename T>
-    Dbg& operator<< (std::vector<T> v)
+    template <typename T, typename U>
+    Dbg& operator<< (std::vector<T, U> v)
     {
         std::cout << " vector<" << typeid(T).name() << ">(";
         std::copy(v.begin(), v.end(), std::ostream_iterator<T>(std::cout, ", "));
