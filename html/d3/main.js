@@ -190,7 +190,9 @@ function drawchart(task) {
         .y(function(d) { return y(d.mean); });
 
     chartdiv
-        .append("h2").attr("class", "taskname").text(task.name);
+        .append("h2").attr("class", "taskname")
+        .append("a").attr("xlink:href", "#task"+task.tn)
+        .text(task.name);
 
     var svg = chartdiv
         .append("svg")
