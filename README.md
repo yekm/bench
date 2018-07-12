@@ -157,6 +157,22 @@ Aka don't try this at <s>home</s> work.
 - loose JSON handling (`utils/output/jsonoutput.cpp`)
 - lack of comments
 
+https://git-scm.com/book/en/v2/Git-Tools-Advanced-Merging
+
+```
+git remote add swenson_sort https://github.com/swenson/sort
+git remote add despacer_remote https://github.com/lemire/despacer
+git remote add pdqsort_remote https://github.com/orlp/pdqsort
+
+git checkout -b swenson_branch swenson_sort/master
+git checkout -b despacer_branch despacer_remote/master
+git checkout -b pdqsort_branch pdqsort_remote/master
+
+git read-tree --prefix=tasks/simple_sorting/swenson-sort -u swenson_branch
+git read-tree --prefix=tasks/despace/despacer -u despacer_branch
+git read-tree --prefix=tasks/simple_sorting/pdqsort -u pdqsort_branch
+```
+
 ### LICENSE
 MIT.
 However, this project uses various sources from OpenSSL ans OpenSSH. I haven't read
