@@ -1,6 +1,0 @@
-[submodule "tasks/simple_sorting/swenson-sort"]
-	path = tasks/simple_sorting/swenson-sort
-	url = https://github.com/swenson/sort
-[submodule "tasks/despace/despacer"]
-	path = tasks/despace/despacer
-	url = https://github.com/lemire/despacer
